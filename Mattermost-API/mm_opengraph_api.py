@@ -17,6 +17,7 @@ class Opengraph(Base):
         No permission required but must be logged in.
 
         :param url: The URL to get Open Graph Metadata.
+        :return: Open Graph retrieval.
         """
 
         url = f"{self.api_url}/"
