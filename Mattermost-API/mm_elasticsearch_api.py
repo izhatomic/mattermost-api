@@ -26,3 +26,20 @@ class Elasticsearch(Base):
 
         return self.request(url, request_type='POST')
 
+    def purge_elast_indexes(self) -> dict:
+
+        """
+        Deletes all Elasticsearch indexes and their contents.
+        After calling this endpoint, it is necessary to schedule
+        a new Elasticsearch indexing job to repopulate the indexes.
+
+        Minimum server version: 4.1
+        Must have manage_system permission.
+
+        :return: Elasticsearch retreival
+        """
+
+        url = f"{self.api_url}/purge_indexes"
+        self.reset()
+
+        return self.request(url, request_type='POST')
