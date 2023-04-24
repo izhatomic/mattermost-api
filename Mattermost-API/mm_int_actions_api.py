@@ -2,7 +2,7 @@ from typing import Union, List, Dict
 from Mattermost_Base import Base
 
 
-class Intagration_Actions(Base):
+class Integration_Actions(Base):
     def __init__(self, token: str, server_url: str):
         super().__init__(token, server_url)
         self.api_url = f"{self.base_url}/actions/dialogs"
@@ -21,7 +21,7 @@ class Intagration_Actions(Base):
         :param trigger_id: Trigger ID provided by other action
         :param url: The URL to send the submitted dialog payload to
         :param dialog: Post object to create
-        :return: Dialog open succesful
+        :return: Dialog open successful
         """
 
         url = f"{self.api_url}/open"
