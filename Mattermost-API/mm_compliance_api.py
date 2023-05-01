@@ -44,3 +44,20 @@ class Compliance(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_report(self, report_id: str):
+        """
+        Get a compliance reports previously created.
+
+        Must have manage_system permission.
+
+        :param report_id: Compliance report GUID
+        :return: Compliance report retrieval successful
+        """
+
+        url = f"{self.api_url}/reports/{report_id}"
+
+        self.reset()
+        self.add_to_json('report_id', report_id)
+
+        return self.request(url, request_type='GET')
+
