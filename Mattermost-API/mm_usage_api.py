@@ -24,4 +24,20 @@ class Usage(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_total_file_storage_usage(self) -> dict:
+        """
+        Get the total file storage usage for the instance in bytes
+        rounded down to the most significant digit.
+        Example: returns 4000 instead of 4321
 
+        Must be authenticated.
+        Minimum server version: 7.1
+
+        :return: Total file storage usage for the instance in bytes rounded down to the most significant digit
+        """
+
+        url = f"{self.api_url}/storage"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
