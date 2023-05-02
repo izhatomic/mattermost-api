@@ -41,7 +41,7 @@ class Exports(Base):
 
         return self.request(url, request_type='GET')
 
-  def delete_export_file(self, export_name: str) -> dict:
+    def delete_export_file(self, export_name: str) -> dict:
         """
         Deletes an export file.
 
@@ -53,3 +53,8 @@ class Exports(Base):
         """
 
         url = f"{self.api_url}/{export_name}"
+
+        self.reset()
+        self.add_to_json('export_name', export_name)
+
+        return self.request(url, request_type='DEL')
