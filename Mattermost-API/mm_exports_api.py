@@ -23,4 +23,21 @@ class Exports(Base):
 
         return self.request(url, request_type='GET')
 
+    def download_export_file(self, export_name: str) -> dict:
+        """
+        Downloads an export file.
+
+        Minimum server version: 5.33
+        Must have manage_system permissions.
+
+        :param export_name: The name of the export file to download
+        :return: Download info
+        """
+
+        url = f"{self.api_url}/{export_name}"
+
+        self.reset()
+        self.add_to_json('export_name', export_name)
+
+        return self.request(url, request_type='GET')
 
