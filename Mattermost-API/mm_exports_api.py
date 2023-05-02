@@ -41,3 +41,15 @@ class Exports(Base):
 
         return self.request(url, request_type='GET')
 
+  def delete_export_file(self, export_name: str) -> dict:
+        """
+        Deletes an export file.
+
+        Minimum server version: 5.33
+        Must have manage_system permissions.
+
+        :param export_name: The name of the export file to delete
+        :return: Delete info
+        """
+
+        url = f"{self.api_url}/{export_name}"
