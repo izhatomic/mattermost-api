@@ -32,3 +32,23 @@ class TermsOfService(Base):
         self.add_to_json('accepted', accepted)
 
         return self.request(url, request_type='POST', body=True)
+
+    def fetches_user_terms_of_service_action(self, user_id: str) -> dict:
+        """
+        Will be deprecated in v6.0 Fetches user's latest terms of service action
+        if the latest action was for acceptance.
+
+        Minimum server version: 5.6
+        Must be logged in as the user being acted on.
+        :param user_id: User GUID
+        :return: User's accepted terms of service action
+        """
+
+        url = f"{self.api_url}/{user_id}/terms_of_service"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('user_id', user_id)
+
+        return self.request(url, request_type='GET')
+
