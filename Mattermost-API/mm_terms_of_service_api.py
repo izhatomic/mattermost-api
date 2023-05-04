@@ -52,3 +52,17 @@ class TermsOfService(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_latest_terms_of_service(self) -> dict:
+        """
+        Get latest terms of service from the server
+
+        Minimum server version: 5.4
+        Must be authenticated.
+        """
+
+        url = f"{self.api_url}/terms_of_service"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
