@@ -58,6 +58,7 @@ class TermsOfService(Base):
 
         Minimum server version: 5.4
         Must be authenticated.
+        :return: Terms of service fetched successfully
         """
 
         url = f"{self.api_url}/terms_of_service"
@@ -66,3 +67,17 @@ class TermsOfService(Base):
 
         return self.request(url, request_type='GET')
 
+    def creates_new_terms_of_service(self) -> dict:
+        """
+        Creates new terms of service
+
+        Minimum server version: 5.4
+        Must have manage_system permission.
+        :return: Terms of service fetched successfully
+        """
+
+        url = f"{self.api_url}/terms_of_service"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
