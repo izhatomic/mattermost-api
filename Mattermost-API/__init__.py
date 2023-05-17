@@ -13,7 +13,7 @@ from . import mm_terms_of_service_api
 from . import mm_usage_api
 
 
-__all__ = [
+__all__ = (
     'mattermost',
     'Mattermost_Base',
     'mm_uploads_api',
@@ -27,4 +27,4 @@ __all__ = [
     'mm_permissions_api',
     'mm_terms_of_service_api',
     'mm_usage_api',
-]
+)
