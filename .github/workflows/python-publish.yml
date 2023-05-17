@@ -29,8 +29,10 @@ jobs:
         pip install build
 
     - name: Build package
-#      run: python -m build --sdist --wheel --outdir dist/
-      run: python setup.py sdist bdist_wheel
+      run: |
+#        python setup.py sdist bdist_wheel
+        python -m build --sdist --wheel --outdir dist/
+        twine upload --skip-existing dist/*
 
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
