@@ -10,13 +10,13 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='Mattermost-API',
-    version='0.15',
+    version='0.16',
     description='Simple Mattermost API library',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
     license='MIT',
     packages=find_packages(),
-    author='Aleksandr Kuznetsov <izhatomic@yandex.ru>, Aleksandr Zarin <vector-777@yandex.ru>',
+    author='Aleksandr Kuznetsov, Aleksandr Zarin',
     author_email='izhatomic@yandex.ru, vector-777@yandex.ru',
     keywords=['mattermost', 'mattermostapi', 'mattermost-api', "mattermost api", "mm api", "mm-api"],
     url='https://github.com/izhatomic/mattermost-api',
