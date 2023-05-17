@@ -11,14 +11,14 @@ HISTORY = ""
 
 setup_args = dict(
     name='MM-API',
-    version='0.11',
+    version='0.12',
     description='Simple Mattermost API library',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
     license='MIT',
     packages=find_packages(),
-    author='Aleksandr Kuznetsov',
-    author_email='izhatomic@yandex.ru',
+    author='Aleksandr Kuznetsov, Aleksandr Zarin',
+    author_email='izhatomic@yandex.ru, vector-777@yandex.ru',
     keywords=['mattermost', 'mattermostapi', 'mattermost-api', "mattermost api", "mm api", "mm-api"],
     url='https://github.com/izhatomic/mattermost-api',
     download_url='https://pypi.org/project/mattermost-api/'
