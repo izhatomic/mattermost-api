@@ -11,7 +11,7 @@ HISTORY = ""
 
 setup_args = dict(
     name='MM-API',
-    version='0.1',
+    version='0.11',
     description='Simple Mattermost API library',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
