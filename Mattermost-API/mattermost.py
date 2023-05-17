@@ -41,7 +41,7 @@ class MattermostAPI:
         return Imports(token=self.token, server_url=self.server_url)
 
     @property
-    def integrationactions(self):
+    def integration_actions(self):
         return IntegrationActions(token=self.token, server_url=self.server_url)
 
     @property
@@ -59,6 +59,7 @@ class MattermostAPI:
     @property
     def usage(self):
         return Usage(token=self.token, server_url=self.server_url)
+
 
 
 
