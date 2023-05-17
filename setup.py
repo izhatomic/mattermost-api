@@ -10,7 +10,7 @@ with open('README.md') as readme_file:
 HISTORY = ""
 
 setup_args = dict(
-    name='Mattermost-API',
+    name='MM-API',
     version='0.1',
     description='Simple Mattermost API library',
     long_description_content_type="text/markdown",
@@ -19,7 +19,7 @@ setup_args = dict(
     packages=find_packages(),
     author='Aleksandr Kuznetsov',
     author_email='izhatomic@yandex.ru',
-    keywords=['mattermost', 'mattermostapi', 'mattermost-api', "mattermost api"],
+    keywords=['mattermost', 'mattermostapi', 'mattermost-api', "mattermost api", "mm api", "mm-api"],
     url='https://github.com/izhatomic/mattermost-api',
     download_url='https://pypi.org/project/mattermost-api/'
 )
