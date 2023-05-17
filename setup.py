@@ -7,6 +7,7 @@ with open('README.md') as readme_file:
 
 # with open('HISTORY.md') as history_file:
 #     HISTORY = history_file.read()
+HISTORY = ""
 
 setup_args = dict(
     name='Mattermost-API',
