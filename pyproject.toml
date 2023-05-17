@@ -7,7 +7,7 @@ name = "Mattermost-API"
 version = "0.1"
 authors = [
     { name="Aleksandr Kuznetsov", email="izhatomic@yandex.ru" },
-    { name="Aleksandr Zarin", email="" },
+    { name="Aleksandr Zarin", email="vector-777@yandex.ru" },
 ]
 description = "Simple Mattermost API library"
 readme = "README.md"
