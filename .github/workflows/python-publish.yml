@@ -33,6 +33,9 @@ jobs:
       run: |
         python -m build --sdist --wheel --outdir dist/
         twine upload --skip-existing dist/*
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
 
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
