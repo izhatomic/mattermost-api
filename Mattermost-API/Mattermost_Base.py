@@ -56,12 +56,16 @@ class Base:
         """
             Добавляет заголовок в запрос для отправки JSON данных.
         """
+        if self.headers is None:
+            self.headers = {}
         self.headers.update({'Content-Type': 'application/json'})
 
     def add_application_www_form_header(self) -> None:
         """
             Добавляет заголовок в запрос для отправки JSON данных.
         """
+        if self.headers is None:
+            self.headers = {}
         self.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
 
     def add_to_json(self, key: str, value: Union[str, dict, list, tuple, int, bool]) -> None:
