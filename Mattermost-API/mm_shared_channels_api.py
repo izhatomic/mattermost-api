@@ -32,3 +32,19 @@ class Shared_channels(Base):
 
         return self.request(url, request_type='GET', body=True)
 
+    def get_remote_clstr_info_by_id(self, remote_id:str) -> dict:
+        """
+        Get remote cluster info based on remoteId.
+
+        Minimum server version: 5.50
+        Must be authenticated and user must belong to
+        at least one channel shared with the remote cluster.
+
+        :param remote_id: Remote Cluster GUID.
+        :return: Remote cluster info.
+        """
+
+        url = f"{self.api_url}/{remote_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
