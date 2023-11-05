@@ -35,3 +35,27 @@ class Schemes(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def create_a_scheme(self,
+                        name:str,
+                        description:str) -> dict:
+        """
+        Create a new scheme.
+
+        Minimum server version: 5.50
+        Must have manage_system permission.
+
+        :param name: The name of the scheme.
+        :param description: The description of the scheme.
+        :param The scope of the scheme ("team" or "channel").
+        :return: Schemes creation info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('name', name)
+        if description is not None:
+            self.add_to_json('description', description)
+        self.add_to_json('scope', scope)
+
+        return self.request(url, request_type='GET', body=True)
