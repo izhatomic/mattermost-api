@@ -75,3 +75,21 @@ class Schemes(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def delete_a_scheme(self, scheme_id:str)-> dict:
+        """
+        Soft deletes a scheme, by marking the scheme
+        as deleted in the database.
+
+        Minimum server version: 5.0
+        Must have manage_system permission.
+
+        :param scheme_id: ID of the scheme to delete.
+        :return: Schemes deletion info.
+        """
+        url = f"{self.api_url}/{scheme_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
+
+
