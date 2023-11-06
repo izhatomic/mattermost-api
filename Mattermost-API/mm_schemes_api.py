@@ -144,3 +144,30 @@ class Schemes(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_a_pg_of_chnls_use_scheme(self,
+                                     scheme_id: str,
+                                     page: int,
+                                     per_page: int) -> dict:
+        """
+        Get a page of channels which use this scheme.
+        The provided Scheme ID should be for a Channel-scoped Scheme.
+        Use the query parameters to modify the behaviour of this endpoint.
+
+        Minimum server version: 5.0
+        manage_system permission is required.
+
+        :param scheme_id: Scheme GUID.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of channels per page.
+        :return: Channel list retrieval info.
+        """
+        url = f"{self.api_url}/{scheme_id}/channels"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
