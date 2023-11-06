@@ -8,8 +8,8 @@ class Schemes(Base):
         self.api_url = f"{self.base_url}/schemes"
 
     def get_the_schemes(self, scope: str,
-                      page: int,
-                      per_page: int) -> dict:
+                        page: int,
+                        per_page: int) -> dict:
         """
         Get a page of schemes. Use the query parameters to modify
         the behaviour of this endpoint.
@@ -37,8 +37,9 @@ class Schemes(Base):
         return self.request(url, request_type='GET', body=True)
 
     def create_a_scheme(self,
-                        name:str,
-                        description:str) -> dict:
+                        name: str,
+                        description: str,
+                        scope: str) -> dict:
         """
         Create a new scheme.
 
@@ -47,7 +48,7 @@ class Schemes(Base):
 
         :param name: The name of the scheme.
         :param description: The description of the scheme.
-        :param The scope of the scheme ("team" or "channel").
+        :param scope: The scope of the scheme ("team" or "channel").
         :return: Schemes creation info.
         """
         url = f"{self.api_url}/"
@@ -59,3 +60,18 @@ class Schemes(Base):
         self.add_to_json('scope', scope)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_a_scheme(self, scheme_id: str) -> dict:
+        """
+        Get a scheme from the provided scheme id.
+
+        Minimum server version: 5.0
+        Must have manage_system permission.
+
+        :param scheme_id: Scheme GUID.
+        :return: Schemes retrieval info.
+        """
+        url = f"{self.api_url}/{scheme_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
