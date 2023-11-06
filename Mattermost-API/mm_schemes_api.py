@@ -76,7 +76,7 @@ class Schemes(Base):
 
         return self.request(url, request_type='GET')
 
-    def delete_a_scheme(self, scheme_id:str)-> dict:
+    def delete_a_scheme(self, scheme_id: str) -> dict:
         """
         Soft deletes a scheme, by marking the scheme
         as deleted in the database.
@@ -92,4 +92,30 @@ class Schemes(Base):
 
         return self.request(url, request_type='DEL')
 
+    def patch_a_scheme(self, scheme_id: str,
+                       name: str,
+                       description: str) -> dict:
+        """
+        Partially update a scheme by providing only the fields you want to update.
+        Omitted fields will not be updated.
+        The fields that can be updated are defined in the request body,
+        all other provided fields will be ignored.
 
+        Minimum server version: 5.0
+        manage_system permission is required.
+
+        :param scheme_id: Scheme GUID.
+        :param name: The human readable name of the scheme.
+        :param description: The description of the scheme.
+        :return: Schemes deletion info.
+        """
+
+        url = f"{self.api_url}/{scheme_id}/patch"
+        self.reset()
+        self.add_application_json_header()
+        if name is not None:
+            self.add_to_json('name', name)
+        if description is not None:
+            self.add_to_json('description', description)
+
+        return self.request(url, request_type='PUT', body=True)
