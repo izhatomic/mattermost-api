@@ -50,3 +50,23 @@ class Roles(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def patch_a_role(self, role_id: str) -> dict:
+        """
+        Partially update a role by providing only the fields you want to update.
+        Omitted fields will not be updated.
+        The fields that can be updated are defined in the request body,
+        all other provided fields will be ignored.
+
+        Minimum server version: 4.9
+        manage_system permission is required.
+
+        :param role_id: Role GUID.
+        :return: Role patch info.
+        """
+        url = f"{self.api_url}/name/{role_id}/patch"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
