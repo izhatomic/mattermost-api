@@ -7,7 +7,7 @@ class Roles(Base):
         super().__init__(token, server_url)
         self.api_url = f"{self.base_url}/roles"
 
-    def Get_a_lst_roles(self) -> dict:
+    def get_a_lst_roles(self) -> dict:
         """
         Get a list of all the roles.
 
@@ -17,6 +17,21 @@ class Roles(Base):
         :return: Roles list.
         """
         url = f"{self.api_url}/"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+    def get_a_role(self, role_id: str) -> dict:
+        """
+        Get a role from the provided role id.
+
+        Minimum server version: 4.9
+        Requires an active session but no other permissions.
+
+        :param role_id: Role GUID.
+        :return: Role retrieval info.
+        """
+        url = f"{self.api_url}/{role_id}"
         self.reset()
 
         return self.request(url, request_type='GET')
