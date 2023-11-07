@@ -83,4 +83,20 @@ class Plugins(Base):
 
         return self.request(url, request_type='DEL')
 
+    def enable_plugin(self, plugin_id: str) -> dict:
+        """
+        Enable a previously uploaded plugin.
+        Plugins must be enabled in the server's config settings.
+
+        Minimum server version: 4.4
+        Must have manage_system permission.
+
+        :param plugin_id: Id of the plugin to be enabled.
+        :return: Plugin state info.
+        """
+        url = f"{self.api_url}/{plugin_id}"
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
 
