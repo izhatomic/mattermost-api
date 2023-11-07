@@ -64,4 +64,23 @@ class Plugins(Base):
         if force is not None:
             self.add_to_json('force', force)
 
-        return self.request(url, request_type='GET', body=True)
+        return self.request(url, request_type='POST', body=True)
+
+    def remove_plugin(self, plugin_id: str) -> dict:
+        """
+        Remove the plugin with the provided ID from the server.
+        All plugin files are deleted.
+        Plugins must be enabled in the server's config settings.
+
+        Minimum server version: 4.4
+        Must have manage_system permission.
+
+        :param plugin_id: Id of the plugin to be removed
+        :return: Plugin removal info.
+        """
+        url = f"{self.api_url}/{plugin_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
+
+
