@@ -94,9 +94,23 @@ class Plugins(Base):
         :param plugin_id: Id of the plugin to be enabled.
         :return: Plugin state info.
         """
-        url = f"{self.api_url}/{plugin_id}"
+        url = f"{self.api_url}/{plugin_id}/enable"
         self.reset()
 
         return self.request(url, request_type='POST')
 
+    def disable_plugin(self, plugin_id: str) -> dict:
+        """
+        Disable a previously enabled plugin.
+        Plugins must be enabled in the server's config settings.
 
+        Minimum server version: 4.4
+        Must have manage_system permission.
+
+        :param plugin_id: Id of the plugin to be disabled.
+        :return: Plugin state info.
+        """
+        url = f"{self.api_url}/{plugin_id}/disable"
+        self.reset()
+
+        return self.request(url, request_type='POST')
