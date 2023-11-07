@@ -52,3 +52,21 @@ class Jobs(Base):
             self.add_to_json('data', data)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_a_job(self, job_id: str) -> dict:
+
+        """
+        Gets a single job.
+
+        Minimum server version: 4.1
+        Must have manage_jobs permission.
+
+        :param ob_id: The type of job to create.
+        :return: Job retrieval info.
+        """
+        url = f"{self.api_url}/{job_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
