@@ -129,4 +129,16 @@ class Plugins(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_plugins_status(self) -> dict:
+        """
+        Returns the status for plugins installed anywhere in the cluster
 
+        Minimum server version: 4.4
+        No permissions required.
+
+        :return: Plugin status info.
+        """
+        url = f"{self.api_url}/statuses"
+        self.reset()
+
+        return self.request(url, request_type='GET')
