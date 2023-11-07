@@ -54,14 +54,13 @@ class Jobs(Base):
         return self.request(url, request_type='POST', body=True)
 
     def get_a_job(self, job_id: str) -> dict:
-
         """
         Gets a single job.
 
         Minimum server version: 4.1
         Must have manage_jobs permission.
 
-        :param ob_id: The type of job to create.
+        :param job_id: The type of job to create.
         :return: Job retrieval info.
         """
         url = f"{self.api_url}/{job_id}"
@@ -69,4 +68,17 @@ class Jobs(Base):
 
         return self.request(url, request_type='GET')
 
+    def download_the_results_of_job(self, job_id: str) -> dict:
+        """
+        Download the result of a single job.
 
+        Minimum server version: 5.28
+        Must have manage_jobs permission.
+
+        :param job_id: The type of job to create.
+        :return: Job GUID.
+        """
+        url = f"{self.api_url}/{job_id}/download"
+        self.reset()
+
+        return self.request(url, request_type='GET')
