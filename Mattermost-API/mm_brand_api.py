@@ -36,3 +36,18 @@ class Brand(Base):
         self.add_to_json('image', image)
 
         return self.request(url, request_type='POST', body=True)
+
+    def delete_current_brand_image(self) -> dict:
+        """
+        Deletes the previously uploaded brand image.
+        Returns 404 if no brand image has been uploaded.
+
+        Minimum server version: 5.6
+        Must have manage_system permission.
+
+        :return: Brand image deletion info.
+        """
+        url = f"{self.api_url}/image"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
