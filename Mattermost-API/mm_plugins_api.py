@@ -114,3 +114,19 @@ class Plugins(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def get_webapp_plugins(self) -> dict:
+        """
+        Get a list of web app plugins installed and activated on the server.
+
+        Minimum server version: 4.4
+        No permissions required.
+
+        :return: Plugin state info.
+        """
+        url = f"{self.api_url}/webapp"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
