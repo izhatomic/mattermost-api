@@ -75,10 +75,25 @@ class Jobs(Base):
         Minimum server version: 5.28
         Must have manage_jobs permission.
 
-        :param job_id: The type of job to create.
-        :return: Job GUID.
+        :param job_id: Job GUID.
+        :return: Results status.
         """
         url = f"{self.api_url}/{job_id}/download"
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def cancel_a_job(self, job_id: str) -> dict:
+        """
+        Cancel a job.
+
+        Minimum server version: 4.1
+        Must have manage_jobs permission.
+
+        :param job_id: Job GUID.
+        :return: Job cancellation info.
+        """
+        url = f"{self.api_url}/{job_id}/download"
+        self.reset()
+
+        return self.request(url, request_type='POST')
