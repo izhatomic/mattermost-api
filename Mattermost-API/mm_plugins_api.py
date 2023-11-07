@@ -8,8 +8,8 @@ class Plugins(Base):
         self.api_url = f"{self.base_url}/plugins"
 
     def upload_plugin(self,
-                      plugin:str,
-                      force:str) -> dict:
+                      plugin: str,
+                      force: str) -> dict:
         """
         Upload a plugin that is contained within a compressed .tar.gz file.
         Plugins and plugin uploads must be enabled in the server's config settings.
@@ -30,3 +30,17 @@ class Plugins(Base):
 
         return self.request(url, request_type='POST', body=True)
 
+    def get_plugins(self) -> dict:
+        """
+        Get a list of inactive and a list of active plugin manifests.
+        Plugins must be enabled in the server's config settings.
+
+        Minimum server version: 4.4
+        Must have manage_system permission.
+
+        :return: Plugin retrieval info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+
+        return self.request(url, request_type='POST', body=True)
