@@ -30,3 +30,25 @@ class Jobs(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def create_a_new_job(self,
+                         type: str,
+                         data: dict) -> dict:
+        """
+        Create a new job
+
+        Minimum server version: 4.1
+        Must have manage_jobs permission.
+
+        :param type: The type of job to create.
+        :param data: An object containing any additional data required for this job type.
+        :return: Job creation info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('type', type)
+        if data is not None:
+            self.add_to_json('data', data)
+
+        return self.request(url, request_type='POST', body=True)
