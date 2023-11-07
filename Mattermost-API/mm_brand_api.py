@@ -20,3 +20,19 @@ class Brand(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def upload_brand_image(self, image: str) -> dict:
+        """
+        Uploads a brand image.
+
+        Must have manage_system permission.
+
+        :param image: The image to be uploaded.
+        :return: Brand image upload info.
+        """
+        url = f"{self.api_url}/image"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('image', image)
+
+        return self.request(url, request_type='POST', body=True)
