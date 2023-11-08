@@ -7,7 +7,9 @@ class DataRetention(Base):
         super().__init__(token, server_url)
         self.api_url = f"{self.base_url}/data_retention"
 
-    def get_policies_applied_to_user_teams(self, user_id: str, page: int, per_page: int) -> dict:
+    def get_policies_applied_to_user_teams(self, user_id: str,
+                                           page: int,
+                                           per_page: int) -> dict:
         """
         Gets the policies which are applied to the all of the teams
         to which a user belongs.
@@ -34,7 +36,10 @@ class DataRetention(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def get_policies_applied_to_user_chnls(self, user_id: str, page: int, per_page: int) -> dict:
+    def get_policies_applied_to_user_chnls(self,
+                                           user_id: str,
+                                           page: int,
+                                           per_page: int) -> dict:
         """
         Gets the policies which are applied to the all of the channels to which a user belongs.
 
@@ -87,3 +92,26 @@ class DataRetention(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_granular_drp(self,
+                         page: int,
+                         per_page: int) -> dict:
+        """
+        Gets details about the granular (i.e. team or channel-specific)
+        data retention policies from the server.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :return: Policies count info.
+        """
+        url = f"{self.api_url}/policies"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
