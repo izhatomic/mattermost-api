@@ -272,6 +272,7 @@ class DataRetention(Base):
 
         Minimum server version: 5.35
         Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
 
         :param policy_id: The ID of the granular retention policy.
         :param teams_ids: The IDs of the teams to remove from the policy.
@@ -293,6 +294,7 @@ class DataRetention(Base):
 
         Minimum server version: 5.35
         Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
 
         :param policy_id: The ID of the granular retention policy.
         :param term: The search term to match against the name or display name of teams
@@ -315,6 +317,7 @@ class DataRetention(Base):
 
         Minimum server version: 5.35
         Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
 
         :param policy_id: The ID of the granular retention policy.
         :param page: Default: 0. The page to select.
@@ -330,3 +333,25 @@ class DataRetention(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def add_channels_to_granular_drp(self,
+                                     policy_id: str,
+                                     channels_ids: list[str]) -> dict:
+        """
+        Adds channels to a granular data retention policy.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param channels_ids: The IDs of the channels to add to the policy.
+        :return: Channels addition info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/channels"
+        self.reset()
+        self.add_application_json_header()
+        if channels_ids is not None:
+            self.add_to_json('channels_ids', channels_ids)
+
+        return self.request(url, request_type='POST', body=True)
