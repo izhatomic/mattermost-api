@@ -214,3 +214,30 @@ class DataRetention(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def get_teams_for_granular_drp(self,
+                                   policy_id: str,
+                                   page: int,
+                                   per_page: int) -> dict:
+        """
+        Gets the teams to which a granular data retention policy is applied.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param page: Default: 0.The page to select.
+        :param per_page: Default: 60. The number of teams per page. There is a maximum limit of 200 per page.
+        :return: Teams for retention policy info.
+        """
+
+        url = f"{self.api_url}/policies/{policy_id}/teams"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='DEL', body=True)
