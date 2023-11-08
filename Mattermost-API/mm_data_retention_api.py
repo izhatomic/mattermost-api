@@ -377,3 +377,45 @@ class DataRetention(Base):
             self.add_to_json('channels_ids', channels_ids)
 
         return self.request(url, request_type='DEL', body=True)
+
+    def search_for_channels_in_granular_drp(self,
+                                            policy_id: str,
+                                            term: str,
+                                            team_ids: list[str],
+                                            public: bool,
+                                            private: bool,
+                                            deleted: bool) -> dict:
+        """
+        Searches for the channels to which a granular data retention policy is applied.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param term: The string to search in the channel name, display name, and purpose.
+        :param team_ids: Filters results to channels belonging to the given team ids
+        :param public: Filters results to only return Public / Open channels,
+        can be used in conjunction with private to return both public and
+        private channels
+        :param private: Filters results to only return Private channels,
+        can be used in conjunction with public to return both private and
+        public channels
+        :param deleted: Filters results to only return deleted / archived channels
+        :return: Channels info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/channels/search"
+        self.reset()
+        self.add_application_json_header()
+        if term is not None:
+            self.add_to_json('term', term)
+        if team_ids is not None:
+            self.add_to_json('team_ids', team_ids)
+        if public is not None:
+            self.add_to_json('public', public)
+        if private is not None:
+            self.add_to_json('private', private)
+        if deleted is not None:
+            self.add_to_json('deleted', deleted)
+
+        return self.request(url, request_type='POST', body=True)
