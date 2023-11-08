@@ -284,3 +284,22 @@ class DataRetention(Base):
             self.add_to_json('teams_ids', teams_ids)
 
         return self.request(url, request_type='DEL', body=True)
+
+    def search_for_teams_in_granular_drp(self, policy_id: str, term: str) -> dict:
+        """
+        Searches for the teams to which a granular data retention policy is applied.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param term: The search term to match against the name or display name of teams
+        :return: Teams retrieval info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/teams/search"
+        self.reset()
+        self.add_application_json_header()
+        if term is not None:
+            self.add_to_json('term', term)
+
+        return self.request(url, request_type='POST', body=True)
