@@ -56,3 +56,18 @@ class DataRetention(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_global_data_retention_policy(self) -> dict:
+        """
+        Gets the current global data retention policy details from the server, including what data should be purged and the cutoff times for each data type that should be purged.
+
+        Minimum server version: 4.3
+        Requires an active session but no other permissions.
+        Requires an E20 license.
+
+        :return: Global data retention policy info.
+        """
+        url = f"{self.api_url}/policy"
+        self.reset()
+
+        return self.request(url, request_type='GET')
