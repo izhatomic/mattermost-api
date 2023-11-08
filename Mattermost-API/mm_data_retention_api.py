@@ -165,4 +165,37 @@ class DataRetention(Base):
 
         return self.request(url, request_type='POST')
 
+    def patch_a_granular_drp(self,
+                             policy_id: str,
+                             display_name: str,
+                             post_duration: int,
+                             team_ids: list[str],
+                             channel_ids: list[str]) -> dict:
+        """
+        Patches (i.e. replaces the fields of) a granular data retention policy. If any fields are omitted, they will not be changed.
 
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param display_name: The display name for this retention policy.
+        :param post_duration: The number of days a message will be retained before being deleted by this policy. If this value is less than 0, the policy has infinite retention (i.e. messages are never deleted).
+        :param team_ids: The IDs of the teams to which this policy should be applied.
+        :param channel_ids: The IDs of the channels to which this policy should be applied.
+        :return: Patching policies retention info.
+        """
+
+        url = f"{self.api_url}/policies/{policy_id}"
+        self.reset()
+        self.add_application_json_header()
+        if display_name is not None:
+            self.add_to_json('display_name', display_name)
+        if post_duration is not None:
+            self.add_to_json('post_duration', post_duration)
+        if team_ids is not None:
+            self.add_to_json('team_ids', team_ids)
+        if channel_ids is not None:
+            self.add_to_json('channel_ids', channel_ids)
+
+        return self.request(url, request_type='PATCH', body=True)
