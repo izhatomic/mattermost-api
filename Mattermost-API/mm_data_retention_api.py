@@ -285,7 +285,9 @@ class DataRetention(Base):
 
         return self.request(url, request_type='DEL', body=True)
 
-    def search_for_teams_in_granular_drp(self, policy_id: str, term: str) -> dict:
+    def search_for_teams_in_granular_drp(self,
+                                         policy_id: str,
+                                         term: str) -> dict:
         """
         Searches for the teams to which a granular data retention policy is applied.
 
@@ -303,3 +305,28 @@ class DataRetention(Base):
             self.add_to_json('term', term)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_channels_for_granular_drp(self,
+                                      policy_id: str,
+                                      page: int,
+                                      per_page: int) -> dict:
+        """
+        Gets the channels to which a granular data retention policy is applied.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of channels per page. There is a maximum limit of 200 per page.
+        :return: Channels retrieval info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/channels"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
