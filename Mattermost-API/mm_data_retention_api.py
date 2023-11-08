@@ -263,3 +263,24 @@ class DataRetention(Base):
             self.add_to_json('teams_ids', teams_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def delete_teams_from_granular_drp(self,
+                                       policy_id: str,
+                                       teams_ids: list[str]) -> dict:
+        """
+        Delete teams from a granular data retention policy.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param teams_ids: The IDs of the teams to remove from the policy.
+        :return: Teams addition info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/teams"
+        self.reset()
+        self.add_application_json_header()
+        if teams_ids is not None:
+            self.add_to_json('teams_ids', teams_ids)
+
+        return self.request(url, request_type='DEL', body=True)
