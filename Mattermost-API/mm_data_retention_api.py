@@ -93,7 +93,7 @@ class DataRetention(Base):
 
         return self.request(url, request_type='GET')
 
-    def get_granular_drp(self,
+    def get_the_granular_drp(self,
                          page: int,
                          per_page: int) -> dict:
         """
@@ -148,3 +148,21 @@ class DataRetention(Base):
             self.add_to_json('channel_ids', channel_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_a_granular_drp(self, policy_id: str) -> dict:
+        """
+        Gets details about a granular data retention policies by ID.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :return: Policies retention info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}"
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
+
