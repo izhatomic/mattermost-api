@@ -71,3 +71,19 @@ class DataRetention(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_number_of_granular_drp(self) -> dict:
+        """
+        Gets the number of granular (i.e. team or channel-specific)
+        data retention policies from the server.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_read_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :return: Policies count info.
+        """
+        url = f"{self.api_url}/policies_count"
+        self.reset()
+
+        return self.request(url, request_type='GET')
