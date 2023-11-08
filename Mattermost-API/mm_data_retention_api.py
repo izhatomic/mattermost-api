@@ -241,3 +241,25 @@ class DataRetention(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='DEL', body=True)
+
+    def add_teams_to_granular_drp(self,
+                                  policy_id: str,
+                                  teams_ids: list[str]) -> dict:
+        """
+        Adds teams to a granular data retention policy.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :param teams_ids: The IDs of the teams to add to the policy.
+        :return: Teams addition info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}/teams"
+        self.reset()
+        self.add_application_json_header()
+        if teams_ids is not None:
+            self.add_to_json('teams_ids', teams_ids)
+
+        return self.request(url, request_type='POST', body=True)
