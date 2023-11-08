@@ -185,7 +185,6 @@ class DataRetention(Base):
         :param channel_ids: The IDs of the channels to which this policy should be applied.
         :return: Patching policies retention info.
         """
-
         url = f"{self.api_url}/policies/{policy_id}"
         self.reset()
         self.add_application_json_header()
@@ -199,3 +198,19 @@ class DataRetention(Base):
             self.add_to_json('channel_ids', channel_ids)
 
         return self.request(url, request_type='PATCH', body=True)
+
+    def delete_granular_drp(self, policy_id: str) -> dict:
+        """
+        Deletes a granular data retention policy.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param policy_id: The ID of the granular retention policy.
+        :return: Retention policy deletion info.
+        """
+        url = f"{self.api_url}/policies/{policy_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
