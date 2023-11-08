@@ -104,6 +104,9 @@ class DataRetention(Base):
         Must have the sysconsole_read_compliance_data_retention permission.
         Requires an E20 license.
 
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of policies per page.
+        There is a maximum limit of 200 per page.
         :return: Policies count info.
         """
         url = f"{self.api_url}/policies"
@@ -115,3 +118,33 @@ class DataRetention(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def create_new_granular_drp(self,
+                                display_name: str,
+                                post_duration: int,
+                                team_ids: list[str],
+                                channel_ids: list[str]) -> dict:
+        """
+        Creates a new granular data retention policy with the specified display name and post duration.
+
+        Minimum server version: 5.35
+        Must have the sysconsole_write_compliance_data_retention permission.
+        Requires an E20 license.
+
+        :param display_name: The display name for this retention policy.
+        :param post_duration: The number of days a message will be retained before being deleted by this policy. If this value is less than 0, the policy has infinite retention (i.e. messages are never deleted).
+        :param team_ids: The IDs of the teams to which this policy should be applied.
+        :param channel_ids: The IDs of the channels to which this policy should be applied.
+        :return: Policies count info.
+        """
+        url = f"{self.api_url}/policies"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('display_name', display_name)
+        self.add_to_json('post_duration', post_duration)
+        if team_ids is not None:
+            self.add_to_json('team_ids', team_ids)
+        if channel_ids is not None:
+            self.add_to_json('channel_ids', channel_ids)
+
+        return self.request(url, request_type='POST', body=True)
