@@ -69,9 +69,26 @@ class Reactions(Base):
         :return: Reaction deletion info.
         """
 
-        url = f"{self.base_url}/posts/{post_id}/reactions"
+        url = f"{self.base_url}/users/{user_id}/posts/{post_id}/reactions/{emoji_name}"
         self.reset()
-        self.add_to_json('user_id', user_id)
-        self.add_to_json('emoji_name', emoji_name)
-        return self.request(url, request_type='DEL', body=True)
 
+        return self.request(url, request_type='DEL')
+
+    def bulk_get_reaction_for_posts(self, posts_ids: list[str]) -> dict:
+        """
+        Get a list of reactions made by all users to a given post.
+
+        Minimum server version: 5.8
+        Must have read_channel permission for the channel the post is in.
+
+        :param posts_ids: Array of post IDs
+        :return: Reaction retrieval info.
+        """
+
+        url = f"{self.base_url}/posts/ids/reactions"
+        self.reset()
+        self.add_application_json_header()
+        if posts_ids is not None:
+            self.add_to_json('posts_ids', posts_ids)
+
+        return self.request(url, request_type='POST', body=True)
