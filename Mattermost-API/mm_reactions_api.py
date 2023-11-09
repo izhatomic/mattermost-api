@@ -23,7 +23,6 @@ class Reactions(Base):
         :param create_at: The time in milliseconds this reaction was made.
         :return: Reaction creation info.
         """
-
         url = f"{self.api_url}/"
         self.reset()
         self.add_application_json_header()
@@ -47,7 +46,6 @@ class Reactions(Base):
         :param post_id: ID of a post.
         :return: Reaction list retrieval info.
         """
-
         url = f"{self.base_url}/posts/{post_id}/reactions"
         self.reset()
 
@@ -68,7 +66,6 @@ class Reactions(Base):
 
         :return: Reaction deletion info.
         """
-
         url = f"{self.base_url}/users/{user_id}/posts/{post_id}/reactions/{emoji_name}"
         self.reset()
 
@@ -84,7 +81,6 @@ class Reactions(Base):
         :param posts_ids: Array of post IDs
         :return: Reaction retrieval info.
         """
-
         url = f"{self.base_url}/posts/ids/reactions"
         self.reset()
         self.add_application_json_header()
