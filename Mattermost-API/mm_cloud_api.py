@@ -127,3 +127,43 @@ class Cloud(Base):
             self.add_to_json('num_employees', num_employees)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def update_cloud_customer_address(self,
+                                      city: str,
+                                      country: str,
+                                      line_1: str,
+                                      line_2: str,
+                                      postal_code: str,
+                                      state: str) -> dict:
+        """
+        Updates the company address for the Mattermost Cloud customer bound to this installation.
+
+        Minimum server version: 5.29
+        Must have manage_system permission and be licensed for Cloud.
+        Note: This is intended for internal use and is subject to change.
+
+        :param city: The city to update.
+        :param country: The country to update.
+        :param line_1: The line for additional info
+        :param line_2: The line for additional info
+        :param postal_code: The postal code to update.
+        :param state: The state to update.
+        :return: Cloud customer address updating info
+        """
+        url = f"{self.api_url}/customer/address"
+        self.reset()
+        self.add_application_json_header()
+        if city is not None:
+            self.add_to_json('city', city)
+        if country is not None:
+            self.add_to_json('country', country)
+        if line_1 is not None:
+            self.add_to_json('line_1', line_1)
+        if line_2 is not None:
+            self.add_to_json('line_2', line_2)
+        if postal_code is not None:
+            self.add_to_json('postal_code', postal_code)
+        if state is not None:
+            self.add_to_json('state', state)
+
+        return self.request(url, request_type='PUT', body=True)
