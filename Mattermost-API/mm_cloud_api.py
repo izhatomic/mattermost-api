@@ -54,3 +54,24 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def complete_payment_setup_intent(self, stripe_setup_intent_id: str) -> dict:
+        """
+        Confirms the payment setup intent initiated when posting to /cloud/payment.
+
+        Minimum server version: 5.28
+        Must have manage_system permission and be licensed for Cloud.
+        Note: This is intended for internal use and is subject to change.
+
+        :param stripe_setup_intent_id: id of the payment setup intent
+        :return: Policies count info.
+        """
+
+        url = f"{self.api_url}/confirm"
+
+        self.reset()
+        self.add_application_json_header()
+        if stripe_setup_intent_id is not None:
+            self.add_to_json('stripe_setup_intent_id', stripe_setup_intent_id)
+
+        return self.request(url, request_type='POST')
