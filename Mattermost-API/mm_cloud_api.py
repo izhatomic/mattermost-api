@@ -75,3 +75,19 @@ class Cloud(Base):
             self.add_to_json('stripe_setup_intent_id', stripe_setup_intent_id)
 
         return self.request(url, request_type='POST')
+
+    def get_cloud_customer(self) -> dict:
+        """
+        Retrieves the customer information for the Mattermost Cloud customer bound to this installation.
+
+        Minimum server version: 5.28
+        Must have manage_system permission and be licensed for Cloud.
+        Note: This is intended for internal use and is subject to change.
+
+        :return: Cloud customer info.
+        """
+
+        url = f"{self.api_url}/customer"
+        self.reset()
+
+        return self.request(url, request_type='GET')
