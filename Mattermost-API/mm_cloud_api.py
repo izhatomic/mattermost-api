@@ -22,3 +22,19 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_cloud_products(self) -> dict:
+        """
+        Retrieve a list of all products that are offered for Mattermost Cloud.
+
+        Minimum server version: 5.28
+        Must be logged in as the user or have the manage_system permission.
+        Note: This is intended for internal use and is subject to change.
+
+        :return: Cloud products info.
+        """
+
+        url = f"{self.api_url}/products"
+        self.reset()
+
+        return self.request(url, request_type='GET')
