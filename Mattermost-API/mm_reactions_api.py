@@ -52,3 +52,26 @@ class Reactions(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def remove_reaction_from_post(self,
+                                  user_id:str,
+                                  post_id:str,
+                                  emoji_name:str) -> dict:
+        """
+        Deletes a reaction made by a user from the given post.
+
+        Must be user or have manage_system permission.
+
+        :param user_id: ID of the user
+        :param post_id: ID of a post.
+        :param emoji_name: Emoji name
+
+        :return: Reaction deletion info.
+        """
+
+        url = f"{self.base_url}/posts/{post_id}/reactions"
+        self.reset()
+        self.add_to_json('user_id', user_id)
+        self.add_to_json('emoji_name', emoji_name)
+        return self.request(url, request_type='DEL', body=True)
+
