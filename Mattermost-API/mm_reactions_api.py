@@ -13,11 +13,9 @@ class Reactions(Base):
                           emoji_name: str,
                           create_at: int) -> dict:
         """
-        Endpoints for creating, getting and removing emoji reactions.
+        Create a reaction.
 
-        Minimum server version: 7.0
-        Must be authenticated and be licensed for Cloud.
-        Note: This is intended for internal use and is subject to change.
+        Must have read_channel permission for the channel the post is in.
 
         :param user_id: The ID of the user that made this reaction.
         :param post_id: The ID of the post to which this reaction was made.
@@ -40,4 +38,17 @@ class Reactions(Base):
 
         return self.request(url, request_type='POST', body=True)
 
+    def get_list_of_reactions_to_post(self, post_id: str) -> dict:
+        """
+        Get a list of reactions made by all users to a given post.
 
+        Must have read_channel permission for the channel the post is in.
+
+        :param post_id: ID of a post.
+        :return: Reaction list retrieval info.
+        """
+
+        url = f"{self.base_url}/posts/{post_id}/reactions"
+        self.reset()
+
+        return self.request(url, request_type='GET')
