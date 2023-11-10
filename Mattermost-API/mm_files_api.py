@@ -32,7 +32,7 @@ class File(Base):
         :param client_ids: A unique identifier for the file that will be returned in the response.
         :return: Corresponding lists and metadata info
         """
-        url = f"{self.api_url}/limits"
+        url = f"{self.api_url}/"
         self.reset()
         self.add_application_json_header()
         if channel_id is not None:
@@ -45,3 +45,18 @@ class File(Base):
             self.add_to_json('client_ids', client_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_a_file(self,
+                   file_id: str) -> dict:
+        """
+        Gets a file that has been uploaded previously.
+
+        Must have read_channel permission or be uploader of the file.
+
+        :param file_id: str: The ID of the channel that this file will be uploaded to.
+        :return: Corresponding lists and metadata info
+        """
+        url = f"{self.api_url}/{file_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
