@@ -75,3 +75,18 @@ class File(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_file_preview(self,
+                         file_id: str) -> dict:
+        """
+        Gets a file's preview.
+
+        Must have read_channel permission or be uploader of the file.
+
+        :param file_id: The ID of the file to get.
+        :return: File's preview info
+        """
+        url = f"{self.api_url}/{file_id}/preview"
+        self.reset()
+
+        return self.request(url, request_type='GET')
