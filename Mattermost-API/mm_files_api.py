@@ -53,10 +53,25 @@ class File(Base):
 
         Must have read_channel permission or be uploader of the file.
 
-        :param file_id: str: The ID of the channel that this file will be uploaded to.
+        :param file_id: The ID of the channel that this file will be uploaded to.
         :return: Corresponding lists and metadata info
         """
         url = f"{self.api_url}/{file_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+    def get_file_thumbnail(self,
+                           file_id: str) -> dict:
+        """
+        Gets a file's thumbnail.
+
+        Must have read_channel permission or be uploader of the file.
+
+        :param file_id: The ID of the file to get.
+        :return: File's thumbnail info
+        """
+        url = f"{self.api_url}/{file_id}/thumbnail"
         self.reset()
 
         return self.request(url, request_type='GET')
