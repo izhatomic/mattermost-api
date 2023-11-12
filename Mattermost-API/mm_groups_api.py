@@ -171,3 +171,20 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def link_team_to_group(self,
+                           group_id: str,
+                           team_id: str) -> dict:
+        """
+        Link a team to a group
+
+        Minimum server version: 5.11
+        Must have manage_team permission
+        :param group_id: Group GUID.
+        :param team_id: Team GUID.
+        :return: Link btw team and group info.
+        """
+        url = f"{self.api_url}/{group_id}/teams/{team_id}/link"
+        self.reset()
+
+        return self.request(url, request_type='POST')
