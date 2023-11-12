@@ -97,3 +97,18 @@ class Cloud(Base):
         self.add_to_json('user_ids', user_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_a_group(self, group_id: str) -> dict:
+
+        """
+        Get group from the provided group id string
+
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :return: Group retrieval info.
+        """
+        url = f"{self.api_url}/{group_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
