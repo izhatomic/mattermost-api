@@ -193,13 +193,13 @@ class Cloud(Base):
                                        group_id: str,
                                        team_id: str) -> dict:
         """
-        Link a team to a group
+        Delete a team to a group link
 
         Minimum server version: 5.11
         Must have manage_team permission
         :param group_id: Group GUID.
         :param team_id: Team GUID.
-        :return: Link btw team and group info.
+        :return: Link deletion info.
         """
         url = f"{self.api_url}/{group_id}/teams/{team_id}/link"
         self.reset()
@@ -223,3 +223,21 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def delete_link_from_channel_to_group(self,
+                                          group_id: str,
+                                          channel_id: str) -> dict:
+        """
+       Delete a link from a channel to a group
+
+        Minimum server version: 5.11
+        If the channel is private, you must have manage_private_channel_members permission.
+        Otherwise, you must have the manage_public_channel_members permission.
+        :param group_id: Group GUID.
+        :param channel_id: Channel GUID.
+        :return: Link deletion info.
+        """
+        url = f"{self.api_url}/{group_id}/channels/{channel_id}/link"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
