@@ -289,3 +289,17 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_group_channels(self, group_id: str) -> dict:
+        """
+        Retrieve the list of channels associated to the group
+
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :return: Channels list retrieval info.
+        """
+        url = f"{self.api_url}/{group_id}/channels"
+        self.reset()
+
+        return self.request(url, request_type='GET')
