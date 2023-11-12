@@ -59,7 +59,6 @@ class Cloud(Base):
         :return: Group list retrieval info.
         """
         url = f"{self.api_url}/"
-
         self.reset()
         self.add_application_json_header()
         if page is not None:
@@ -78,3 +77,23 @@ class Cloud(Base):
             self.add_to_json('filter_allow_reference', filter_allow_reference)
 
         return self.request(url, request_type='GET', body=True)
+
+    def create_custom_group(self,
+                            group: dict,
+                            user_ids: list[str]) -> dict:
+        """
+        Create a custom type group.
+
+        Minimum server version: 6.3
+        Must have create_custom_group permission.
+        :param group: Group object to create.
+        :param user_ids: The user ids of the group members to add.
+        :return: Group creation info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('group', group)
+        self.add_to_json('user_ids', user_ids)
+
+        return self.request(url, request_type='POST', body=True)
