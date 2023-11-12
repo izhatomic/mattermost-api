@@ -127,4 +127,32 @@ class Cloud(Base):
 
         return self.request(url, request_type='DEL')
 
+    def patch_a_group(self,
+                      group_id: str,
+                      name: str,
+                      display_name: str,
+                      description: str) -> dict:
+        """
+        Partially update a group by providing only the fields you want to update.
+        Omitted fields will not be updated. The fields that can be updated are defined
+        in the request body, all other provided fields will be ignored.
 
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :param name: The name to update.
+        :param display_name: The name to be displayed to update.
+        :param description: Description to update.
+        :return: Group deletion info.
+        """
+        url = f"{self.api_url}/{group_id}/patch"
+        self.reset()
+        self.add_application_json_header()
+        if name is not None:
+            self.add_to_json('name', name)
+        if display_name is not None:
+            self.add_to_json('display_name', display_name)
+        if description is not None:
+            self.add_to_json('description', description)
+
+        return self.request(url, request_type='PUT', body=True)
