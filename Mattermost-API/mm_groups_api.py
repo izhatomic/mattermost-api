@@ -318,9 +318,33 @@ class Cloud(Base):
         :param group_id: Group GUID.
         :param team_id: Team GUID.
         :param auto_add: Toggle auto add.
-        :return: Channels list retrieval info.
+        :return: groupSyncable patch info.
         """
         url = f"{self.api_url}/{group_id}/teams/{team_id}/patch"
+        self.reset()
+        self.add_application_json_header()
+        if auto_add is not None:
+            self.add_to_json('auto_add', auto_add)
+
+        return self.request(url, request_type='PUT', body=True)
+
+    def patch_groupSyncable_associated_to_channel(self,
+                                                  group_id: str,
+                                                  channel_id: str,
+                                                  auto_add: bool) -> dict:
+        """
+        Partially update a GroupSyncable by providing only the fields you want to update.
+        Omitted fields will not be updated. The fields that can be updated are defined in
+        the request body, all other provided fields will be ignored.
+
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :param channel_id: Channel GUID.
+        :param auto_add: Toggle auto add.
+        :return: groupSyncable patch info.
+        """
+        url = f"{self.api_url}/{group_id}/channels/{channel_id}/patch"
         self.reset()
         self.add_application_json_header()
         if auto_add is not None:
