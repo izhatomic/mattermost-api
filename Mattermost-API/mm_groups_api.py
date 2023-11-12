@@ -487,3 +487,35 @@ class Cloud(Base):
             self.add_to_json('filter_allow_reference', filter_allow_reference)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_team_groups_by_channels(self,
+                                    team_id: str,
+                                    page: int,
+                                    per_page: int,
+                                    filter_allow_reference: bool,
+                                    paginate: bool) -> dict:
+        """
+        Retrieve the set of groups associated with the channels in the given team grouped by channel.
+        Minimum server version: 5.11
+        Must have manage_system permission or can access only for current user
+        :param team_id: Team GUID.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of groups per page.
+        :param filter_allow_reference: Default: false. Boolean which filters the group
+        entries with the allow_reference attribute set.
+        :param paginate: Default: false Boolean to determine whether the pagination should be applied or not
+        :return: Group list retrieval info.
+        """
+        url = f"{self.api_url}/{team_id}/groups_by_channels"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if filter_allow_reference is not None:
+            self.add_to_json('filter_allow_reference', filter_allow_reference)
+        if paginate is not None:
+            self.add_to_json('paginate', paginate)
+
+        return self.request(url, request_type='GET', body=True)
