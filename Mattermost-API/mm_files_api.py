@@ -103,3 +103,17 @@ class File(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_metadata_for_file(self, file_id: str) -> dict:
+        """
+        Gets a file's info.
+
+        Must have read_channel permission or be uploader of the file.
+
+        :param file_id: The ID of the file info to get.
+        :return: Stored metadata info.
+        """
+        url = f"{self.api_url}/{file_id}/info"
+        self.reset()
+
+        return self.request(url, request_type='GET')
