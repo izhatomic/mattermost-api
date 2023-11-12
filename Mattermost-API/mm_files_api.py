@@ -117,3 +117,20 @@ class File(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_public_file(self,
+                        file_id: str,
+                        h: str) -> dict:
+        """
+        Gets a public file.
+
+        No permissions required.
+
+        :param file_id: The ID of the file to get.
+        :param h: File hash.
+        :return: Public file info.
+        """
+        url = f"{self.api_url}/{file_id}/public"
+        self.reset()
+
+        return self.request(url, request_type='GET')
