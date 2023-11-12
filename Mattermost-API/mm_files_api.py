@@ -76,8 +76,7 @@ class File(Base):
 
         return self.request(url, request_type='GET')
 
-    def get_file_preview(self,
-                         file_id: str) -> dict:
+    def get_file_preview(self, file_id: str) -> dict:
         """
         Gets a file's preview.
 
@@ -87,6 +86,20 @@ class File(Base):
         :return: File's preview info
         """
         url = f"{self.api_url}/{file_id}/preview"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+    def get_public_file_link(self, file_id: str) -> dict:
+        """
+        Gets a public link for a file that can be accessed without logging into Mattermost.
+
+        Must have read_channel permission or be uploader of the file.
+
+        :param file_id: The ID of the file to get a link for.
+        :return: Public file link info
+        """
+        url = f"{self.api_url}/{file_id}/link"
         self.reset()
 
         return self.request(url, request_type='GET')
