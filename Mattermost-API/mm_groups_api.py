@@ -395,3 +395,23 @@ class Cloud(Base):
             self.add_to_json('user_ids', user_ids)
 
         return self.request(url, request_type='DEL', body=True)
+
+    def adds_members_to_custom_group(self,
+                                     group_id: str,
+                                     user_ids: list[str]) -> dict:
+        """
+        Adds members to a custom group.
+
+        Minimum server version: 6.3
+        Must have custom_group_manage_members permission for the given group.
+        :param group_id: The ID of the group to delete.
+        :param user_ids: The IDs of the group members.
+        :return: Group members addition info.
+        """
+        url = f"{self.api_url}/{group_id}/members"
+        self.reset()
+        self.add_application_json_header()
+        if user_ids is not None:
+            self.add_to_json('user_ids', user_ids)
+
+        return self.request(url, request_type='POST', body=True)
