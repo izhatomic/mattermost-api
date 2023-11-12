@@ -143,7 +143,7 @@ class Cloud(Base):
         :param name: The name to update.
         :param display_name: The name to be displayed to update.
         :param description: Description to update.
-        :return: Group deletion info.
+        :return: Group patch info.
         """
         url = f"{self.api_url}/{group_id}/patch"
         self.reset()
@@ -156,3 +156,18 @@ class Cloud(Base):
             self.add_to_json('description', description)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def restore_previously_deleted_group(self, group_id: str) -> dict:
+        """
+        Restores a previously deleted custom group, allowing it to be used normally.
+        May not be used with LDAP groups.
+
+        Minimum server version: 7.7
+        Permissions Must have restore_custom_group permission for the given group.
+        :param group_id: Group GUID.
+        :return: Group restoration info.
+        """
+        url = f"{self.api_url}/{group_id}/restore"
+        self.reset()
+
+        return self.request(url, request_type='POST')
