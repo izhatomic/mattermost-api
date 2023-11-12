@@ -252,9 +252,26 @@ class Cloud(Base):
         Must have manage_system permission.
         :param group_id: Group GUID.
         :param team_id: Team GUID.
-        :return: Link deletion info.
+        :return: GroupSyncable retrieval info.
         """
         url = f"{self.api_url}/{group_id}/teams/{team_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+    def get_groupSyncable_from_channel_id(self,
+                                          group_id: str,
+                                          channel_id: str) -> dict:
+        """
+        Get the GroupSyncable object with group_id and team_id from params
+
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :param channel_id: Channel GUID.
+        :return: GroupSyncable retrieval info.
+        """
+        url = f"{self.api_url}/{group_id}/channels/{channel_id}"
         self.reset()
 
         return self.request(url, request_type='GET')
