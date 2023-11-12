@@ -415,3 +415,20 @@ class Cloud(Base):
             self.add_to_json('user_ids', user_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_group_stats(self,
+                        group_id: str) -> dict:
+        """
+        Retrieve the stats of a given group.
+
+        Minimum server version: 5.26
+        Must have manage_system permission.
+        :param group_id: The ID of the group to delete.
+        :return: Group stats retrieval info.
+        """
+        url = f"{self.api_url}/{group_id}/state"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
