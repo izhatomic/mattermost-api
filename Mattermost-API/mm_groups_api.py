@@ -459,3 +459,31 @@ class Cloud(Base):
             self.add_to_json('filter_allow_reference', filter_allow_reference)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_team_groups(self,
+                        team_id: str,
+                        page: int,
+                        per_page: int,
+                        filter_allow_reference: bool) -> dict:
+        """
+        Retrieve the list of groups associated with a given team.
+
+        Minimum server version: 5.11
+        :param team_id: Team GUID.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of groups per page.
+        :param filter_allow_reference: Default: false. Boolean which filters the group
+        entries with the allow_reference attribute set.
+        :return: Group list retrieval info.
+        """
+        url = f"{self.api_url}/{team_id}/groups"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if filter_allow_reference is not None:
+            self.add_to_json('filter_allow_reference', filter_allow_reference)
+
+        return self.request(url, request_type='GET', body=True)
