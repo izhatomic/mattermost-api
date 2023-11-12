@@ -519,3 +519,15 @@ class Cloud(Base):
             self.add_to_json('paginate', paginate)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_groups_for_userid(self, user_id) -> dict:
+        """
+        Retrieve the list of groups associated to the user.
+        Minimum server version: 5.24
+        :param user_id: User GUID.
+        :return: Group list retrieval info.
+        """
+        url = f"{self.base_url}/users/{user_id}/groups"
+        self.reset()
+
+        return self.request(url, request_type='GET')
