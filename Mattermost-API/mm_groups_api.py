@@ -228,7 +228,7 @@ class Cloud(Base):
                                           group_id: str,
                                           channel_id: str) -> dict:
         """
-       Delete a link from a channel to a group
+        Delete a link from a channel to a group
 
         Minimum server version: 5.11
         If the channel is private, you must have manage_private_channel_members permission.
@@ -241,3 +241,20 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def get_groupSyncable_from_team_id(self,
+                                       group_id: str,
+                                       team_id: str) -> dict:
+        """
+        Get the GroupSyncable object with group_id and team_id from params
+
+        Minimum server version: 5.11
+        Must have manage_system permission.
+        :param group_id: Group GUID.
+        :param team_id: Team GUID.
+        :return: Link deletion info.
+        """
+        url = f"{self.api_url}/{group_id}/teams/{team_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
