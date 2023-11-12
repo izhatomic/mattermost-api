@@ -112,3 +112,19 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def deletes_custom_group(self, group_id: str) -> dict:
+        """
+        Soft deletes a custom group.
+
+        Minimum server version: 6.3
+        Must have custom_group_delete permission for the given group.
+        :param group_id: The ID of the group.
+        :return: Group deletion info.
+        """
+        url = f"{self.api_url}/{group_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
+
+
