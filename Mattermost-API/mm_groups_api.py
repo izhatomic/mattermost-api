@@ -205,3 +205,21 @@ class Cloud(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def link_channel_to_group(self,
+                              group_id: str,
+                              channel_id: str) -> dict:
+        """
+        Link a channel to a group
+
+        Minimum server version: 5.11
+        If the channel is private, you must have manage_private_channel_members permission.
+        Otherwise, you must have the manage_public_channel_members permission.
+        :param group_id: Group GUID.
+        :param channel_id: Channel GUID.
+        :return: Link btw channel and group info.
+        """
+        url = f"{self.api_url}/{group_id}/channels/{channel_id}/link"
+        self.reset()
+
+        return self.request(url, request_type='POST')
