@@ -124,3 +124,15 @@ class ldap(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def create_memberships_for_ldap_conf_channels_teams_for_user(self, user_id: str) -> dict:
+        """
+        Add the user to each channel and team configured for each LDAP group of whicht the user is a member.
+        Must have sysconsole_write_user_management_groups permission.
+        :param user_id: User ID
+        :return: LDAP certificate info.
+        """
+        url = f"{self.api_url}/users/{user_id}}/group_sybc_membership"
+        self.reset()
+
+        return self.request(url, request_type='POST')
