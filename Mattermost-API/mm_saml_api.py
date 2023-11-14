@@ -111,3 +111,18 @@ class saml(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def upload_private_key(self, certificate: str) -> dict:
+        """
+        Upload the private key to be used for encryption with your SAML configuration. The server will pick a hard-coded filename for the PrivateKeyFile setting in your config.json.
+        Must have sysconsole_write_authentication permission.
+        :param certificate: The private key file
+        :return: SAML certificate info.
+        """
+        url = f"{self.api_url}/certificate/private"
+        self.reset()
+        self.add_application_json_header()
+        if certificate is not None:
+            self.add_to_json('certificate', certificate)
+
+        return self.request(url, request_type='POST', body=True)
