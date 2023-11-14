@@ -59,3 +59,17 @@ class Oauth(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_an_oauth_app(self,
+                         app_id: str) -> dict:
+        """
+        Get an OAuth 2.0 client application registered with Mattermost.
+        If app creator, must have mange_oauth permission otherwise manage_system_wide_oauth
+        permission is required.
+        :param app_id: Application client id.
+        :return: App retrieval info.
+        """
+        url = f"{self.api_url}/{app_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
