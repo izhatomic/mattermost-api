@@ -30,3 +30,14 @@ class saml(Base):
             self.add_to_json('auto', auto)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_metadata(self) -> dict:
+        """
+        Get SAML metadata from the server. SAML must be configured properly.
+        No permission required.
+        :return: SAML retrieval info.
+        """
+        url = f"{self.api_url}/metadata"
+        self.reset()
+
+        return self.request(url, request_type='GET')
