@@ -32,13 +32,26 @@ class ldap(Base):
 
         return self.request(url, request_type='POST', body=True)
 
-        def sync_with_ldap(self) -> dict:
-            """
-            Synchronize any user attribute changes in the configured AD/LDAP server with Mattermost.
-            Must have manage_system permission.
-            :return: LDAP sync info.
-            """
-            url = f"{self.api_url}/sync"
-            self.reset()
+    def sync_with_ldap(self) -> dict:
+        """
+        Synchronize any user attribute changes in the configured AD/LDAP server with Mattermost.
+        Must have manage_system permission.
+        :return: LDAP sync info.
+        """
+        url = f"{self.api_url}/sync"
+        self.reset()
 
-            return self.request(url, request_type='POST')
+        return self.request(url, request_type='POST')
+
+    def test_ldap_configuration(self) -> dict:
+        """
+        Test the current AD/LDAP configuration to see if the AD/LDAP server can be contacted successfully.
+        Must have manage_system permission.
+        :return: LDAP test info.
+        """
+        url = f"{self.api_url}/test"
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
+
