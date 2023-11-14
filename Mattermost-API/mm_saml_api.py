@@ -126,3 +126,14 @@ class saml(Base):
             self.add_to_json('certificate', certificate)
 
         return self.request(url, request_type='POST', body=True)
+
+    def remove_private_key(self) -> dict:
+        """
+        Delete the current private key being used with your SAML configuration. This will also disable encryption for SAML on your system as this key is required for that.
+        Must have sysconsole_write_authentication permission.
+        :return: SAML certificate info.
+        """
+        url = f"{self.api_url}/certificate/private"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
