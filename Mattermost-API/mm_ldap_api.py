@@ -113,3 +113,14 @@ class ldap(Base):
             self.add_to_json('certificate', certificate)
 
         return self.request(url, request_type='POST', body=True)
+
+    def remove_private_key(self) -> dict:
+        """
+        Delete the current private key being used with your TLS verification.
+        Must have manage_system permission.
+        :return: LDAP certificate info.
+        """
+        url = f"{self.api_url}/certificate/private"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
