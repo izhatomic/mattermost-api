@@ -56,3 +56,19 @@ class saml(Base):
             self.add_to_json('saml_metadata_url', saml_metadata_url)
 
         return self.request(url, request_type='POST')
+
+    def upload_idp_certificate(self, certificate: str) -> dict:
+        """
+        Upload the IDP certificate to be used with your SAML configuration.
+        The server will pick a hard-coded filename for the IdpCertificateFile setting in your config.json.
+        Must have sysconsole_write_authentication permission.
+        :param certificate: The  IDP certificate file
+        :return: SAML certificate info.
+        """
+        url = f"{self.api_url}/certificate/idp"
+        self.reset()
+        self.add_application_json_header()
+        if certificate is not None:
+            self.add_to_json('certificate', certificate)
+
+        return self.request(url, request_type='POST', body=True)
