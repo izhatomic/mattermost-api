@@ -54,4 +54,19 @@ class ldap(Base):
 
         return self.request(url, request_type='POST')
 
+    def migrate_id_ldap(self, toAttribute: str) -> dict:
+        """
+        Migrate LDAP IdAttribute to new value.
+        Minimum server version: 5.26
+        Must have manage_system permission.
+        :param toAttribute: New IdAttribute value
+        :return: Migration info.
+        """
+        url = f"{self.api_url}/migrateid"
+        self.reset()
+        self.add_application_json_header()
 
+        if toAttribute is not None:
+            self.add_to_json('toAttribute', toAttribute)
+
+        return self.request(url, request_type='POST', body=True)
