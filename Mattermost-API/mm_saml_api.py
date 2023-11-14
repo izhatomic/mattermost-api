@@ -72,3 +72,15 @@ class saml(Base):
             self.add_to_json('certificate', certificate)
 
         return self.request(url, request_type='POST', body=True)
+
+    def remove_idp_certificate(self) -> dict:
+        """
+        Delete the current IDP certificate being used with your SAML configuration.
+        This will also disable SAML on your system as this certificate is required for SAML.
+        Must have sysconsole_write_authentication permission.
+        :return: SAML certificate info.
+        """
+        url = f"{self.api_url}/certificate/idp"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
