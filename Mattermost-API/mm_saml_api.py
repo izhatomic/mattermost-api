@@ -41,3 +41,18 @@ class saml(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_metadata_from_identity_provider(self, saml_metadata_url: str) -> dict:
+        """
+        Get SAML metadata from the Identity Provider. SAML must be configured properly.
+        No permission required.
+        :param saml_metadata_url: The URL from which to retrieve the SAML IDP data.
+        :return: SAML retrieval info.
+        """
+        url = f"{self.api_url}/metadatafromidp"
+        self.reset()
+        self.add_application_json_header()
+        if from is not None:
+            self.add_to_json('saml_metadata_url', saml_metadata_url)
+
+        return self.request(url, request_type='POST')
