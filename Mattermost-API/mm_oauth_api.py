@@ -138,3 +138,16 @@ class Oauth(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def get_info_on_oauth_app(self, app_id: str) -> dict:
+        """
+        Get public information about an OAuth 2.0 client application registered with Mattermost.
+        The application's client secret will be blanked out.
+        Must be authenticated.
+        :param app_id: Application client id.
+        :return: App retrieval info.
+        """
+        url = f"{self.api_url}/{app_id}/info"
+        self.reset()
+
+        return self.request(url, request_type='GET')
