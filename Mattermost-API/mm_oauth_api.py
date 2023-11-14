@@ -73,3 +73,42 @@ class Oauth(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def update_an_oauth_app(self,
+                            app_id: str,
+                            id: str,
+                            name: str,
+                            description: str,
+                            icon_url: str,
+                            callback_urls: list[str],
+                            homepage: str,
+                            is_trusted: bool) -> dict:
+        """
+        Get an OAuth 2.0 client application registered with Mattermost.
+        If app creator, must have mange_oauth permission otherwise manage_system_wide_oauth
+        permission is required.
+        :param app_id: Application client id.
+        :param id: The id of the client application.
+        :param name: The name of the client application.
+        :param description: A short description of the application.
+        :param icon_url: A URL to an icon to display with the application.
+        :param callback_urls: A list of callback URLs for the appliation.
+        :param homepage: A link to the website of the application.
+        :param is_trusted: Set this to true to skip asking users for permission.
+        It will be set to false if value is not provided.
+        :return: App retrieval info.
+        """
+        url = f"{self.api_url}/{app_id}"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('id', id)
+        self.add_to_json('name', name)
+        self.add_to_json('description', description)
+        if icon_url is not None:
+            self.add_to_json('icon_url', icon_url)
+        self.add_to_json('callback_urls', callback_urls)
+        self.add_to_json('homepage', homepage)
+        if is_trusted is not None:
+            self.add_to_json('is_trusted', is_trusted)
+
+        return self.request(url, request_type='PUT', body=True)
