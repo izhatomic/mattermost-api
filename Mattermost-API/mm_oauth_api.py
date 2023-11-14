@@ -125,3 +125,16 @@ class Oauth(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def regenerate_oauth_app_secret(self, app_id: str) -> dict:
+        """
+        Regenerate the client secret for an OAuth 2.0 client application registered with Mattermost.
+        If app creator, must have mange_oauth permission otherwise manage_system_wide_oauth
+        permission is required.
+        :param app_id: Application client id.
+        :return: Secret regeneration info.
+        """
+        url = f"{self.api_url}/{app_id}/regen_secret"
+        self.reset()
+
+        return self.request(url, request_type='POST')
