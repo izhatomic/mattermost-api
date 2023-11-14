@@ -129,7 +129,8 @@ class saml(Base):
 
     def remove_private_key(self) -> dict:
         """
-        Delete the current private key being used with your SAML configuration. This will also disable encryption for SAML on your system as this key is required for that.
+        Delete the current private key being used with your SAML configuration.
+        This will also disable encryption for SAML on your system as this key is required for that.
         Must have sysconsole_write_authentication permission.
         :return: SAML certificate info.
         """
@@ -137,3 +138,42 @@ class saml(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def get_certificate_status(self) -> dict:
+        """
+        Get the status of the uploaded certificates and keys in use by your SAML configuration.
+        Must have sysconsole_write_authentication permission.
+        Minimum server version: 5.35
+        :return: SAML certificate info.
+        """
+        url = f"{self.api_url}/certificate/status"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+    def reset_authdata_to_email(self,
+                                include_deleted: bool,
+                                dry_run: bool,
+                                user_ids: list[str]) -> dict:
+        """
+        Reset the AuthData field of SAML users to their email.
+        This is meant to be used when the "id" attribute is set to an empty value ("")
+        from a previously non-empty value.
+        Must have manage_system permission.
+        Minimum server version: 5.35
+        :param include_deleted: Default: false. Whether to include deleted users.
+        :param dry_run: Default: false. If set to true, the number of users who would be affected is returned.
+        :param user_ids: Default: []. If set to a non-empty array, then users whose IDs are not in the array will be excluded.
+        :return: LDAP certificate info.
+        """
+        url = f"{self.api_url}/certificate/private"
+        self.reset()
+        self.add_application_json_header()
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+        if dry_run is not None:
+            self.add_to_json('dry_run', dry_run)
+        if user_ids is not None:
+            self.add_to_json('user_ids', user_ids)
+
+        return self.request(url, request_type='POST', body=True)
