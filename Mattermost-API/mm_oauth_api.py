@@ -38,3 +38,24 @@ class Oauth(Base):
             self.add_to_json('is_trusted', is_trusted)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_oauth_apps(self,
+                       page: int,
+                       per_page: int) -> dict:
+        """
+        Get a page of OAuth 2.0 client applications registered with Mattermost.
+        With manage_oauth permission, the apps registered by the logged in user are returned.
+        With manage_system_wide_oauth permission, all apps regardless of creator are returned.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of apps per page.
+        :return: OAuth list retrieval info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
