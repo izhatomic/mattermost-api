@@ -112,3 +112,16 @@ class Oauth(Base):
             self.add_to_json('is_trusted', is_trusted)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def delete_an_oauth_app(self, app_id: str) -> dict:
+        """
+        Delete and unregister an OAuth 2.0 client application
+        If app creator, must have mange_oauth permission otherwise manage_system_wide_oauth
+        permission is required.
+        :param app_id: Application client id.
+        :return: App deletion info.
+        """
+        url = f"{self.api_url}/{app_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
