@@ -107,3 +107,41 @@ class Webhooks(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def update_incoming_webhook(self,
+                                hook_id: str,
+                                id: str,
+                                channel_id: str,
+                                display_name: str,
+                                description: str,
+                                username: str,
+                                icon_url: str) -> dict:
+        """
+        Update an incoming webhook given the hook id.
+
+        manage_webhooks for system or manage_webhooks for the specific team or manage_webhooks for the channel.
+
+        :param hook_id: Incoming Webhook GUID.
+        :param id: Incoming Webhook GUID.
+        :param channel_id: The ID of a public channel or private group that receives the webhook payloads.
+        :param display_name: The display name for this incoming webhook.
+        :param description: The description for this incoming webhook.
+        :param username: The username this incoming webhook will post as.
+        :param icon_url: The profile picture this incoming webhook will use when posting.
+        :return: Webhook update info.
+        """
+
+        url = f"{self.api_url}/incoming/{hook_id}"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('id', id)
+        self.add_to_json('channel_id', channel_id)
+        self.add_to_json('display_name', display_name)
+        self.add_to_json('description', description)
+        if username is not None:
+            self.add_to_json('username', username)
+        if icon_url is not None:
+            self.add_to_json('icon_url', icon_url)
+
+        return self.request(url, request_type='PUT', body=True)
