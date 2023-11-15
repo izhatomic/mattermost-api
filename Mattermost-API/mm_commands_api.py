@@ -22,7 +22,6 @@ class Commands(Base):
         :param url: The URL that the command will make the request.
         :return: Command creation info.
         """
-
         url = f"{self.api_url}/"
         self.reset()
         self.add_application_json_header()
@@ -32,3 +31,23 @@ class Commands(Base):
         self.add_to_json('url', url)
 
         return self.request(url, request_type='POST', body=True)
+
+    def list_commands_for_team(self,
+                               team_id: str,
+                               custom_only: bool) -> dict:
+        """
+        List commands for a team.
+        manage_slash_commands if need list custom commands.
+        :param team_id: The team id.
+        :param custom_only: Default: false. To get only the custom commands. If set to false will get the custom if the user have access plus the system commands, otherwise just the system commands.
+        :return: List commands retrieval info.
+        """
+        url = f"{self.api_url}/"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('team_id', team_id)
+        self.add_to_json('custom_only', custom_only)
+
+        return self.request(url, request_type='GET', body=True)
+
+
