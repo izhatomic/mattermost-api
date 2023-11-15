@@ -123,3 +123,30 @@ class Emoji(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def search_custom_emoji(self,
+                            term: str,
+                            prefix_only: str) -> dict:
+        """
+        Search for custom emoji by name based on search criteria provided in the request body.
+        A maximum of 200 results are returned.
+
+        Must be authenticated.
+
+        Minimum server version: 4.7
+
+        :param term: Emoji GUID.
+        :param prefix_only: Emoji GUID.
+        :return: Emoji list retrieval info.
+        """
+
+        url = f"{self.api_url}/search"
+
+        self.reset()
+        self.add_application_json_header()
+        if term is not None:
+            self.add_to_json('term', term)
+        if prefix_only is not None:
+            self.add_to_json('prefix_only', prefix_only)
+
+        return self.request(url, request_type='GET', body=True)
