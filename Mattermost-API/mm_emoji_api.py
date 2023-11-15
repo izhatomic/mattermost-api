@@ -91,3 +91,19 @@ class Emoji(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def get_custom_emoji_by_name(self, emoji_name: str) -> dict:
+        """
+        Get some metadata for a custom emoji using its name.
+
+        Must be authenticated.
+
+        :param emoji_name: Emoji name.
+        :return: Emoji retrieval info.
+        """
+
+        url = f"{self.api_url}/{emoji_name}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
