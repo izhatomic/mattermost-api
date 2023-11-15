@@ -190,4 +190,4 @@ class Emoji(Base):
         self.add_application_json_header()
         self.add_to_json('list_of_emoji_names', list_of_emoji_names)
 
-        return self.request(url, request_type='GET', body=True)
+        return self.request(url, request_type='POST', body=True)
