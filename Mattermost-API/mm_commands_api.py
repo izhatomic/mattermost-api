@@ -188,7 +188,9 @@ class Commands(Base):
 
         return self.request(url, request_type='DEL')
 
-    def move_a_command(self, command_id: str, team_id: str) -> dict:
+    def move_a_command(self,
+                       command_id: str,
+                       team_id: str) -> dict:
         """
         Move a command to a different team based on command id string.
         Must have manage_slash_commands permission for the team the command is in.
@@ -215,3 +217,21 @@ class Commands(Base):
         self.reset()
 
         return self.request(url, request_type='PUT')
+
+    def execute_a_command(self,
+                          channel_id: str,
+                          command: str) -> dict:
+        """
+        Execute a command on a team.
+        Must have manage_slash_commands permission for the team the command is in.
+        :param channel_id: Channel Id where the command will execute
+        :param command: The slash command to execute, including parameters. Eg, '/echo bounces around the room'
+        :return: Command execution info.
+        """
+        url = f"{self.api_url}/execute"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('channel_id', channel_id)
+        self.add_to_json('command', command)
+
+        return self.request(url, request_type='POST', body=True)
