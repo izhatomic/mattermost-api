@@ -59,3 +59,19 @@ class Emoji(Base):
             self.add_to_json('sort', sort)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_custom_emoji(self, emoji_id: str) -> dict:
+        """
+        Get some metadata for a custom emoji.
+
+        Must be authenticated.
+
+        :param emoji_id: Emoji GUID.
+        :return: Emoji retrieval info.
+        """
+
+        url = f"{self.api_url}/{emoji_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
