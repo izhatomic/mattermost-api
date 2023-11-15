@@ -261,3 +261,34 @@ class Webhooks(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def update_outgoing_webhook(self,
+                                hook_id: str,
+                                id: str,
+                                channel_id: str,
+                                display_name: str,
+                                description: str) -> dict:
+        """
+        Update an outgoing webhook given the hook id.
+
+        manage_webhooks for system or manage_webhooks for the specific team or manage_webhooks for the channel.
+
+        :param hook_id: Outgoing Webhook GUID.
+        :param id: Outgoing Webhook GUID.
+        :param channel_id: The ID of a public channel or private group that receives the webhook payloads.
+        :param display_name: The display name for this outgoing webhook.
+        :param description: The description for this outgoing webhook.
+        :return: Outgoing webhook update info.
+        """
+
+        url = f"{self.api_url}/incoming/{hook_id}"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('hook_id', hook_id)
+        self.add_to_json('id', id)
+        self.add_to_json('channel_id', channel_id)
+        self.add_to_json('display_name', display_name)
+        self.add_to_json('description', description)
+
+        return self.request(url, request_type='PUT', body=True)
