@@ -80,3 +80,16 @@ class Commands(Base):
             self.add_to_json('user_input', user_input)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_a_command(self, command_id: str) -> dict:
+        """
+        Get a command definition based on command id string.
+        Minimum server version: 5.22
+        Must have manage_slash_commands permission for the team the command is in.
+        :param command_id: ID of the command to get.
+        :return: Command get info.
+        """
+        url = f"{self.api_url}/{command_id}"
+        self.reset()
+
+        return self.request(url, request_type='GET')
