@@ -175,3 +175,15 @@ class Commands(Base):
             self.add_to_json('url', url)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def delete_a_command(self, command_id: str) -> dict:
+        """
+        Delete a command based on command id string.
+        Must have manage_slash_commands permission for the team the command is in.
+        :param command_id: ID of the command to delete.
+        :return: Command deletion info.
+        """
+        url = f"{self.api_url}/{command_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
