@@ -50,4 +50,16 @@ class Commands(Base):
 
         return self.request(url, request_type='GET', body=True)
 
+    def list_autocomplete_commands(self, team_id: str) -> dict:
+        """
+        List autocomplete commands in the team.
+        view_team for the team.
+        :param team_id: Team GUID.
+        :return: Autocomplete commands retrieval info.
+        """
+        url = f"{self.base_url}/teams/{team_id}/commands/autocomplete"
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
 
