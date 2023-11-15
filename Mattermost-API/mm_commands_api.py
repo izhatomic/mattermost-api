@@ -62,4 +62,21 @@ class Commands(Base):
 
         return self.request(url, request_type='GET')
 
+    def list_commands_autocomplete_data(self,
+                                        team_id: str,
+                                        user_input: str) -> dict:
+        """
+        List commands' autocomplete data for the team.
+        Minimum server version: 5.24
+        view_team for the team.
+        :param team_id: Team GUID.
+        :param user_input: String inputted by the user.
+        :return: Commands' autocomplete data retrieval info.
+        """
+        url = f"{self.base_url}/teams/{team_id}/commands/autocomplete_suggestions"
+        self.reset()
+        self.add_application_json_header()
+        if user_input is not None:
+            self.add_to_json('user_input', user_input)
 
+        return self.request(url, request_type='GET', body=True)
