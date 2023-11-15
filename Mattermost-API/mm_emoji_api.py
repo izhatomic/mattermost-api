@@ -149,4 +149,25 @@ class Emoji(Base):
         if prefix_only is not None:
             self.add_to_json('prefix_only', prefix_only)
 
+        return self.request(url, request_type='POST', body=True)
+
+    def autocomplete_custom_emoji(self, name: str) -> dict:
+        """
+        Get a list of custom emoji with names starting with or matching the provided name.
+        Returns a maximum of 100 results.
+
+        Must be authenticated.
+
+        Minimum server version: 4.7
+
+        :param name: The emoji name to search.
+        :return: Emoji list retrieval info.
+        """
+
+        url = f"{self.api_url}/autocomplete"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('name', name)
+
         return self.request(url, request_type='GET', body=True)
