@@ -245,3 +245,19 @@ class Webhooks(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def delete_outgoing_webhook(self, hook_id: str) -> dict:
+        """
+        Delete an outgoing webhook given the hook id.
+
+        manage_webhooks for system or manage_webhooks for the specific team or manage_webhooks for the channel.
+
+        :param hook_id: Outgoing webhook GUID.
+        :return: Outgoing webhook deletion info.
+        """
+
+        url = f"{self.api_url}/outgoing/{hook_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
