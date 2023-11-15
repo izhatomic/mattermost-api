@@ -93,3 +93,85 @@ class Commands(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def update_a_command(self,
+                         command_id: str,
+                         id: str,
+                         token: str,
+                         create_at: int,
+                         update_at: int,
+                         delete_at: int,
+                         creator_id: str,
+                         team_id: str,
+                         trigger: str,
+                         method: str,
+                         username: str,
+                         icon_url: str,
+                         auto_complete: bool,
+                         auto_complete_desc: str,
+                         auto_complete_hint: str,
+                         display_name: str,
+                         description: str,
+                         url: str) -> dict:
+        """
+        Update a single command based on command id string and Command struct.
+        Must have manage_slash_commands permission for the team the command is in.
+        :param command_id: ID of the command to update
+        :param id: The ID of the slash command.
+        :param token: The token which is used to verify the source of the payload.
+        :param create_at: The time in milliseconds the command was created.
+        :param update_at: The time in milliseconds the command was last updated.
+        :param delete_at: The time in milliseconds the command was deleted, 0 if never deleted
+        :param creator_id: The user id for the commands creator
+        :param team_id: The team id for which this command is configured
+        :param trigger: The string that triggers this command
+        :param method: Is the trigger done with HTTP Get ('G') or HTTP Post ('P')
+        :param username: What is the username for the response post
+        :param icon_url: The url to find the icon for this users avatar
+        :param auto_complete: Use auto complete for this command
+        :param auto_complete_desc: The description for this command shown when selecting the command
+        :param auto_complete_hint: The hint for this command
+        :param display_name: Display name for the command
+        :param description: Description for this command
+        :param url: The URL that is triggered
+        :return: Command update info.
+        """
+        url = f"{self.api_url}/{command_id}"
+        self.reset()
+        self.add_application_json_header()
+        if id is not None:
+            self.add_to_json('id', id)
+        if token is not None:
+            self.add_to_json('token', token)
+        if create_at is not None:
+            self.add_to_json('create_at', create_at)
+        if update_at is not None:
+            self.add_to_json('update_at', update_at)
+        if delete_at is not None:
+            self.add_to_json('delete_at', delete_at)
+        if creator_id is not None:
+            self.add_to_json('creator_id', creator_id)
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+        if trigger is not None:
+            self.add_to_json('trigger', trigger)
+        if method is not None:
+            self.add_to_json('method', method)
+        if username is not None:
+            self.add_to_json('username', username)
+        if icon_url is not None:
+            self.add_to_json('icon_url', icon_url)
+        if auto_complete is not None:
+            self.add_to_json('auto_complete', auto_complete)
+        if auto_complete_desc is not None:
+            self.add_to_json('auto_complete_desc', auto_complete_desc)
+        if auto_complete_hint is not None:
+            self.add_to_json('auto_complete_hint', auto_complete_hint)
+        if display_name is not None:
+            self.add_to_json('display_name', display_name)
+        if description is not None:
+            self.add_to_json('description', description)
+        if url is not None:
+            self.add_to_json('url', url)
+
+        return self.request(url, request_type='PUT', body=True)
