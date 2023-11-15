@@ -107,3 +107,19 @@ class Emoji(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_custom_emoji_image(self, emoji_id: str) -> dict:
+        """
+        Get the image for a custom emoji.
+
+        Must be authenticated.
+
+        :param emoji_id: Emoji GUID.
+        :return: Emoji image retrieval info.
+        """
+
+        url = f"{self.api_url}/{emoji_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
