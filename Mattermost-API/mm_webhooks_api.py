@@ -196,3 +196,36 @@ class Webhooks(Base):
             self.add_to_json('content_type', content_type)
 
         return self.request(url, request_type='POST', body=True)
+
+    def list_outgoing_webhooks(self,
+                               page: int,
+                               per_page: int,
+                               team_id: str,
+                               channel_id: str) -> dict:
+        """
+        Get a page of a list of outgoing webhooks. Optionally filter for
+        a specific team or channel using query parameters.
+
+        manage_webhooks for the system or manage_webhooks for the specific team/channel.
+
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of hooks per page.
+        :param team_id: The ID of the team to get hooks for.
+        :param channel_id: The ID of the channel to get hooks for.
+        :return: Outgoing webhook retrieval info.
+        """
+
+        url = f"{self.api_url}/outgoing"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+        if channel_id is not None:
+            self.add_to_json('channel_id', channel_id)
+
+        return self.request(url, request_type='GET', body=True)
