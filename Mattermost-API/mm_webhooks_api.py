@@ -292,3 +292,19 @@ class Webhooks(Base):
         self.add_to_json('description', description)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def regenerate_token_for_outgoing_webhook(self, hook_id: str) -> dict:
+        """
+        Regenerate the token for the outgoing webhook.
+
+        manage_webhooks for system or manage_webhooks for the specific team or manage_webhooks for the channel.
+
+        :param hook_id: Outgoing webhook GUID.
+        :return: Webhook token regeneration info.
+        """
+
+        url = f"{self.api_url}/outgoing/{hook_id}/regen_token"
+
+        self.reset()
+
+        return self.request(url, request_type='POST', body=True)
