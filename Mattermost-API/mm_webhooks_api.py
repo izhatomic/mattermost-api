@@ -229,3 +229,19 @@ class Webhooks(Base):
             self.add_to_json('channel_id', channel_id)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_outgoing_webhook(self, hook_id: str) -> dict:
+        """
+        Get an outgoing webhook given the hook id.
+
+        manage_webhooks for system or manage_webhooks for the specific team or manage_webhooks for the channel.
+
+        :param hook_id: Outgoing webhook GUID.
+        :return: Outgoing webhook retrieval info.
+        """
+
+        url = f"{self.api_url}/outgoing/{hook_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
