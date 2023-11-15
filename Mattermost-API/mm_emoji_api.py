@@ -171,3 +171,23 @@ class Emoji(Base):
         self.add_to_json('name', name)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_custom_emojis_by_name(self, list_of_emoji_names: list[str]) -> dict:
+        """
+        Get a list of custom emoji based on a provided list of emoji names. A maximum of 200 results are returned.
+
+        Must be authenticated.
+
+        Minimum server version: 9.2
+
+        :param list_of_emoji_names: List of emoji names.
+        :return: Emoji list retrieval info.
+        """
+
+        url = f"{self.api_url}/names"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('list_of_emoji_names', list_of_emoji_names)
+
+        return self.request(url, request_type='GET', body=True)
