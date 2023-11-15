@@ -75,3 +75,19 @@ class Emoji(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def delete_custom_emoji(self, emoji_id: str) -> dict:
+        """
+        Delete a custom emoji.
+
+        Must have the manage_team or manage_system permissions or be the user who created the emoji.
+
+        :param emoji_id: Emoji GUID.
+        :return: Emoji deletion info.
+        """
+
+        url = f"{self.api_url}/{emoji_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
