@@ -187,3 +187,19 @@ class Commands(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def move_a_command(self, command_id: str, team_id: str) -> dict:
+        """
+        Move a command to a different team based on command id string.
+        Must have manage_slash_commands permission for the team the command is in.
+        :param command_id: ID of the command to move.
+        :param team_id: Destination teamId
+        :return: Command move info.
+        """
+        url = f"{self.api_url}/{command_id}/move"
+        self.reset()
+        self.add_application_json_header()
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+
+        return self.request(url, request_type='PUT', body=True)
