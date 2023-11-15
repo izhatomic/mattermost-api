@@ -145,3 +145,54 @@ class Webhooks(Base):
             self.add_to_json('icon_url', icon_url)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def create_outgoing_webhook(self,
+                                team_id: str,
+                                channel_id: str,
+                                creator_id: str,
+                                description: str,
+                                display_name: str,
+                                trigger_words: list[str],
+                                trigger_when: int,
+                                callback_urls: list[str],
+                                content_type: str) -> dict:
+        """
+        Create an outgoing webhook for a team.
+
+        manage_webhooks for the team the webhook is in.
+        manage_others_outgoing_webhooks for the team the webhook is in if the user is different than the requester.
+
+        :param team_id: The ID of the team that the webhook watchs.
+        :param channel_id: The ID of a public channel that the webhook watchs.
+        :param creator_id: The ID of the owner of the webhook if different than the requester. Required in local mode.
+        :param description: The description for this outgoing webhook.
+        :param display_name: The display name for this outgoing webhook.
+        :param trigger_words: List of words for the webhook to trigger on.
+        :param trigger_when: When to trigger the webhook, 0 when a trigger word is present at all and 1
+        if the message starts with a trigger word.
+        :param callback_urls: The URLs to POST the payloads to when the webhook is triggered.
+        :param content_type: Default: "application/x-www-form-urlencoded". The format to POST the data in,
+        either application/json or application/x-www-form-urlencoded
+        :return: Outgoing webhook creation info.
+        """
+
+        url = f"{self.api_url}/outgoing"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('team_id', team_id)
+        if channel_id is not None:
+            self.add_to_json('channel_id', channel_id)
+        if creator_id is not None:
+            self.add_to_json('creator_id', creator_id)
+        if description is not None:
+            self.add_to_json('description', description)
+        self.add_to_json('display_name', display_name)
+        self.add_to_json('trigger_words', trigger_words)
+        if trigger_when is not None:
+            self.add_to_json('trigger_when', trigger_when)
+        self.add_to_json('callback_urls', callback_urls)
+        if content_type is not None:
+            self.add_to_json('content_type', content_type)
+
+        return self.request(url, request_type='POST', body=True)
