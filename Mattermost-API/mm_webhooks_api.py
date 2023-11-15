@@ -47,3 +47,31 @@ class Webhooks(Base):
             self.add_to_json('icon_url', icon_url)
 
         return self.request(url, request_type='POST', body=True)
+
+    def list_incoming_webhooks(self,
+                               page: int,
+                               per_page: int,
+                               team_id: str) -> dict:
+        """
+        Get a page of a list of incoming webhooks. Optionally filter for a specific team using query parameters.
+
+        manage_webhooks for the system or manage_webhooks for the specific team.
+
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of hooks per page.
+        :param team_id: The ID of the team to get hooks for.
+        :return: Incoming webhook retreival info.
+        """
+
+        url = f"{self.api_url}/incoming"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+
+        return self.request(url, request_type='GET', body=True)
