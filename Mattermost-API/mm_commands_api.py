@@ -203,3 +203,15 @@ class Commands(Base):
             self.add_to_json('team_id', team_id)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def generate_new_token(self, command_id: str) -> dict:
+        """
+        Generate a new token for the command based on command id string.
+        Must have manage_slash_commands permission for the team the command is in.
+        :param command_id: ID of the command to generate the new token.
+        :return: Token generation info.
+        """
+        url = f"{self.api_url}/{command_id}/regen_token"
+        self.reset()
+
+        return self.request(url, request_type='PUT')
