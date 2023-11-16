@@ -68,3 +68,37 @@ class Status(Base):
             self.add_to_json('user_ids', user_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def update_user_custom_status(self,
+                                  user_id: str,
+                                  emoji: str,
+                                  text: str,
+                                  duration: str,
+                                  expires_at: str) -> dict:
+        """
+        Updates a user's custom status by setting the value in the user's props and updates the user.
+        Also save the given custom status to the recent custom statuses in the user's props
+
+        Must be logged in as the user whose custom status is being update.
+
+        :param user_id: User ID.
+        :param emoji: Any emoji
+        :param text: Any custom status text
+        :param duration: Duration of custom status, can be thirty_minutes, one_hour,
+        four_hours, today, this_week or date_and_time
+        :param expires_at: The time at which custom status should be expired. It should be in ISO format.
+        :return: User custom status update info.
+        """
+        url = f"{self.api_url}/{user_id}/status/custom"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('user_id', user_id)
+        self.add_to_json('emoji', emoji)
+        self.add_to_json('text', text)
+        if duration is not None:
+            self.add_to_json('duration', duration)
+        if expires_at is not None:
+            self.add_to_json('expires_at', expires_at)
+
+        return self.request(url, request_type='PUT', body=True)
