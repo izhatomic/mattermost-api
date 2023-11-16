@@ -102,3 +102,18 @@ class Status(Base):
             self.add_to_json('expires_at', expires_at)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def unsets_user_custom_status(self, user_id: str) -> dict:
+        """
+        Unsets a user's custom status by updating the user's props and updates the user.
+
+        Must be logged in as the user whose custom status is being removed.
+
+        :param user_id: User ID.
+        :return: User custom status update info.
+        """
+        url = f"{self.api_url}/{user_id}/status/custom"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
