@@ -48,3 +48,23 @@ class Status(Base):
             self.add_to_json('dnd_end_time', dnd_end_time)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def get_user_statuses_by_id(self,
+                                user_ids:
+                                list[str]) -> dict:
+        """
+        Get a list of user statuses by id from the server.
+
+        Must be authenticated.
+
+        :param user_ids: User ID.
+        :return: User status retrieval info.
+        """
+        url = f"{self.api_url}/status/ids"
+
+        self.reset()
+        self.add_application_json_header()
+        if user_ids is not None:
+            self.add_to_json('user_ids', user_ids)
+
+        return self.request(url, request_type='POST', body=True)
