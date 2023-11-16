@@ -146,3 +146,32 @@ class Status(Base):
         self.add_to_json('expires_at', expires_at)
 
         return self.request(url, request_type='DEL', body=True)
+
+    def delete_users_recent_custom_status(self,
+                                          user_id: str,
+                                          emoji: str,
+                                          text: str,
+                                          duration: str,
+                                          expires_at: str) -> dict:
+        """
+        Deletes a user's recent custom status by removing the specific status from the recentCustomStatuses in the user's props and updates the user.
+
+        Must be logged in as the user whose recent custom status is being deleted.
+
+        :param user_id: User ID.
+        :param emoji: Any emoji
+        :param text: Any custom status text
+        :param duration: Duration of custom status, can be thirty_minutes, one_hour, four_hours, today, this_week or date_and_time
+        :param expires_at: The time at which custom status should be expired. It should be in ISO format.
+        :return: User custom status deletion info.
+        """
+        url = f"{self.api_url}/{user_id}/status/custom/recent/delete"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('emoji', emoji)
+        self.add_to_json('text', text)
+        self.add_to_json('duration', duration)
+        self.add_to_json('expires_at', expires_at)
+
+        return self.request(url, request_type='POST', body=True)
