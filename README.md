@@ -1,2 +1,2 @@
 # mattermost-api
-API for Mattermost
+Another wrapper for the [MatterMost API](https://api.mattermost.com)
