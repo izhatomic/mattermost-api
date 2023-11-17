@@ -33,11 +33,12 @@ class Preferences(Base):
         Must be logged in as the user being updated or have the edit_other_users permission.
 
         :param user_id: User ID.
-        :param category: Category.
-        :param name: Name.
-        :param value: Value.
+        :param category: The category of a group of preferences.
+        :param name: The name of a group of preferences.
+        :param value: The value of a group of preferences.
         :return: User preferences saving info.
         """
+
         url = f"{self.api_url}/{user_id}/preferences"
 
         self.reset()
@@ -52,3 +53,25 @@ class Preferences(Base):
             self.add_to_json('value', value)
 
         return self.request(url, request_type='PUT')
+
+    def list_user_preferences_by_category(self,
+                                          user_id: str,
+                                          category: str) -> dict:
+        """
+        Lists the current user's stored preferences in the given category.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id: User ID.
+        :param category: The category of a group of preferences.
+        :return: User preferences saving info.
+        """
+
+        url = f"{self.api_url}/{user_id}/preferences/delete"
+
+        self.reset()
+        self.add_application_json_header()
+        if category is not None:
+            self.add_to_json('category', category)
+
+        return self.request(url, request_type='POST')
