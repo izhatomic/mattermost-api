@@ -84,7 +84,7 @@ class Preferences(Base):
         if value is not None:
             self.add_to_json('value', value)
 
-        return self.request(url, request_type='POST')
+        return self.request(url, request_type='POST', body=True)
 
     def list_user_preferences_by_category(self,
                                           user_id: str,
@@ -105,4 +105,23 @@ class Preferences(Base):
 
         return self.request(url, request_type='GET')
 
-    def
+    def get_specific_user_preference(self,
+                                     user_id: str,
+                                     category: str,
+                                     preference_name: str) -> dict:
+        """
+        Lists the current user's stored preferences in the given category.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id: User ID.
+        :param category: The category of a group of preferences.
+        :param preference_name: The name of the preference.
+        :return: Preferences info.
+        """
+
+        url = f"{self.api_url}/{user_id}/preferences/{category}/name/{preference_name}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
