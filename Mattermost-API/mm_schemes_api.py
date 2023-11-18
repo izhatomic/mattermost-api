@@ -24,7 +24,7 @@ class Schemes(Base):
         :return: Schemes list.
         """
 
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
         self.reset()
         self.add_application_json_header()
         if scope is not None:
@@ -51,7 +51,7 @@ class Schemes(Base):
         :param scope: The scope of the scheme ("team" or "channel").
         :return: Schemes creation info.
         """
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
         self.reset()
         self.add_application_json_header()
         self.add_to_json('name', name)
