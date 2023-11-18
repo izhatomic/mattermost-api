@@ -16,7 +16,7 @@ class Roles(Base):
 
         :return: Roles list.
         """
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
         self.reset()
 
         return self.request(url, request_type='GET')
