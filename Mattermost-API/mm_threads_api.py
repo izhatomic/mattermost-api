@@ -167,4 +167,24 @@ class Threads(Base):
 
         return self.request(url, request_type='PUT')
 
+    def stop_following_thread(self,
+                              user_id: str,
+                              team_id: str,
+                              thread_id: str) -> dict:
+        """
+        Stop following a thread.
 
+        Minimum server version: 5.29
+        Must be logged in as the user or have edit_other_users permission.
+
+        :param user_id: The ID of the user. This can also be "me" which will point to the current user.
+        :param team_id: The ID of the team in which the thread is.
+        :param thread_id: The ID of the thread to update.
+        :return: User's thread update info.
+        """
+
+        url = f"{self.api_url}/{user_id}/teams/{team_id}/threads/{thread_id}/following"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
