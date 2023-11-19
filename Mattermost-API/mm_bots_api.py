@@ -273,3 +273,68 @@ class Bots(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def convert_bot_into_user(self,
+                              bot_user_id: str,
+                              set_system_admin: bool,
+                              email: str,
+                              username: str,
+                              password: str,
+                              first_name: str,
+                              last_name: str,
+                              nickname: str,
+                              locale: str,
+                              position: str,
+                              props: str,
+                              notify_props: dict) -> dict:
+
+        """
+        Convert a bot into a user.
+
+        Must have manage_system permission.
+
+        Minimum server version: 5.26
+
+        :param bot_user_id: Bot user ID.
+        :param set_system_admin: Default: false. Whether to give the user the system admin role.
+        :param email: User's email.
+        :param username: User's name.
+        :param password: User's password.
+        :param first_name: User's first name.
+        :param last_name: User's last name.
+        :param nickname: User's nickname.
+        :param locale: User's locale.
+        :param position: User's position.
+        :param props: User's props.
+        :param notify_props: User's notify_props.
+        :return: Bot conversion info.
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/convert_to_user"
+
+        self.reset()
+        self.add_application_json_header()
+        if set_system_admin is not None:
+            self.add_to_json('set_system_admin', set_system_admin)
+        if email is not None:
+            self.add_to_json('email', email)
+        if username is not None:
+            self.add_to_json('username', username)
+        if password is not None:
+            self.add_to_json('password', password)
+        if first_name is not None:
+            self.add_to_json('first_name', first_name)
+        if last_name is not None:
+            self.add_to_json('last_name', last_name)
+        if nickname is not None:
+            self.add_to_json('nickname', nickname)
+        if locale is not None:
+            self.add_to_json('locale', locale)
+        if position is not None:
+            self.add_to_json('position', position)
+        if props is not None:
+            self.add_to_json('props', props)
+        if notify_props is not None:
+            self.add_to_json('notify_props', notify_props)
+
+        return self.request(url, request_type='POST', body=True)
