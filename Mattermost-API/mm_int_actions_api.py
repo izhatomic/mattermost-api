@@ -24,7 +24,7 @@ class IntegrationActions(Base):
         :return: Dialog open successful
         """
 
-        url = f"{self.api_url}/open"
+        api_url = f"{self.api_url}/open"
 
         self.reset()
         self.add_application_json_header()
@@ -32,15 +32,15 @@ class IntegrationActions(Base):
         self.add_to_json('url', url)
         self.add_to_json('dialog', dialog)
 
-        return self.request(url, request_type='POST', body=True)
+        return self.request(api_url, request_type='POST', body=True)
 
     def submit_dialog(self, url: str,
                       channel_id: str,
                       team_id: str,
                       submission: dict,
-                      callback_id: str,
-                      state: str,
-                      cancelled: bool) -> dict:
+                      callback_id: str = None,
+                      state: str = None,
+                      cancelled: bool = None) -> dict:
         """
         Endpoint used by the Mattermost clients to submit a dialog.
         Minimum server version: 5.6
@@ -56,7 +56,7 @@ class IntegrationActions(Base):
         :return: Dialog submission successful
         """
 
-        url = f"{self.api_url}/submit"
+        api_url = f"{self.api_url}/submit"
 
         self.reset()
         self.add_application_json_header()
@@ -71,4 +71,4 @@ class IntegrationActions(Base):
         if cancelled is not None:
             self.add_to_json('cancelled', cancelled)
 
-        return self.request(url, request_type='POST', body=True)
+        return self.request(api_url, request_type='POST', body=True)

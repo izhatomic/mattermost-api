@@ -8,8 +8,8 @@ class Shared_channels(Base):
         self.api_url = f"{self.base_url}/sharedchannels"
 
     def get_shrd_chnls_for_team(self, team_id: str,
-                      page: int,
-                      per_page: int) -> dict:
+                                page: int = None,
+                                per_page: int = None) -> dict:
         """
         Get all shared channels for a team.
 
@@ -32,7 +32,7 @@ class Shared_channels(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def get_remote_clstr_info_by_id(self, remote_id:str) -> dict:
+    def get_remote_clstr_info_by_id(self, remote_id: str) -> dict:
         """
         Get remote cluster info based on remoteId.
 

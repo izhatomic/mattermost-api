@@ -22,7 +22,7 @@ class Compliance(Base):
 
         return self.request(url, request_type='POST')
 
-    def get_reports(self, page: int, per_page: int) -> dict:
+    def get_reports(self, page: int = None, per_page: int = None) -> dict:
         """
         Get a list of compliance reports previously created by page,
         selected with page and per_page query parameters.
