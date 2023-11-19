@@ -254,3 +254,22 @@ class Bots(Base):
         self.add_to_json('image', image)
 
         return self.request(url, request_type='POST')
+
+    def delete_bot_lhs_icon_image(self, bot_user_id: str) -> dict:
+
+        """
+        Delete bot's LHS icon image based on bot_user_id string parameter.
+
+        Must have manage_bots permission.
+
+        Minimum server version: 5.14
+
+        :param bot_user_id: Bot user ID.
+        :return: Icon image deletion info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/icon"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
