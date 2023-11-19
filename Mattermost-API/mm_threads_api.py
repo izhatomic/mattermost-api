@@ -10,13 +10,13 @@ class Threads(Base):
     def get_threads_user_is_following(self,
                                       user_id: str,
                                       team_id: str,
-                                      since: int,
-                                      deleted: bool,
-                                      extended: bool,
-                                      page: int,
-                                      pageSize: int,
-                                      totalsOnly: bool,
-                                      threadsOnly: bool):
+                                      since: int = None,
+                                      deleted: bool = None,
+                                      extended: bool = None,
+                                      page: int = None,
+                                      pageSize: int = None,
+                                      totalsOnly: bool = None,
+                                      threadsOnly: bool = None):
         """
         Get all threads that user is following.
 
@@ -55,6 +55,7 @@ class Threads(Base):
             self.add_to_json('threadsOnly', threadsOnly)
 
         return self.request(url, request_type='GET', body=True)
+                                          
     def get_unread_mention_counts_from_followed_threads(self,
                                                         user_id: str,
                                                         team_id: str) -> dict:
