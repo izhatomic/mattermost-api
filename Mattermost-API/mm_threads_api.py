@@ -75,6 +75,26 @@ class Threads(Base):
 
         return self.request(url, request_type='GET')
 
+    def mark_all_threads_that_user_following_as_read(self,
+                                                     user_id: str,
+                                                     team_id: str) -> dict:
+        """
+        Mark all threads that user is following as read.
+
+        Minimum server version: 5.29
+        Must be logged in as the user or have edit_other_users permission.
+
+        :param user_id: The ID of the user. This can also be "me" which will point to the current user.
+        :param team_id: The ID of the team in which the thread is.
+        :return: User's threads update info.
+        """
+
+        url = f"{self.api_url}/{user_id}/teams/{team_id}/threads/read"
+
+        self.reset()
+
+        return self.request(url, request_type='PUT')
+
     def mark_thread_that_user_following_read_state_to_the_timestamp(self,
                                                                     user_id: str,
                                                                     team_id: str,
@@ -88,7 +108,7 @@ class Threads(Base):
 
         :param user_id: The ID of the user. This can also be "me" which will point to the current user.
         :param team_id: The ID of the team in which the thread is.
-        :thread_id: The ID of the thread to update.
+        :param thread_id: The ID of the thread to update.
         :param timestamp: The timestamp to which the thread's "last read" state will be reset.
         :return: User's threads update info.
         """
@@ -98,3 +118,5 @@ class Threads(Base):
         self.reset()
 
         return self.request(url, request_type='PUT')
+
+    def
