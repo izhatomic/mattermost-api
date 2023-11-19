@@ -55,7 +55,7 @@ class Cloud(Base):
 
         return self.request(url, request_type='POST')
 
-    def complete_payment_setup_intent(self, stripe_setup_intent_id: str) -> dict:
+    def complete_payment_setup_intent(self, stripe_setup_intent_id: str = None) -> dict:
         """
         Confirms the payment setup intent initiated when posting to /cloud/payment.
 
@@ -93,11 +93,11 @@ class Cloud(Base):
         return self.request(url, request_type='GET')
 
     def update_cloud_customer(self,
-                              name: str,
-                              email: str,
-                              contact_first_name: str,
-                              contact_last_name: str,
-                              num_employees: str) -> dict:
+                              name: str = None,
+                              email: str = None,
+                              contact_first_name: str = None,
+                              contact_last_name: str = None,
+                              num_employees: str = None) -> dict:
         """
         Updates the customer information for the Mattermost Cloud customer bound to this installation.
 
@@ -113,8 +113,10 @@ class Cloud(Base):
         :return: Cloud customer updating info.
         """
         url = f"{self.api_url}/customer"
+                                  
         self.reset()
         self.add_application_json_header()
+                                  
         if name is not None:
             self.add_to_json('name', name)
         if email is not None:
@@ -129,12 +131,12 @@ class Cloud(Base):
         return self.request(url, request_type='PUT', body=True)
 
     def update_cloud_customer_address(self,
-                                      city: str,
-                                      country: str,
-                                      line_1: str,
-                                      line_2: str,
-                                      postal_code: str,
-                                      state: str) -> dict:
+                                      city: str = None,
+                                      country: str = None,
+                                      line_1: str = None,
+                                      line_2: str = None,
+                                      postal_code: str = None,
+                                      state: str = None) -> dict:
         """
         Updates the company address for the Mattermost Cloud customer bound to this installation.
 
