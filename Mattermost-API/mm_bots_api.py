@@ -229,3 +229,28 @@ class Bots(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def set_bot_lhs_icon_image(self,
+                               bot_user_id: str,
+                               image: str) -> dict:
+
+        """
+        Set a bot's LHS icon image based on bot_user_id string parameter.
+        Icon image must be SVG format, all other formats are rejected.
+
+        Must have manage_bots permission.
+
+        Minimum server version: 5.14
+
+        :param bot_user_id: Bot user ID.
+        :param image: SVG icon image to be uploaded
+        :return: SVG icon image info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/icon"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('image', image)
+
+        return self.request(url, request_type='POST')
