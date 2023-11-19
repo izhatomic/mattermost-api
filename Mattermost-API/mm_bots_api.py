@@ -151,3 +151,22 @@ class Bots(Base):
             self.add_to_json('include_deleted', include_deleted)
 
         return self.request(url, request_type='GET', body=True)
+
+    def disable_bot(self,bot_user_id:str) -> dict:
+
+        """
+        Disable a bot.
+
+        Must have manage_bots permission.
+
+        Minimum server version: 5.10
+
+        :param bot_user_id: Bot user ID.
+        :return: Bot retrieval info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/disable"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
