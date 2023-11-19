@@ -27,8 +27,8 @@ class Bots(Base):
 
     def create_bot(self,
                    username: str,
-                   display_name: str,
-                   description: str) -> dict:
+                   display_name: str = None,
+                   description: str = None) -> dict:
         """
         Create a new bot account on the system. Username is required.
 
@@ -55,10 +55,10 @@ class Bots(Base):
         return self.request(url, request_type='POST', body=True)
 
     def get_bots(self,
-                 page: int,
-                 per_page: int,
-                 include_deleted: bool,
-                 only_orphaned: bool) -> dict:
+                 page: int = None,
+                 per_page: int = None,
+                 include_deleted: bool = None,
+                 only_orphaned: bool = None) -> dict:
 
         """
         Get a page of a list of bots.
@@ -94,8 +94,8 @@ class Bots(Base):
     def patch_bot(self,
                   bot_user_id: str,
                   username: str,
-                  display_name: str,
-                  description: str) -> dict:
+                  display_name: str = None,
+                  description: str = None) -> dict:
 
         """
         Partially update a bot by providing only the fields you want to update.
@@ -127,7 +127,7 @@ class Bots(Base):
 
     def get_bot(self,
                 bot_user_id: str,
-                include_deleted: bool) -> dict:
+                include_deleted: bool = None) -> dict:
 
         """
         Get a bot specified by its bot id.
@@ -276,17 +276,17 @@ class Bots(Base):
 
     def convert_bot_into_user(self,
                               bot_user_id: str,
-                              set_system_admin: bool,
-                              email: str,
-                              username: str,
-                              password: str,
-                              first_name: str,
-                              last_name: str,
-                              nickname: str,
-                              locale: str,
-                              position: str,
-                              props: str,
-                              notify_props: dict) -> dict:
+                              set_system_admin: bool = None,
+                              email: str = None,
+                              username: str = None,
+                              password: str = None,
+                              first_name: str = None,
+                              last_name: str = None,
+                              nickname: str = None,
+                              locale: str = None,
+                              position: str = None,
+                              props: str = None,
+                              notify_props: dict = None) -> dict:
 
         """
         Convert a bot into a user.
