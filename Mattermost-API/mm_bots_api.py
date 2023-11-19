@@ -152,7 +152,7 @@ class Bots(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def disable_bot(self,bot_user_id:str) -> dict:
+    def disable_bot(self, bot_user_id: str) -> dict:
 
         """
         Disable a bot.
@@ -162,10 +162,29 @@ class Bots(Base):
         Minimum server version: 5.10
 
         :param bot_user_id: Bot user ID.
-        :return: Bot retrieval info
+        :return: Bot disable info
         """
 
         url = f"{self.api_url}/{bot_user_id}/disable"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
+    def enable_bot(self, bot_user_id: str) -> dict:
+
+        """
+        Enable a bot.
+
+        Must have manage_bots permission.
+
+        Minimum server version: 5.10
+
+        :param bot_user_id: Bot user ID.
+        :return: Bot enable info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/enable"
 
         self.reset()
 
