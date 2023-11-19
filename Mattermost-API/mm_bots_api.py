@@ -125,3 +125,29 @@ class Bots(Base):
             self.add_to_json('description', description)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def get_bot(self,
+                bot_user_id: str,
+                include_deleted: bool) -> dict:
+
+        """
+        Get a bot specified by its bot id.
+
+        Must have read_bots permission for bots you are managing,
+        and read_others_bots permission for bots others are managing.
+
+        Minimum server version: 5.10
+
+        :param bot_user_id: Bot user ID.
+        :param include_deleted: If deleted bots should be returned.
+        :return: Bot retrieval info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}"
+
+        self.reset()
+        self.add_application_json_header()
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+
+        return self.request(url, request_type='GET', body=True)
