@@ -91,3 +91,37 @@ class Bots(Base):
             self.add_to_json('only_orphaned', only_orphaned)
 
         return self.request(url, request_type='GET', body=True)
+
+    def patch_bot(self,
+                  bot_user_id: str,
+                  username: str,
+                  display_name: str,
+                  description: str) -> dict:
+
+        """
+        Partially update a bot by providing only the fields you want to update.
+        Omitted fields will not be updated.
+        The fields that can be updated are defined in the request body, all other provided fields will be ignored.
+
+        Must have manage_bots permission.
+        Minimum server version: 5.10
+
+        :param bot_user_id: Bot user ID.
+        :param username: Bot's name.
+        :param display_name: Bot's display name.
+        :param description: Bot's name.
+        A bot is consitered orphaned if it's owner has been deactivated.
+        :return: Bot patch info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('username', username)
+        if display_name is not None:
+            self.add_to_json('display_name', display_name)
+        if description is not None:
+            self.add_to_json('description', description)
+
+        return self.request(url, request_type='PUT', body=True)
