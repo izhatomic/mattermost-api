@@ -21,7 +21,7 @@ class Emoji(Base):
         :return: Emoji creation info.
         """
 
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
 
         self.reset()
         self.add_application_json_header()
@@ -31,9 +31,9 @@ class Emoji(Base):
         return self.request(url, request_type='POST', body=True)
 
     def get_list_of_custom_emoji(self,
-                                 page: int,
-                                 per_page: int,
-                                 sort: str) -> dict:
+                                 page: int = None,
+                                 per_page: int = None,
+                                 sort: str = None) -> dict:
         """
         Get a page of metadata for custom emoji on the system.
         Since server version 4.7, sort using the sort query parameter.
@@ -47,7 +47,7 @@ class Emoji(Base):
         :return: Emoji list retrieval info.
         """
 
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
 
         self.reset()
         self.add_application_json_header()
@@ -125,8 +125,8 @@ class Emoji(Base):
         return self.request(url, request_type='GET')
 
     def search_custom_emoji(self,
-                            term: str,
-                            prefix_only: str) -> dict:
+                            term: str = None,
+                            prefix_only: str = None) -> dict:
         """
         Search for custom emoji by name based on search criteria provided in the request body.
         A maximum of 200 results are returned.
