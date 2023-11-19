@@ -211,3 +211,26 @@ class Bots(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def get_bot_lhs_icon(self, bot_user_id: str) -> dict:
+
+        """
+        Get a bot's LHS icon image based on bot_user_id string parameter.
+
+        Must be logged in.
+
+        Minimum server version: 5.14
+
+        :param bot_user_id: Bot user ID.
+        :return: Bot LHS icon info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/icon"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
+
+
