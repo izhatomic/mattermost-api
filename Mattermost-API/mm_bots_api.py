@@ -169,3 +169,22 @@ class Bots(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def enable_bot(self, bot_user_id: str) -> dict:
+
+        """
+        Enable a bot.
+
+        Must have manage_bots permission.
+
+        Minimum server version: 5.10
+
+        :param bot_user_id: Bot user ID.
+        :return: Bot enable info
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/enable"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
