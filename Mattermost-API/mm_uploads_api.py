@@ -22,7 +22,7 @@ class Uploads(Base):
         :return: Upload creation successful.
         """
 
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
 
         self.reset()
         self.add_application_json_header()
