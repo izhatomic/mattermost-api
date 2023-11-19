@@ -119,4 +119,28 @@ class Threads(Base):
 
         return self.request(url, request_type='PUT')
 
-    def
+    def mark_thread_that_user_following_as_read_based_on_post_id(self,
+                                                                 user_id: str,
+                                                                 team_id: str,
+                                                                 thread_id: str,
+                                                                 post_id: str) -> dict:
+        """
+        Mark a thread that user is following as unread.
+
+        Minimum server version: 6.7
+        Must have read_channel permission for the channel the thread is in or if the channel is public,
+        have the read_public_channels permission for the team.
+        Must have edit_other_users permission if the user is not the one marking the thread for himself.
+
+        :param user_id: The ID of the user. This can also be "me" which will point to the current user.
+        :param team_id: The ID of the team in which the thread is.
+        :param thread_id: The ID of the thread to update.
+        :param post_id: The ID of a post belonging to the thread to mark as unread.
+        :return: User's thread update info.
+        """
+
+        url = f"{self.api_url}/{user_id}/teams/{team_id}/threads/{thread_id}/set_unread/{post_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
