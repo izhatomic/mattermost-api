@@ -53,3 +53,40 @@ class Bots(Base):
             self.add_to_json('description', description)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_bots(self,
+                 page: int,
+                 per_page: int,
+                 include_deleted: bool,
+                 only_orphaned: bool) -> dict:
+
+        """
+        Get a page of a list of bots.
+
+        Must have read_bots permission for bots you are managing, and read_others_bots permission for bots
+        others are managing.
+
+        Minimum server version: 5.10
+
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of users per page. There is a maximum limit of 200 users per page.
+        :param include_deleted: If deleted bots should be returned.
+        :param only_orphaned: When true, only orphaned bots will be returned.
+        A bot is consitered orphaned if it's owner has been deactivated.
+        :return: Bot creation info
+        """
+
+        url = f"{self.api_url}"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+        if only_orphaned is not None:
+            self.add_to_json('only_orphaned', only_orphaned)
+
+        return self.request(url, request_type='GET', body=True)
