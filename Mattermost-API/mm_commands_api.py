@@ -22,15 +22,16 @@ class Commands(Base):
         :param url: The URL that the command will make the request.
         :return: Command creation info.
         """
-        url = f"{self.api_url}/"
+        api_url = f"{self.api_url}/"
         self.reset()
+                             
         self.add_application_json_header()
         self.add_to_json('team_id', team_id)
         self.add_to_json('method', method)
         self.add_to_json('trigger', trigger)
         self.add_to_json('url', url)
 
-        return self.request(url, request_type='POST', body=True)
+        return self.request(api_url, request_type='POST', body=True)
 
     def list_commands_for_team(self,
                                team_id: str,
@@ -64,7 +65,7 @@ class Commands(Base):
 
     def list_commands_autocomplete_data(self,
                                         team_id: str,
-                                        user_input: str) -> dict:
+                                        user_input: str = None) -> dict:
         """
         List commands' autocomplete data for the team.
         Minimum server version: 5.24
@@ -96,23 +97,23 @@ class Commands(Base):
 
     def update_a_command(self,
                          command_id: str,
-                         id: str,
-                         token: str,
-                         create_at: int,
-                         update_at: int,
-                         delete_at: int,
-                         creator_id: str,
-                         team_id: str,
-                         trigger: str,
-                         method: str,
-                         username: str,
-                         icon_url: str,
-                         auto_complete: bool,
-                         auto_complete_desc: str,
-                         auto_complete_hint: str,
-                         display_name: str,
-                         description: str,
-                         url: str) -> dict:
+                         id: str = None,
+                         token: str = None,
+                         create_at: int = None,
+                         update_at: int = None,
+                         delete_at: int = None,
+                         creator_id: str = None,
+                         team_id: str = None,
+                         trigger: str = None,
+                         method: str = None,
+                         username: str = None,
+                         icon_url: str = None,
+                         auto_complete: bool = None,
+                         auto_complete_desc: str = None,
+                         auto_complete_hint: str = None,
+                         display_name: str = None,
+                         description: str = None,
+                         url: str = None) -> dict:
         """
         Update a single command based on command id string and Command struct.
         Must have manage_slash_commands permission for the team the command is in.
@@ -136,9 +137,10 @@ class Commands(Base):
         :param url: The URL that is triggered
         :return: Command update info.
         """
-        url = f"{self.api_url}/{command_id}"
+        api_url = f"{self.api_url}/{command_id}"
         self.reset()
         self.add_application_json_header()
+                             
         if id is not None:
             self.add_to_json('id', id)
         if token is not None:
@@ -174,7 +176,7 @@ class Commands(Base):
         if url is not None:
             self.add_to_json('url', url)
 
-        return self.request(url, request_type='PUT', body=True)
+        return self.request(api_url, request_type='PUT', body=True)
 
     def delete_a_command(self, command_id: str) -> dict:
         """
@@ -190,7 +192,7 @@ class Commands(Base):
 
     def move_a_command(self,
                        command_id: str,
-                       team_id: str) -> dict:
+                       team_id: str = None) -> dict:
         """
         Move a command to a different team based on command id string.
         Must have manage_slash_commands permission for the team the command is in.
