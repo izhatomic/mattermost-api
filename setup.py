@@ -10,7 +10,7 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='Mattermost-API',
-    version='0.17',
+    version='0.18',
     description='Simple Mattermost API library',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
