@@ -47,7 +47,7 @@ class Posts(Base):
         if metadata is not None:
             self.add_to_json('metadata', metadata)
 
-        return self.request(url, request_type='POST', files=True)
+        return self.request(url, request_type='POST', body=True)
 
     def create_ephemeral_post(self,
                               user_id: str,
@@ -67,8 +67,28 @@ class Posts(Base):
         self.add_to_json('user_id', user_id)
         self.add_to_json('post', post)
 
-        return self.request(url, request_type='POST', files=True)
+        return self.request(url, request_type='POST', body=True)
 
+    def get_post(self,
+                 post_id: str,
+                 include_deleted: bool) -> dict:
+        """
+        Get a single post.
+
+        Must have read_channel permission for the channel the post is in or if the channel is public,
+        have the read_public_channels permission for the team.
+
+        :param post_id: The target user id for the ephemeral post.
+        :param include_deleted: Post object to create.
+        :return: Post retrieval info.
+        """
+        url = f"{self.api_url}/{post_id}"
+        self.reset()
+        self.add_application_json_header()
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+
+        return self.request(url, request_type='GET', body=True)
 
     def update_post(self,
                     used_id:str,
