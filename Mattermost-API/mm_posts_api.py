@@ -29,7 +29,7 @@ class Posts(Base):
         Note that posts are limited to 5 files maximum. Please use additional posts for more files.
         :param props: A general JSON property bag to attach to the post
         :param metadata: A JSON object to add post metadata, e.g the post's priority
-        :return: Upload creation successful.
+        :return: Post creation info.
         """
         url = f"{self.api_url}"
         self.reset()
@@ -49,10 +49,29 @@ class Posts(Base):
 
         return self.request(url, request_type='POST', files=True)
 
+    def create_ephemeral_post(self,
+                              user_id: str,
+                              post: dict) -> dict:
+        """
+        Create a new ephemeral post in a channel.
+
+        Must have create_post_ephemeral permission (currently only given to system admin)
+
+        :param user_id: The target user id for the ephemeral post.
+        :param post: Post object to create.
+        :return: Post creation info.
+        """
+        url = f"{self.api_url}/ephemeral"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('user_id', user_id)
+        self.add_to_json('post', post)
+
+        return self.request(url, request_type='POST', files=True)
 
 
     def update_post(self,
-                    post_id:str,
+                    used_id:str,
                     id:str,
                     is_pinned:bool,
                     message:str,
