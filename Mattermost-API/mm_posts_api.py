@@ -90,6 +90,22 @@ class Posts(Base):
 
         return self.request(url, request_type='GET', body=True)
 
+    def delete_post(self, post_id: str) -> dict:
+        """
+        Soft deletes a post, by marking the post as deleted in the database.
+        Soft deleted posts will not be returned in post queries.
+
+        Must be logged in as the user or have delete_others_posts permission.
+
+        :param post_id: ID of the post to delete.
+        :return: Post deletion info.
+        """
+
+        url = f"{self.api_url}/{post_id}"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
+
     def update_post(self,
                     used_id:str,
                     id:str,
