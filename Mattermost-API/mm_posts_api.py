@@ -146,3 +146,23 @@ class Posts(Base):
             self.add_to_json('props', props)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def mark_as_unread_from_post(self,
+                                 user_id: str,
+                                 post_id: str) -> dict:
+        """
+        Mark a channel as being unread from a given post.
+
+        Must have read_channel permission for the channel the post is in or if the channel is public,
+        have the read_public_channels permission for the team. Must have edit_other_users permission
+        if the user is not the one marking the post for himself.
+
+        :param user_id: User GUID.
+        :param post_id: Post GUID.
+        :return: Post info.
+        """
+
+        url = f"{self.base_url}/users/{user_id}/post/{post_id}/set_unread"
+        self.reset()
+
+        return self.request(url, request_type='POST')
