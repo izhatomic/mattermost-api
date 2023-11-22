@@ -31,6 +31,7 @@ class Posts(Base):
         :param metadata: A JSON object to add post metadata, e.g the post's priority
         :return: Post creation info.
         """
+
         url = f"{self.api_url}"
         self.reset()
         self.add_application_json_header()
@@ -61,6 +62,7 @@ class Posts(Base):
         :param post: Post object to create.
         :return: Post creation info.
         """
+
         url = f"{self.api_url}/ephemeral"
         self.reset()
         self.add_application_json_header()
@@ -78,10 +80,12 @@ class Posts(Base):
         Must have read_channel permission for the channel the post is in or if the channel is public,
         have the read_public_channels permission for the team.
 
-        :param post_id: The target user id for the ephemeral post.
-        :param include_deleted: Post object to create.
+        :param post_id: ID of the post to get.
+        :param include_deleted: Default: false. Defines if result should
+        include deleted posts, must have 'manage_system' (admin) permission.
         :return: Post retrieval info.
         """
+
         url = f"{self.api_url}/{post_id}"
         self.reset()
         self.add_application_json_header()
@@ -107,12 +111,12 @@ class Posts(Base):
         return self.request(url, request_type='DEL')
 
     def update_post(self,
-                    used_id:str,
-                    id:str,
-                    is_pinned:bool,
-                    message:str,
-                    has_reactions:bool,
-                    props:str)->dict:
+                    post_id: str,
+                    id: str,
+                    is_pinned: bool = None,
+                    message: str = None,
+                    has_reactions: bool = None,
+                    props: str = None) -> dict:
         """
         Update a post. Only the fields listed below are updatable,
         omitted fields will be treated as blank.
@@ -122,8 +126,23 @@ class Posts(Base):
         :param post_id: ID of the post to update.
         :param id: ID of the post to update.
         :param is_pinned: The size of the file to upload in bytes.
-        :param message:
-        :param has_reactions:
-        :param props:
-        :return: Upload creation successful.
+        :param message: The message text of the post.
+        :param has_reactions: Set to true if the post has reactions to it.
+        :param props: A general JSON property bag to attach to the post
+        :return: Post update info.
         """
+
+        url = f"{self.api_url}/{post_id}"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('id', id)
+        if is_pinned is not None:
+            self.add_to_json('is_pinned', is_pinned)
+        if message is not None:
+            self.add_to_json('message', message)
+        if has_reactions is not None:
+            self.add_to_json('has_reactions', has_reactions)
+        if props is not None:
+            self.add_to_json('props', props)
+
+        return self.request(url, request_type='PUT', body=True)
