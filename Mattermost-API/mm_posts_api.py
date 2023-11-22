@@ -166,3 +166,43 @@ class Posts(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def patch_post(self,
+                   post_id:str,
+                   is_pinned:bool,
+                   message:str,
+                   file_ids:list[str],
+                   has_reactions:bool,
+                   props:str)->dict:
+        """
+        Partially update a post by providing only the fields you want to update.
+        Omitted fields will not be updated. The fields that can be updated are defined in the request body,
+        all other provided fields will be ignored.
+
+        Must have the edit_post permission.
+
+        :param post_id: Post GUID.
+        :param is_pinned: Set to true to pin the post to the channel it is in.
+        :param message: The message text of the post.
+        :param file_ids: The list of files attached to this post.
+        :param has_reactions: Set to true if the post has reactions to it.
+        :param props: A general JSON property bag to attach to the post.
+        :return: Post patch info.
+        """
+
+        url = f"{self.api_url}/{post_id}/patch"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('id', id)
+        if is_pinned is not None:
+            self.add_to_json('is_pinned', is_pinned)
+        if message is not None:
+            self.add_to_json('message', message)
+        if file_ids is not None:
+            self.add_to_json('file_ids', file_ids)
+        if has_reactions is not None:
+            self.add_to_json('has_reactions', has_reactions)
+        if props is not None:
+            self.add_to_json('props', props)
+
+        return self.request(url, request_type='PUT', body=True)
