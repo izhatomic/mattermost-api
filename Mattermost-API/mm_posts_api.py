@@ -206,3 +206,49 @@ class Posts(Base):
             self.add_to_json('props', props)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def get_thread(self,
+                   post_id: str,
+                   perPage: int = None,
+                   fromPost: str = None,
+                   fromCreateAt: int = None,
+                   direction: str = None,
+                   skipFetchThreads: bool = None,
+                   collapsedThreads: bool = None,
+                   collapsedThreadsExtended: bool = None) -> dict:
+        """
+        Get a post and the rest of the posts in the same thread.
+
+        Must have read_channel permission for the channel
+        the post is in or if the channel is public, have the read_public_channels permission for the team.
+
+        :param post_id: ID of a post in the thread.
+        :param perPage: Default: 0. The number of posts per page.
+        :param fromPost: Default: "". The post_id to return the next page of posts from.
+        :param fromCreateAt: Default: 0. The create_at timestamp to return the next page of posts from.
+        :param direction: Default: "". The direction to return the posts. Either up or down.
+        :param skipFetchThreads: Default: false. Whether to skip fetching threads or not.
+        :param collapsedThreads: Default: false. Whether the client uses CRT or not
+        :param collapsedThreadsExtended: Default: false. Whether to return the associated users as part of the response or not
+        :return: Post list retrieval info.
+        """
+
+        url = f"{self.api_url}/{post_id}/thread"
+        self.reset()
+        self.add_application_json_header()
+        if perPage is not None:
+            self.add_to_json('perPage', perPage)
+        if fromPost is not None:
+            self.add_to_json('fromPost', fromPost)
+        if fromCreateAt is not None:
+            self.add_to_json('fromCreateAt', fromCreateAt)
+        if direction is not None:
+            self.add_to_json('direction', direction)
+        if skipFetchThreads is not None:
+            self.add_to_json('skipFetchThreads', skipFetchThreads)
+        if collapsedThreads is not None:
+            self.add_to_json('collapsedThreads', collapsedThreads)
+        if collapsedThreadsExtended is not None:
+            self.add_to_json('collapsedThreadsExtended', collapsedThreadsExtended)
+
+        return self.request(url, request_type='GET', body=True)
