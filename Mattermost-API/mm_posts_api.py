@@ -540,6 +540,8 @@ class Posts(Base):
         Must have read_channel permission for the channel the post is in.
         Must be logged in as the user or have edit_other_users permission.
 
+        Minimum server version: 7.7
+
         :param user_id: User GUID
         :param post_id: Post GUID
         :return: Acknowledgement info
@@ -549,3 +551,25 @@ class Posts(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def delete_post_acknowledgement(self,
+                                    user_id: str,
+                                    post_id: str) -> dict:
+        """
+        Delete an acknowledgement form a post that you had previously acknowledged.
+
+        Must have read_channel permission for the channel the post is in.
+        Must be logged in as the user or have edit_other_users permission.
+        The post must have been acknowledged in the previous 5 minutes.
+
+        Minimum server version: 7.7
+
+        :param user_id: User GUID
+        :param post_id: Post GUID
+        :return: Acknowledgement deletion info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/posts/{post_id}/ack"
+        self.reset()
+
+        return self.request(url, request_type='DEL')
