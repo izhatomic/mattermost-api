@@ -450,7 +450,7 @@ class Posts(Base):
         Must be authenticated and have the read_channel permission to the channel the post is in.
 
         :param post_id: Post GUID
-        :return: Post list retrieval info
+        :return: Pinned post info
         """
 
         url = f"{self.api_url}/{post_id}/pin"
@@ -459,4 +459,18 @@ class Posts(Base):
 
         return self.request(url, request_type='POST')
 
+    def unpin_post_to_channel(self, post_id: str) -> dict:
+        """
+        Unpin a post to a channel it is in based from the provided post id string.
 
+        Must be authenticated and have the read_channel permission to the channel the post is in.
+
+        :param post_id: Post GUID
+        :return: Unpinned post info
+        """
+
+        url = f"{self.api_url}/{post_id}/unpin"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
