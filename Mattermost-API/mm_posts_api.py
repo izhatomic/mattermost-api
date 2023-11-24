@@ -509,3 +509,24 @@ class Posts(Base):
             self.add_to_json('post_ids', post_ids)
 
         return self.request(url, request_type='POST')
+
+    def set_post_reminder(self,
+                          user_id: str,
+                          post_id: str,
+                          target_time: int) -> dict:
+        """
+        Must have read_channel permission for the channel the post is in.
+
+        Minimum server version: 7.2
+
+        :param user_id: User GUID
+        :param post_id: Post GUID
+        :param target_time: Target time for the reminder
+        :return: Reminder info
+        """
+        url = f"{self.base_url}/users/{user_id}/posts/{post_id}/reminder"
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('target_time', target_time)
+
+        return self.request(url, request_type='POST', body=True)
