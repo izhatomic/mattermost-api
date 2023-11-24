@@ -454,7 +454,6 @@ class Posts(Base):
         """
 
         url = f"{self.api_url}/{post_id}/pin"
-
         self.reset()
 
         return self.request(url, request_type='POST')
@@ -470,7 +469,6 @@ class Posts(Base):
         """
 
         url = f"{self.api_url}/{post_id}/unpin"
-
         self.reset()
 
         return self.request(url, request_type='POST')
@@ -489,7 +487,25 @@ class Posts(Base):
         """
 
         url = f"{self.api_url}/{post_id}/actions/{action_id}"
-
         self.reset()
+
+        return self.request(url, request_type='POST')
+
+    def get_posts_by_list_of_ids(self, post_ids: list[str]) -> dict:
+        """
+        Fetch a list of posts based on the provided postIDs
+
+        Must have read_channel permission for the channel the post is in or if the channel is public,
+        have the read_public_channels permission for the team.
+
+        :param post_ids: List of post ids
+        :return: Post list retrieval info
+        """
+
+        url = f"{self.api_url}/ids"
+        self.reset()
+        self.add_application_json_header()
+        if post_ids is not None:
+            self.add_to_json('post_ids', post_ids)
 
         return self.request(url, request_type='POST')
