@@ -397,13 +397,13 @@ class Posts(Base):
         return self.request(url, request_type='GET', body=True)
 
     def search_for_team_posts(self,
-                              team_id:str,
-                              terms:str,
-                              is_or_search:bool,
-                              time_zone_offset:int=None,
-                              include_deleted_channels:bool=None,
-                              page:int=None,
-                              per_page:int=None)->dict:
+                              team_id: str,
+                              terms: str,
+                              is_or_search: bool,
+                              time_zone_offset: int = None,
+                              include_deleted_channels: bool = None,
+                              page: int = None,
+                              per_page: int = None) -> dict:
         """
         Search posts in the team and from the provided terms string.
 
@@ -442,4 +442,21 @@ class Posts(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='POST', body=True)
+
+    def pin_post_to_channel(self, post_id: str) -> dict:
+        """
+        Pin a post to a channel it is in based from the provided post id string.
+
+        Must be authenticated and have the read_channel permission to the channel the post is in.
+
+        :param post_id: Post GUID
+        :return: Post list retrieval info
+        """
+
+        url = f"{self.api_url}/{post_id}/pin"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
 
