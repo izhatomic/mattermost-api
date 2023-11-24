@@ -252,3 +252,39 @@ class Posts(Base):
             self.add_to_json('collapsedThreadsExtended', collapsedThreadsExtended)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_list_of_flagged_posts(self,
+                                  user_id: str,
+                                  team_id: str = None,
+                                  channel_id: str = None,
+                                  page: int = None,
+                                  per_page: int = None) -> dict:
+        """
+        Get a page of flagged posts of a user provided user id string. Selects from a channel, team, or all flagged posts by a user. Will only return posts from channels in which the user is member.
+
+        Must be user or have manage_system permission.
+
+        :param user_id: ID of the user
+        :param team_id: Team ID
+        :param channel_id: Channel ID
+        :param page: Default: 0. The page to select
+        :param per_page: Default: 60. The number of posts per page
+        :return: Post list retrieval info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/posts/flagged"
+
+        self.reset()
+        self.add_application_json_header()
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+        if channel_id is not None:
+            self.add_to_json('channel_id', channel_id)
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
+
+
