@@ -286,7 +286,7 @@ class Posts(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def get_file_info_for_post(self, post_id:str)->dict:
+    def get_file_info_for_post(self, post_id: str) -> dict:
         """
         Gets a list of file information objects for the files attached to a post.
 
@@ -301,3 +301,45 @@ class Posts(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_posts_for_channel(self,
+                              channel_id: str,
+                              page: int = None,
+                              per_page: int = None,
+                              since: int = None,
+                              before: str = None,
+                              after: str = None,
+                              include_deleted: bool = None) -> dict:
+        """
+        Get a page of posts in a channel. Use the query parameters to modify the behaviour of this endpoint. The parameter since must not be used with any of before, after, page, and per_page parameters. If since is used, it will always return all posts modified since that time, ordered by their create time limited till 1000. A caveat with this parameter is that there is no guarantee that the returned posts will be consecutive. It is left to the clients to maintain state and fill any missing holes in the post order.
+
+        Must have read_channel permission for the channel.
+
+        :param channel_id: The channel ID to get the posts for
+        :param page: Default: 0. The page to select
+        :param per_page: Default: 60. The number of posts per page
+        :param since: Provide a non-zero value in Unix time milliseconds to select posts modified after that time
+        :param before: A post id to select the posts that came before this one
+        :param after: A post id to select the posts that came after this one
+        :param include_deleted: ID of the post
+        :return: Post list retrieval info
+        """
+
+        url = f"{self.base_url}/channnels/{channel_id}/posts"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+        if since is not None:
+            self.add_to_json('since', since)
+        if before is not None:
+            self.add_to_json('before', before)
+        if after is not None:
+            self.add_to_json('after', after)
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+
+        return self.request(url, request_type='GET', body=True)
