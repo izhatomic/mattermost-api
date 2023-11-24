@@ -193,7 +193,6 @@ class Posts(Base):
         url = f"{self.api_url}/{post_id}/patch"
         self.reset()
         self.add_application_json_header()
-        self.add_to_json('id', id)
         if is_pinned is not None:
             self.add_to_json('is_pinned', is_pinned)
         if message is not None:
@@ -287,4 +286,18 @@ class Posts(Base):
 
         return self.request(url, request_type='GET', body=True)
 
+    def get_file_info_for_post(self, post_id:str)->dict:
+        """
+        Gets a list of file information objects for the files attached to a post.
 
+        Must have read_channel permission for the channel the post is in.
+
+        :param post_id: ID of the post
+        :return: File info retrieval info
+        """
+
+        url = f"{self.api_url}/{post_id}/files/info"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
