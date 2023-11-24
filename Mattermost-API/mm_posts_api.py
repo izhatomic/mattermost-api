@@ -530,3 +530,22 @@ class Posts(Base):
         self.add_to_json('target_time', target_time)
 
         return self.request(url, request_type='POST', body=True)
+
+    def acknowledge_post(self,
+                         user_id: str,
+                         post_id: str) -> dict:
+        """
+        Acknowledge a post that has a request for acknowledgements.
+
+        Must have read_channel permission for the channel the post is in.
+        Must be logged in as the user or have edit_other_users permission.
+
+        :param user_id: User GUID
+        :param post_id: Post GUID
+        :return: Acknowledgement info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/posts/{post_id}/ack"
+        self.reset()
+
+        return self.request(url, request_type='POST')
