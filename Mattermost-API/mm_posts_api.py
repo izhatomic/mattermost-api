@@ -474,3 +474,22 @@ class Posts(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def perform_post_action(self,
+                            post_id: str,
+                            action_id: str) -> dict:
+        """
+        Perform a post action, which allows users to interact with integrations through posts.
+
+        Must be authenticated and have the read_channel permission to the channel the post is in.
+
+        :param post_id: Post GUID
+        :param action_id: Action GUID
+        :return: Post action info
+        """
+
+        url = f"{self.api_url}/{post_id}/actions/{action_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
