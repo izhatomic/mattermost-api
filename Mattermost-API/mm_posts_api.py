@@ -259,7 +259,8 @@ class Posts(Base):
                                   page: int = None,
                                   per_page: int = None) -> dict:
         """
-        Get a page of flagged posts of a user provided user id string. Selects from a channel, team, or all flagged posts by a user. Will only return posts from channels in which the user is member.
+        Get a page of flagged posts of a user provided user id string. Selects from a channel, team,
+        or all flagged posts by a user. Will only return posts from channels in which the user is member.
 
         Must be user or have manage_system permission.
 
@@ -311,7 +312,11 @@ class Posts(Base):
                               after: str = None,
                               include_deleted: bool = None) -> dict:
         """
-        Get a page of posts in a channel. Use the query parameters to modify the behaviour of this endpoint. The parameter since must not be used with any of before, after, page, and per_page parameters. If since is used, it will always return all posts modified since that time, ordered by their create time limited till 1000. A caveat with this parameter is that there is no guarantee that the returned posts will be consecutive. It is left to the clients to maintain state and fill any missing holes in the post order.
+        Get a page of posts in a channel. Use the query parameters to modify the behaviour of this endpoint.
+        The parameter since must not be used with any of before, after, page, and per_page parameters.
+        If since is used, it will always return all posts modified since that time, ordered by their create time
+        limited till 1000. A caveat with this parameter is that there is no guarantee that the returned posts will
+        be consecutive. It is left to the clients to maintain state and fill any missing holes in the post order.
 
         Must have read_channel permission for the channel.
 
@@ -345,25 +350,32 @@ class Posts(Base):
         return self.request(url, request_type='GET', body=True)
 
     def get_posts_around_oldest_unread(self,
-                                       user_id:str,
-                                       channel_id:str,
-                                       limit_before:int,
-                                       limit_after:int,
-                                       skipFetchThreads:bool,
-                                       collapsedThreads:bool,
-                                       collapsedThreadsExtended:bool)->dict:
+                                       user_id: str,
+                                       channel_id: str,
+                                       limit_before: int = None,
+                                       limit_after: int = None,
+                                       skipFetchThreads: bool = None,
+                                       collapsedThreads: bool = None,
+                                       collapsedThreadsExtended: bool = None) -> dict:
         """
-        Get a page of posts in a channel. Use the query parameters to modify the behaviour of this endpoint. The parameter since must not be used with any of before, after, page, and per_page parameters. If since is used, it will always return all posts modified since that time, ordered by their create time limited till 1000. A caveat with this parameter is that there is no guarantee that the returned posts will be consecutive. It is left to the clients to maintain state and fill any missing holes in the post order.
+        Get the oldest unread post in the channel for the given user as well as the posts around it.
+        The returned list is sorted in descending order (most recent post first).
 
-        Must have read_channel permission for the channel.
+        Must be logged in as the user or have edit_other_users permission,
+        and must have read_channel permission for the channel.
+
+        Minimum server version: 5.14
 
         :param user_id: ID of the user
         :param channel_id: The channel ID to get the posts for
-        :param limit_before: Default: 60. The number of posts per page
-        :param limit_after: Provide a non-zero value in Unix time milliseconds to select posts modified after that time
-        :param skipFetchThreads: A post id to select the posts that came before this one
-        :param collapsedThreads: A post id to select the posts that came after this one
-        :param collapsedThreadsExtended: ID of the post
+        :param limit_before: Default: 60. Number of posts before the oldest unread posts.
+        Maximum is 200 posts if limit is set greater than that.
+        :param limit_after: Default: 60. Number of posts after and including the oldest unread post.
+        Maximum is 200 posts if limit is set greater than that.
+        :param skipFetchThreads: Default: false. Whether to skip fetching threads or not
+        :param collapsedThreads: Default: false. Whether the client uses CRT or not
+        :param collapsedThreadsExtended: Default: false. Whether to return the associated
+        users as part of the response or not
         :return: Post list retrieval info
         """
 
@@ -383,4 +395,51 @@ class Posts(Base):
             self.add_to_json('collapsedThreadsExtended', collapsedThreadsExtended)
 
         return self.request(url, request_type='GET', body=True)
+
+    def search_for_team_posts(self,
+                              team_id:str,
+                              terms:str,
+                              is_or_search:bool,
+                              time_zone_offset:int=None,
+                              include_deleted_channels:bool=None,
+                              page:int=None,
+                              per_page:int=None)->dict:
+        """
+        Search posts in the team and from the provided terms string.
+
+        Must be authenticated and have the view_team permission.
+
+        Minimum server version: 5.14
+
+        :param user_id: Team GUID
+        :param terms: The search terms as inputed by the user. To search for posts from a user include
+        from:someusername, using a user's username. To search in a specific channel include in:somechannel,
+        using the channel name (not the display name).
+        :param is_or_search: Set to true if an Or search should be performed vs an And search.
+        :param time_zone_offset: Default: 0. Offset from UTC of user timezone for date searches.
+        :param include_deleted_channels: Set to true if deleted channels should be
+        included in the search. (archived channels)
+        :param page: Default: 0. The page to select. (Only works with Elasticsearch)
+        :param per_page: Default: Default: 60. The number of posts per page. (Only works with Elasticsearch)
+        :return: Post list retrieval info
+        """
+
+        url = f"{self.base_url}/teams/{team_id}/posts/search"
+
+        self.reset()
+        self.add_application_json_header()
+        if terms is not None:
+            self.add_to_json('terms', terms)
+        if is_or_search is not None:
+            self.add_to_json('is_or_search', is_or_search)
+        if time_zone_offset is not None:
+            self.add_to_json('time_zone_offset', time_zone_offset)
+        if include_deleted_channels is not None:
+            self.add_to_json('include_deleted_channels', include_deleted_channels)
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='POST', body=True)
 
