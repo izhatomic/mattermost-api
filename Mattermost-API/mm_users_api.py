@@ -264,6 +264,7 @@ class Uploads(Base):
         Minimum server version: 5.26.0
 
         Local mode only: This endpoint is only available through local mode.
+        :return: Delete request info.
         """
 
         url = f"{self.api_url}"
@@ -271,3 +272,27 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def get_users_by_ids(self,
+                         since: int = None,
+                         user_ids: list[str] = None) -> dict:
+        """
+        Get a list of users based on a provided list of user ids.
+
+        Requires an active session but no other permissions.
+
+        :param since: Only return users that have been modified since the given Unix timestamp (in milliseconds).
+        :param user_ids: List of user ids.
+        :return: User list retrieval info.
+        """
+
+        url = f"{self.api_url}/ids"
+
+        self.reset()
+        self.add_application_json_header()
+        if since is not None:
+            self.add_to_json('since', since)
+        if user_ids is not None:
+            self.add_to_json('user_ids', user_ids)
+
+        return self.request(url, request_type='POST', body=True)
