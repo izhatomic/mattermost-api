@@ -70,3 +70,18 @@ class Uploads(Base):
             self.add_to_json('cws_token', cws_token)
 
         return self.request(url, request_type='POST', body=True)
+
+    def logout_from_mm_server(self)->dict:
+        """
+        Logout from the Mattermost server.
+
+        An active session is required
+
+        :return: User logout info.
+        """
+
+        url = f"{self.api_url}/logout"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
