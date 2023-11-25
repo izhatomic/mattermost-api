@@ -296,3 +296,22 @@ class Uploads(Base):
             self.add_to_json('user_ids', user_ids)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_users_by_group_channels_ids(self, channel_ids: list[str]) -> dict:
+        """
+        Get a list of users based on a provided list of user ids.
+
+        Requires an active session but no other permissions.
+
+        :param channel_ids: Only return users that have been modified since the given Unix timestamp (in milliseconds).
+        :return: User list retrieval info.
+        """
+
+        url = f"{self.api_url}/group_channels"
+
+        self.reset()
+        self.add_application_json_header()
+        if channel_ids is not None:
+            self.add_to_json('channel_ids', channel_ids)
+
+        return self.request(url, request_type='POST', body=True)
