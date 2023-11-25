@@ -297,7 +297,7 @@ class Uploads(Base):
 
         return self.request(url, request_type='POST', body=True)
 
-    def get_users_by_group_channels_ids(self, channel_ids: list[str]) -> dict:
+    def get_users_by_group_channels_ids(self, channel_ids: list[str] = None) -> dict:
         """
         Get a list of users based on a provided list of user ids.
 
@@ -313,5 +313,24 @@ class Uploads(Base):
         self.add_application_json_header()
         if channel_ids is not None:
             self.add_to_json('channel_ids', channel_ids)
+
+        return self.request(url, request_type='POST', body=True)
+
+    def get_users_by_usernames(self, usernames: list[str] = None) -> dict:
+        """
+        Get a list of users based on a provided list of usernames.
+
+        Requires an active session but no other permissions.
+
+        :param usernames: List of usernames.
+        :return: User list retrieval info.
+        """
+
+        url = f"{self.api_url}/usernames"
+
+        self.reset()
+        self.add_application_json_header()
+        if usernames is not None:
+            self.add_to_json('usernames', usernames)
 
         return self.request(url, request_type='POST', body=True)
