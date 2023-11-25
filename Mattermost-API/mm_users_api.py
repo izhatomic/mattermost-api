@@ -256,3 +256,18 @@ class Uploads(Base):
             self.add_to_json('team_roles', team_roles)
 
         return self.request(url, request_type='GET', body=True)
+
+    def permanent_delete_all_users(self) -> dict:
+        """
+        Permanently deletes all users and all their related information, including posts.
+
+        Minimum server version: 5.26.0
+
+        Local mode only: This endpoint is only available through local mode.
+        """
+
+        url = f"{self.api_url}"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
