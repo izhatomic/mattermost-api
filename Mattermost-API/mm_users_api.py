@@ -334,3 +334,64 @@ class Uploads(Base):
             self.add_to_json('usernames', usernames)
 
         return self.request(url, request_type='POST', body=True)
+
+    def search_users(self,
+                     term: str,
+                     team_id=None,
+                     not_in_team_id: str = None,
+                     in_channel_id: str = None,
+                     not_in_channel_id=None,
+                     in_group_id: str = None,
+                     group_constrained: bool = None,
+                     allow_inactive: bool = None,
+                     without_team: bool = None,
+                     limit: int = None) -> dict:
+        """
+        Get a list of users based on search criteria provided in the request body.
+        Searches are typically done against username, full name, nickname and email unless
+        otherwise configured by the server.
+
+        Requires an active session and read_channel and/or view_team permissions for any channels or
+        teams specified in the request body.
+
+        :param term: The term to match against username, full name, nickname and email
+        :param team_id: If provided, only search users on this team.
+        :param not_in_team_id: If provided, only search users not on this team.
+        :param in_channel_id: If provided, only search users in this channel.
+        :param not_in_channel_id: If provided, only search users not in this channel.
+        Must specifiy team_id when using this option
+        :param in_group_id:If provided, only search users in this group. Must have manage_system permission.
+        :param group_constrained: When used with not_in_channel_id or not_in_team_id, returns only the
+        users that are allowed to join the channel or team based on its group constrains.
+        :param allow_inactive: When true, include deactivated users in the results
+        :param without_team: Set this to true if you would like to search for users that are not on a team.
+        This option takes precendence over team_id, in_channel_id, and not_in_channel_id.
+        :param limit: Default: 100. The maximum number of users to return in the results
+        :return: User page retrieval info.
+        """
+
+        url = f"{self.api_url}/search"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('term', term)
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+        if not_in_team_id is not None:
+            self.add_to_json('not_in_team_id', not_in_team_id)
+        if in_channel_id is not None:
+            self.add_to_json('in_channel_id', in_channel_id)
+        if not_in_channel_id is not None:
+            self.add_to_json('not_in_channel_id', not_in_channel_id)
+        if in_group_id is not None:
+            self.add_to_json('in_group_id', in_group_id)
+        if group_constrained is not None:
+            self.add_to_json('group_constrained', group_constrained)
+        if allow_inactive is not None:
+            self.add_to_json('allow_inactive', allow_inactive)
+        if without_team is not None:
+            self.add_to_json('without_team', without_team)
+        if limit is not None:
+            self.add_to_json('limit', limit)
+
+        return self.request(url, request_type='POST', body=True)
