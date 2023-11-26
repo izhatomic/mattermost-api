@@ -395,3 +395,36 @@ class Uploads(Base):
             self.add_to_json('limit', limit)
 
         return self.request(url, request_type='POST', body=True)
+
+    def autocomplete_users(self,
+                           name: str,
+                           team_id: str = None,
+                           channel_id: str = None,
+                           limit: int = None) -> dict:
+        """
+        Get a list of users for the purpose of autocompleting based on the provided search term.
+        Specify a combination of team_id and channel_id to filter results further.
+
+        Requires an active session and view_team and read_channel
+        on any teams or channels used to filter the results further.
+
+        :param name: Username, nickname first name or last name
+        :param team_id: Team ID
+        :param channel_id: Channel ID
+        :param limit: Default: 100. The maximum number of users to return in each subresult
+        :return: User page retrieval info.
+        """
+
+        url = f"{self.api_url}/search"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('name', name)
+        if team_id is not None:
+            self.add_to_json('team_id', team_id)
+        if channel_id is not None:
+            self.add_to_json('channel_id', channel_id)
+        if limit is not None:
+            self.add_to_json('limit', limit)
+
+        return self.request(url, request_type='GET', body=True)
