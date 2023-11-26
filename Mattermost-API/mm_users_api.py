@@ -514,3 +514,19 @@ class Uploads(Base):
             self.add_to_json('team_roles', team_roles)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_user(self, user_id: str) -> dict:
+        """
+        Get a user a object. Sensitive information will be sanitized out.
+
+        Requires an active session but no other permissions.
+
+        :param user_id: User GUID. This can also be "me" which will point to the current user.
+        :return: User retrieval info.
+        """
+
+        url = f"{self.api_url}/{user_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
