@@ -429,7 +429,7 @@ class Uploads(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def get_user_ids_of_known_users(self)->dict:
+    def get_user_ids_of_known_users(self) -> dict:
         """
         Get the list of user IDs of users with any direct relationship with a user.
         That means any user sharing any channel, including direct and group channels.
@@ -447,7 +447,7 @@ class Uploads(Base):
 
         return self.request(url, request_type='GET')
 
-    def get_total_count_of_users_in_the_system(self)->dict:
+    def get_total_count_of_users_in_the_system(self) -> dict:
         """
         Get a total count of users in the system.
 
@@ -462,4 +462,55 @@ class Uploads(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_total_count_of_users_in_system_matching_specified_filters(self,
+                                                                      in_team: str = None,
+                                                                      in_channel: str = None,
+                                                                      include_deleted: bool = None,
+                                                                      include_bots: bool = None,
+                                                                      roles: str = None,
+                                                                      channel_roles: str = None,
+                                                                      team_roles: str = None) -> dict:
+        """
+        Get a count of users in the system matching the specified filters.
 
+        Minimum server version: 5.26
+
+        Must have manage_system permission.
+
+        :param in_team: The ID of the team to get user stats for.
+        :param in_channel: The ID of the channel to get user stats for.
+        :param include_deleted: If deleted accounts should be included in the count.
+        :param include_bots: If bot accounts should be included in the count.
+        :param roles: Comma separated string used to filter users based on any of the specified system roles
+        Example: ?roles=system_admin,system_user will include users that are either system admins or system users
+        :param channel_roles: Comma separated string used to filter users based on any of the specified channel roles,
+        can only be used in conjunction with in_channel
+        Example: ?in_channel=4eb6axxw7fg3je5iyasnfudc5y&channel_roles=channel_user will include users that are only
+        channel users and not admins or guests
+        :param team_roles: Comma separated string used to filter users based on any of the specified team roles,
+        can only be used in conjunction with in_team
+        Example: ?in_team=4eb6axxw7fg3je5iyasnfudc5y&team_roles=team_user will include users that are only team
+        users and not admins or guests
+        :return: Filtered user stats retrieval info.
+        """
+
+        url = f"{self.api_url}/stats/filtered"
+
+        self.reset()
+        self.add_application_json_header()
+        if in_team is not None:
+            self.add_to_json('in_team', in_team)
+        if in_channel is not None:
+            self.add_to_json('in_channel', in_channel)
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
+        if include_bots is not None:
+            self.add_to_json('include_bots', include_bots)
+        if roles is not None:
+            self.add_to_json('roles', roles)
+        if channel_roles is not None:
+            self.add_to_json('channel_roles', channel_roles)
+        if team_roles is not None:
+            self.add_to_json('team_roles', team_roles)
+
+        return self.request(url, request_type='GET', body=True)
