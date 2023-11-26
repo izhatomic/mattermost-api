@@ -412,10 +412,10 @@ class Uploads(Base):
         :param team_id: Team ID
         :param channel_id: Channel ID
         :param limit: Default: 100. The maximum number of users to return in each subresult
-        :return: User page retrieval info.
+        :return: User autocomplete info.
         """
 
-        url = f"{self.api_url}/search"
+        url = f"{self.api_url}/autocomplete"
 
         self.reset()
         self.add_application_json_header()
@@ -428,3 +428,25 @@ class Uploads(Base):
             self.add_to_json('limit', limit)
 
         return self.request(url, request_type='GET', body=True)
+
+    def get_user_ids_of_known_users(self)->dict:
+        """
+        Get the list of user IDs of users with any direct relationship with a user.
+        That means any user sharing any channel, including direct and group channels.
+
+        Must be authenticated.
+
+        Minimum server version: 5.23
+
+        :return: Known user's IDs retrieval info.
+        """
+
+        url = f"{self.api_url}/known"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
+
+
+
+
