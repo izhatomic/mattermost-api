@@ -447,6 +447,19 @@ class Uploads(Base):
 
         return self.request(url, request_type='GET')
 
+    def get_total_count_of_users_in_the_system(self)->dict:
+        """
+        Get a total count of users in the system.
 
+        Must be authenticated.
+
+        :return: User state retrieval info.
+        """
+
+        url = f"{self.api_url}/stats"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
 
 
