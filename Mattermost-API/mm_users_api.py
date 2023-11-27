@@ -686,3 +686,25 @@ class Uploads(Base):
         self.add_to_json('roles', roles)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def update_user_active_status(self,
+                                  user_id: str,
+                                  active: bool) -> dict:
+        """
+        Update user active or inactive status.
+        Since server version 4.6, users using a SSO provider to login can be activated or deactivated with this endpoint. However, if their activation status in Mattermost does not reflect their status in the SSO provider, the next synchronization or login by that user will reset the activation status to that of their account in the SSO provider. Server versions 4.5 and before do not allow activation or deactivation of SSO users from this endpoint.
+
+        User can deactivate themselves. User with manage_system permission can activate or deactivate a user.
+
+        :param user_id: User GUID
+        :param active: Use true to set the user active, false for inactive
+        :return: User active status update info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/active"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('active', active)
+
+        return self.request(url, request_type='PUT', body=True)
