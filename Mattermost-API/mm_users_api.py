@@ -610,3 +610,58 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def patch_user(self,
+                   user_id: str,
+                   email: str = None,
+                   username: str = None,
+                   first_name: str = None,
+                   last_name: str = None,
+                   nickname: str = None,
+                   locale: str = None,
+                   position: str = None,
+                   props: str = None,
+                   notify_props: dict = None) -> dict:
+        """
+        Partially update a user by providing only the fields you want to update. Omitted fields will not be updated.
+        The fields that can be updated are defined in the request body, all other provided fields will be ignored.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :param email: User's email to update
+        :param username: User's username to update
+        :param first_name: User's first name to update
+        :param last_name: User's last name to update
+        :param nickname: User's nickname to update
+        :param locale: User's locale to update
+        :param position: User's position to update
+        :param props: User's props to update
+        :param notify_props: User's props to update
+        :return:  User patch info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/patch"
+
+        self.reset()
+        self.add_application_json_header()
+        if email is not None:
+            self.add_to_json('email', email)
+        if username is not None:
+            self.add_to_json('username', username)
+        if first_name is not None:
+            self.add_to_json('first_name', first_name)
+        if last_name is not None:
+            self.add_to_json('last_name', last_name)
+        if nickname is not None:
+            self.add_to_json('nickname', nickname)
+        if locale is not None:
+            self.add_to_json('locale', locale)
+        if position is not None:
+            self.add_to_json('position', position)
+        if props is not None:
+            self.add_to_json('props', props)
+        if notify_props is not None:
+            self.add_to_json('notify_props', notify_props)
+
+        return self.request(url, request_type='PUT', body=True)
