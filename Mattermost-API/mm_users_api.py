@@ -708,3 +708,25 @@ class Uploads(Base):
         self.add_to_json('active', active)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def get_user_profile_image(self,
+                               user_id: str,
+                               _: str = None) -> dict:
+        """
+        Get a user's profile image based on user_id string parameter.
+
+        Must be logged in.
+
+        :param user_id: User GUID
+        :param _: Not used by the server. Clients can pass in the last picture update time of the user to potentially take advantage of caching
+        :return: User's profile image info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/image"
+
+        self.reset()
+        self.add_application_json_header()
+        if _ is not None:
+            self.add_to_json('_', _)
+
+        return self.request(url, request_type='GET', body=True)
