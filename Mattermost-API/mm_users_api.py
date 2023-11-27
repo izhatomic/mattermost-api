@@ -771,3 +771,18 @@ class Uploads(Base):
 
         return self.request(url, request_type='DEL')
 
+    def return_user_default_profile_image(self, user_id: str) -> dict:
+        """
+        Returns the default (generated) user profile image based on user_id string parameter.
+
+        Must be logged in. Minimum server version: 5.5
+
+        :param user_id: User GUID
+        :return: Default profile image info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/image/default"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
