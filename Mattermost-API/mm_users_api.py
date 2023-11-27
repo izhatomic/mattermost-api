@@ -751,3 +751,23 @@ class Uploads(Base):
         self.add_to_multipart_form_data('image', image)
 
         return self.request(url, request_type='POST', file=True)
+
+    def delete_user_profile_image(self,
+                                  user_id: str) -> dict:
+        """
+        Delete user's profile image and reset to default image based on user_id string parameter.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        Minimum server version: 5.5
+
+        :param user_id: User GUID
+        :return: Profile image reset info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/image"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
+
