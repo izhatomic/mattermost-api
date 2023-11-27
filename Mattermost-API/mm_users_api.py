@@ -665,3 +665,24 @@ class Uploads(Base):
             self.add_to_json('notify_props', notify_props)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def update_user_roles(self,
+                          user_id: str,
+                          roles: str) -> dict:
+        """
+        Update a user's system-level roles. Valid user roles are "system_user", "system_admin" or both of them. Overwrites any previously assigned system-level roles.
+
+        Must have the manage_roles permission.
+
+        :param user_id: User GUID
+        :param roles: Space-delimited system roles to assign to the user
+        :return: User roles update info
+        """
+
+        url = f"{self.base_url}/users/{user_id}/roles"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('roles', roles)
+
+        return self.request(url, request_type='PUT', body=True)
