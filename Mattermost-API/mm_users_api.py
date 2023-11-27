@@ -530,3 +530,64 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def update_user(self,
+                    user_id: str,
+                    id: str,
+                    email: str,
+                    username: str,
+                    first_name: str = None,
+                    last_name: str = None,
+                    nickname: str = None,
+                    locale: str = None,
+                    position: str = None,
+                    timezone: dict = None,
+                    props: str = None,
+                    notify_props: dict = None) -> dict:
+        """
+        Update a user by providing the user object. The fields that can be updated are defined in the request body,
+        all other provided fields will be ignored. Any fields not included in the request body will be set to
+        null or reverted to default values.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :param id: User ID that is to be updated
+        :param email: User email that is to be updated
+        :param username: User's username that is to be updated
+        :param first_name: User's first name to update
+        :param last_name: User's last name to update
+        :param nickname: User's nickname to update
+        :param locale: User's locale to update
+        :param position:  User's position to update
+        :param timezone: User's timezone to update
+        :param props: User's props to update
+        :param notify_props: User's notify props to update
+        :return: User update info
+        """
+
+        url = f"{self.base_url}/users/{user_id}"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('id', id)
+        self.add_to_json('email', email)
+        self.add_to_json('username', username)
+        if first_name is not None:
+            self.add_to_json('first_name', first_name)
+        if last_name is not None:
+            self.add_to_json('last_name', last_name)
+        if nickname is not None:
+            self.add_to_json('nickname', nickname)
+        if locale is not None:
+            self.add_to_json('locale', locale)
+        if position is not None:
+            self.add_to_json('position', position)
+        if timezone is not None:
+            self.add_to_json('timezone', timezone)
+        if props is not None:
+            self.add_to_json('props', props)
+        if notify_props is not None:
+            self.add_to_json('notify_props', notify_props)
+
+        return self.request(url, request_type='PUT', body=True)
