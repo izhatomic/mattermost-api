@@ -591,3 +591,22 @@ class Uploads(Base):
             self.add_to_json('notify_props', notify_props)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def deactivate_user_account(self, user_id: str) -> dict:
+        """
+        Deactivates the user and revokes all its sessions by archiving its user object.
+        As of server version 5.28, optionally use the permanent=true query parameter to permanently delete
+        the user for compliance reasons. To use this feature ServiceSettings.EnableAPIUserDeletion must be set to
+        true in the server's configuration.
+
+        Must be logged in as the user being deactivated or have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :return: User deactivation info
+        """
+
+        url = f"{self.base_url}/users/{user_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='DEL')
