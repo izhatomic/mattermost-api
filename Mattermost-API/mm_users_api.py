@@ -730,3 +730,24 @@ class Uploads(Base):
             self.add_to_json('_', _)
 
         return self.request(url, request_type='GET', body=True)
+
+    def set_user_profile_image(self,
+                               user_id: str,
+                               image: str) -> dict:
+        """
+        Set a user's profile image based on user_id string parameter.
+
+         Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id:
+        :param image:
+        :return: Profile image
+        """
+
+        url = f"{self.base_url}/users/{user_id}/image"
+
+        self.reset()
+        self.add_application_multipart_form_data_header()
+        self.add_to_multipart_form_data('image', image)
+
+        return self.request(url, request_type='POST', file=True)
