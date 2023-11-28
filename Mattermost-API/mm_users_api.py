@@ -786,3 +786,19 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_user_by_username(self, username: str) -> dict:
+        """
+        Get a user object by providing a username. Sensitive information will be sanitized out.
+
+        Requires an active session but no other permissions.
+
+        :param username: Username
+        :return: User retrieval info
+        """
+
+        url = f"{self.base_url}/users/username/{username}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
