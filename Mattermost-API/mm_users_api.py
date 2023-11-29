@@ -1371,7 +1371,7 @@ class Uploads(Base):
         Must have manage_system permission.
 
         :param term: The search term to match against the token id, user id or username.
-        :return: Personal access token enable info.
+        :return: Personal access token search info.
         """
 
         url = f"{self.api_url}/tokens/search"
@@ -1381,3 +1381,30 @@ class Uploads(Base):
         self.add_to_json('term', term)
 
         return self.request(url, request_type='POST', body=True)
+
+    def update_user_authentication_method(self,
+                                          user_id: str,
+                                          auth_data: str,
+                                          auth_service: str) -> dict:
+        """
+        Updates a user's authentication method.
+        This can be used to change them to/from LDAP authentication for example.
+
+        Minimum server version: 4.6.
+
+        Must have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :param auth_data: Service-specific authentication data
+        :param auth_service: The authentication service such as "email", "gitlab", or "ldap"
+        :return: User auth update info.
+        """
+
+        url = f"{self.api_url}/{user_id}/auth"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('auth_data', auth_data)
+        self.add_to_json('auth_service', auth_service)
+
+        return self.request(url, request_type='PUT', body=True)
