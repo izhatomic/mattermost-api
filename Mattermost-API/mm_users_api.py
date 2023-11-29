@@ -1004,3 +1004,19 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def get_user_sessions(self, user_id: str) -> dict:
+        """
+        Get a list of sessions by providing the user GUID. Sensitive information will be sanitized out.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param  user_id: User GUID
+        :return: User session retrieval info
+        """
+
+        url = f"{self.api_url}/{user_id}/sessions"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
