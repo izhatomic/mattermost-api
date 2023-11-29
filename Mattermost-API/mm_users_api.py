@@ -1298,3 +1298,22 @@ class Uploads(Base):
         self.add_to_json('token_id', token_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_user_access_token(self, token_id: str) -> dict:
+        """
+        Get a user access token. Does not include the actual authentication token.
+
+        Minimum server version: 4.1
+
+        Must have read_user_access_token permission.
+        For non-self requests, must also have the edit_other_users permission.
+
+        :param token_id: User access token GUID.
+        :return: User access token retrieval info.
+        """
+
+        url = f"{self.api_url}/tokens/{token_id}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
