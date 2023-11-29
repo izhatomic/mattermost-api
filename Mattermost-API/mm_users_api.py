@@ -566,7 +566,7 @@ class Uploads(Base):
         :return: User update info
         """
 
-        url = f"{self.base_url}/users/{user_id}"
+        url = f"{self.api_url}/{user_id}"
 
         self.reset()
         self.add_application_json_header()
@@ -605,7 +605,7 @@ class Uploads(Base):
         :return: User deactivation info
         """
 
-        url = f"{self.base_url}/users/{user_id}"
+        url = f"{self.api_url}/{user_id}"
 
         self.reset()
 
@@ -641,7 +641,7 @@ class Uploads(Base):
         :return:  User patch info
         """
 
-        url = f"{self.base_url}/users/{user_id}/patch"
+        url = f"{self.api_url}/{user_id}/patch"
 
         self.reset()
         self.add_application_json_header()
@@ -679,7 +679,7 @@ class Uploads(Base):
         :return: User roles update info
         """
 
-        url = f"{self.base_url}/users/{user_id}/roles"
+        url = f"{self.api_url}/{user_id}/roles"
 
         self.reset()
         self.add_application_json_header()
@@ -701,7 +701,7 @@ class Uploads(Base):
         :return: User active status update info
         """
 
-        url = f"{self.base_url}/users/{user_id}/active"
+        url = f"{self.api_url}/{user_id}/active"
 
         self.reset()
         self.add_application_json_header()
@@ -722,7 +722,7 @@ class Uploads(Base):
         :return: User's profile image info
         """
 
-        url = f"{self.base_url}/users/{user_id}/image"
+        url = f"{self.api_url}/{user_id}/image"
 
         self.reset()
         self.add_application_json_header()
@@ -744,7 +744,7 @@ class Uploads(Base):
         :return: Profile image
         """
 
-        url = f"{self.base_url}/users/{user_id}/image"
+        url = f"{self.api_url}/{user_id}/image"
 
         self.reset()
         self.add_application_multipart_form_data_header()
@@ -765,7 +765,7 @@ class Uploads(Base):
         :return: Profile image reset info
         """
 
-        url = f"{self.base_url}/users/{user_id}/image"
+        url = f"{self.self.api_url}/{user_id}/image"
 
         self.reset()
 
@@ -781,7 +781,7 @@ class Uploads(Base):
         :return: Default profile image info
         """
 
-        url = f"{self.base_url}/users/{user_id}/image/default"
+        url = f"{self.api_url}/{user_id}/image/default"
 
         self.reset()
 
@@ -797,8 +797,31 @@ class Uploads(Base):
         :return: User retrieval info
         """
 
-        url = f"{self.base_url}/users/username/{username}"
+        url = f"{self.api_url}/username/{username}"
 
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def reset_password(self,
+                       code: str,
+                       new_password: str) -> dict:
+        """
+        Update the password for a user using a one-use, timed recovery code tied to the user's account.
+        Only works for non-SSO users.
+
+        No permissions required.
+
+        :param code: The recovery code.
+        :param new_password: The new password for the user.
+        :return: User password update info.
+        """
+
+        url = f"{self.api_url}/password/reset"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('code', code)
+        self.add_to_json('new_password', new_password)
+
+        return self.request(url, request_type='POST', body=True)
