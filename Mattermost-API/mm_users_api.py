@@ -1196,3 +1196,27 @@ class Uploads(Base):
             self.add_to_json('ldap_id', ldap_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def create_user_access_token(self,
+                                 user_id: str,
+                                 description: str) -> dict:
+        """
+        Generate a user access token that can be used to authenticate with the Mattermost REST API.
+
+        Minimum server version: 4.1.
+
+        Must have create_user_access_token permission. For non-self requests,
+        must also have the edit_other_users permission.
+
+        :param user_id: User GUID.
+        :param description: A description of the token usage.
+        :return: User email info.
+        """
+
+        url = f"{self.api_url}/{user_id}/tokens/"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('description', description)
+
+        return self.request(url, request_type='POST', body=True)
