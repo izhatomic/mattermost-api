@@ -1041,3 +1041,40 @@ class Uploads(Base):
         self.add_to_json('session_id', session_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def revoke_all_active_sessions_for_user(self, user_id: str) -> dict:
+        """
+        Revokes all user sessions from the provided user id and session id strings.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        Minimum server version: 4.4
+
+        :param  user_id: User GUID
+        :return: User session revoke info
+        """
+
+        url = f"{self.api_url}/{user_id}/sessions/revoke/all"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
+
+    def attach_mobile_device(self, device_id: str) -> dict:
+        """
+        Attach a mobile device id to the currently logged in session.
+        This will enable push notifications for a user, if configured by the server.
+
+        Must be authenticated.
+
+        :param  device_id: Mobile device id. For Android prefix the id with android: and Apple with apple:
+        :return: Device id attach info
+        """
+
+        url = f"{self.api_url}/sessions/device"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('device_id', device_id)
+
+        return self.request(url, request_type='PUT', body=True)
