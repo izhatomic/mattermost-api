@@ -1020,3 +1020,24 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def revoke_user_session(self,
+                            user_id: str,
+                            session_id: str) -> dict:
+        """
+        Revokes a user session from the provided user id and session id strings.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param  user_id: User GUID
+        :param session_id: The session GUID to revoke.
+        :return: User session revoke info
+        """
+
+        url = f"{self.api_url}/{user_id}/sessions/revoke"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('session_id', session_id)
+
+        return self.request(url, request_type='POST', body=True)
