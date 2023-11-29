@@ -1317,3 +1317,25 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def disable_personal_access_token(self, token_id: str) -> dict:
+        """
+        Disable a personal access token and delete any sessions using the token.
+        The token can be re-enabled using /users/tokens/enable.
+
+        Minimum server version: 4.4.
+
+        Must have revoke_user_access_token permission.
+        For non-self requests, must also have the edit_other_users permission.
+
+        :param token_id: User access token GUID.
+        :return: User access token disable info.
+        """
+
+        url = f"{self.api_url}/tokens/disable"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('token_id', token_id)
+
+        return self.request(url, request_type='POST', body=True)
