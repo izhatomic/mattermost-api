@@ -1339,3 +1339,25 @@ class Uploads(Base):
         self.add_to_json('token_id', token_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def enable_personal_access_token(self, token_id: str) -> dict:
+        """
+        Re-enable a personal access token that has been disabled.
+
+        Minimum server version: 4.4
+
+        Must have create_user_access_token permission.
+        For non-self requests, must also have the edit_other_users permission.
+
+        :param token_id: The personal access token GUID to enable.
+        :return: Personal access token enable info.
+        """
+
+        url = f"{self.api_url}/tokens/enable"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('token_id', token_id)
+
+        return self.request(url, request_type='POST', body=True)
+
