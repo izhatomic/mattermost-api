@@ -1249,4 +1249,52 @@ class Uploads(Base):
         if per_page is not None:
             self.add_to_json('per_page', per_page)
 
+        return self.request(url, request_type='GET', body=True)
+
+    def get_user_access_tokens_page(self,
+                                    page: int = None,
+                                    per_page: int = None) -> dict:
+        """
+        Get a page of user access tokens for users on the system.
+        Does not include the actual authentication tokens. Use query parameters for paging.
+
+        Minimum server version: 4.7.
+
+        Must have manage_system permission.
+
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of tokens per page.
+        :return: User access tokens retrieval info.
+        """
+
+        url = f"{self.api_url}/tokens/"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
+
+    def revoke_user_access_token(self, token_id: str) -> dict:
+        """
+        Revoke a user access token and delete any sessions using the token.
+
+        Minimum server version: 4.1.
+
+        Must have revoke_user_access_token permission. For non-self requests,
+        must also have the edit_other_users permission.
+
+        :param token_id: The user access token GUID to revoke.
+        :return: User access token revoke info.
+        """
+
+        url = f"{self.api_url}/tokens/revoke"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('token_id', token_id)
+
         return self.request(url, request_type='POST', body=True)
