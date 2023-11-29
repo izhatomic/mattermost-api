@@ -988,3 +988,19 @@ class Uploads(Base):
         self.add_to_json('email', email)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_user_by_email(self, email: str) -> dict:
+        """
+        Get a user object by providing a user email. Sensitive information will be sanitized out.
+
+        Requires an active session and for the current session to be able to view another user's email based on the server's privacy settings.
+
+        :param  email: User Email
+        :return: User retrieval info
+        """
+
+        url = f"{self.api_url}/email/{email}"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
