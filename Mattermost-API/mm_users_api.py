@@ -944,3 +944,29 @@ class Uploads(Base):
         self.add_to_json('login_id', login_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def update_user_password(self,
+                             user_id: str,
+                             new_password: str,
+                             current_password: str = None) -> dict:
+        """
+        Update a user's password. New password must meet password policy set by server configuration.
+        Current password is required if you're updating your own password.
+
+        Must be logged in as the user the password is being changed for or have
+
+        :param user_id: User GUID
+        :param new_password: The new password for the user.
+        :param current_password: The current password for the user.
+        :return: User password update info.
+        """
+
+        url = f"{self.api_url}/{user_id}/password"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('new_password', new_password)
+        if current_password is not None:
+            self.add_to_json('current_password', current_password)
+
+        return self.request(url, request_type='PUT', body=True)
