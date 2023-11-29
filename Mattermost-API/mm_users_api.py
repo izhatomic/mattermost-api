@@ -970,3 +970,21 @@ class Uploads(Base):
             self.add_to_json('current_password', current_password)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def send_password_reset_email(self, email: str) -> dict:
+        """
+        Send an email containing a link for resetting the user's password. The link will contain a one-use, timed recovery code tied to the user's account. Only works for non-SSO users.
+
+        No permissions required.
+
+        :param  email: The email of the user
+        :return: Email info
+        """
+
+        url = f"{self.api_url}/password/reset/send"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('email', email)
+
+        return self.request(url, request_type='POST', body=True)
