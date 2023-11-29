@@ -1078,3 +1078,19 @@ class Uploads(Base):
         self.add_to_json('device_id', device_id)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def get_user_audits(self, user_id: str) -> dict:
+        """
+        Get a list of audit by providing the user GUID.
+
+        Must be logged in as the user or have the edit_other_users permission.
+
+        :param  user_id: User GUID.
+        :return: User audits retrieval info.
+        """
+
+        url = f"{self.api_url}/{user_id}/audits"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
