@@ -1130,3 +1130,22 @@ class Uploads(Base):
         self.add_to_json('token', token)
 
         return self.request(url, request_type='POST')
+
+    def send_verification_email(self, email: str) -> dict:
+        """
+        Send an email with a verification link to a user that has an email matching the one in the request body.
+        This endpoint will return success even if the email does not match any users on the system.
+
+        No permissions required.
+
+        :param  email: Email of a user.
+        :return: User email info.
+        """
+
+        url = f"{self.api_url}/email/verify/send/"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('email', email)
+
+        return self.request(url, request_type='POST')
