@@ -1149,3 +1149,50 @@ class Uploads(Base):
         self.add_to_json('email', email)
 
         return self.request(url, request_type='POST')
+
+    def switch_login_method(self,
+                            current_service: str,
+                            new_service: str,
+                            email: str = None,
+                            password: str = None,
+                            mfa_code: str = None,
+                            ldap_id: str = None):
+        """
+        Switch a user's login method from using email to OAuth2/SAML/LDAP or back to email.
+        When switching to OAuth2/SAML, account switching is not complete until the user follows the returned
+        link and completes any steps on the OAuth2/SAML service provider.
+        To switch from email to OAuth2/SAML, specify current_service, new_service, email and password.
+        To switch from OAuth2/SAML to email, specify current_service, new_service, email and new_password.
+        To switch from email to LDAP/AD, specify current_service, new_service, email, password,
+        ldap_ip and new_password (this is the user's LDAP password).
+        To switch from LDAP/AD to email, specify current_service, new_service, ldap_ip, password
+        (this is the user's LDAP password), email and new_password.
+        Additionally, specify mfa_code when trying to switch an account on LDAP/AD or email that has MFA activated.
+
+        No current authentication required except when switching from OAuth2/SAML to email.
+
+        :param current_service: The service the user currently uses to login.
+        :param new_service: The service the user will use to login.
+        :param email: The email of the user.
+        :param password: The password used with the current service.
+        :param mfa_code: The MFA code of the current service.
+        :param ldap_id: The LDAP/AD id of the user.
+        :return: Login method info.
+        """
+
+        url = f"{self.api_url}/email/verify/send/"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('current_service', current_service)
+        self.add_to_json('new_service', new_service)
+        if email is not None:
+            self.add_to_json('email', email)
+        if password is not None:
+            self.add_to_json('password', password)
+        if mfa_code is not None:
+            self.add_to_json('mfa_code', mfa_code)
+        if ldap_id is not None:
+            self.add_to_json('ldap_id', ldap_id)
+
+        return self.request(url, request_type='POST', body=True)
