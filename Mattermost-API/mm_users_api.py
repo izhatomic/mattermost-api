@@ -825,3 +825,29 @@ class Uploads(Base):
         self.add_to_json('new_password', new_password)
 
         return self.request(url, request_type='POST', body=True)
+
+    def update_user_mfa(self,
+                        user_id: str,
+                        activate: bool,
+                        code: str = None) -> dict:
+        """
+        Activates multi-factor authentication for the user if activate is true and a valid code is provided.
+        If activate is false, then code is not required and multi-factor authentication is disabled for the user.
+
+        Must be logged in as the user being updated or have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :param activate: Use true to activate, false to deactivate
+        :param code: The code produced by your MFA client. Required if activate is true
+        :return: User MFA update info
+        """
+
+        url = f"{self.api_url}/{user_id}/mfa"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('activate', activate)
+        if code is not None:
+            self.add_to_json('code', code)
+
+        return self.request(url, request_type='PUT', body=True)
