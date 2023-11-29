@@ -1094,3 +1094,21 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def verify_user_email_by_id(self, user_id: str) -> dict:
+        """
+        Verify the email used by a user without a token.
+
+        Minimum server version: 5.24
+
+        Must have manage_system permission.
+
+        :param  user_id: User GUID.
+        :return: User email verification info.
+        """
+
+        url = f"{self.api_url}/{user_id}/email/verify/member"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
