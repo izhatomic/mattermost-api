@@ -1361,3 +1361,23 @@ class Uploads(Base):
 
         return self.request(url, request_type='POST', body=True)
 
+    def search_tokens(self, term: str) -> dict:
+        """
+        Get a list of tokens based on search criteria provided in the request body.
+        Searches are done against the token id, user id and username.
+
+        Minimum server version: 4.7
+
+        Must have manage_system permission.
+
+        :param term: The search term to match against the token id, user id or username.
+        :return: Personal access token enable info.
+        """
+
+        url = f"{self.api_url}/tokens/search"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('term', term)
+
+        return self.request(url, request_type='POST', body=True)
