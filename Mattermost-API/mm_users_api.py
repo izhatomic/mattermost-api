@@ -925,3 +925,22 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def check_mfa(self, login_id: str) -> dict:
+        """
+        Check if a user has multi-factor authentication active on their account by providing a login id.
+        Used to check whether an MFA code needs to be provided when logging in.
+
+        No permission required.
+
+        :param login_id: The email or username used to login
+        :return: MFA check info
+        """
+
+        url = f"{self.api_url}/mfa"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('login_id', login_id)
+
+        return self.request(url, request_type='POST', body=True)
