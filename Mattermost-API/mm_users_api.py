@@ -888,3 +888,22 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def promote_guest_to_user(self, user_id: str) -> dict:
+        """
+        Convert a guest into a regular user. This will convert the guest into a user for the whole system
+        while retaining any team and channel memberships and automatically joining them to the default channels.
+
+        Minimum server version: 5.16
+
+        Must be logged in as the user or have the promote_guest permission.
+
+        :param user_id: User GUID
+        :return: Guest promotion info
+        """
+
+        url = f"{self.api_url}/{user_id}/promote"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
