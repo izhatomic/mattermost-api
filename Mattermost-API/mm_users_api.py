@@ -851,3 +851,21 @@ class Uploads(Base):
             self.add_to_json('code', code)
 
         return self.request(url, request_type='PUT', body=True)
+
+    def generate_mfa_secret(self,
+                            user_id: str) -> dict:
+        """
+        Generates a multi-factor authentication secret for a user and returns it
+        as a string and as base64 encoded QR code image.
+
+        Must be logged in as the user or have the edit_other_users permission.
+
+        :param user_id: User GUID
+        :return: MFA secret generation info
+        """
+
+        url = f"{self.api_url}/{user_id}/mfa/generate"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
