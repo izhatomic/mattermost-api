@@ -869,3 +869,22 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def demote_user_to_guest(self, user_id: str) -> dict:
+        """
+        Convert a regular user into a guest. This will convert the user into a
+        guest for the whole system while retaining their existing team and channel memberships.
+
+        Minimum server version: 5.16
+
+        Must be logged in as the user or have the demote_to_guest permission.
+
+        :param user_id: User GUID
+        :return: User demotion info
+        """
+
+        url = f"{self.api_url}/{user_id}/demote"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
