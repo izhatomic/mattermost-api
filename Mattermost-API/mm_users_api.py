@@ -1220,3 +1220,33 @@ class Uploads(Base):
         self.add_to_json('description', description)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_user_access_tokens(self,
+                               user_id: str,
+                               page: int = None,
+                               per_page: int = None) -> dict:
+        """
+        Get a list of user access tokens for a user. Does not include the actual authentication tokens.
+        Use query parameters for paging.
+
+        Minimum server version: 4.1.
+
+        Must have read_user_access_token permission.
+        For non-self requests, must also have the edit_other_users permission.
+
+        :param user_id: User GUID.
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of tokens per page.
+        :return: User access tokens retrieval info.
+        """
+
+        url = f"{self.api_url}/{user_id}/tokens/"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='POST', body=True)
