@@ -1112,3 +1112,21 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def verify_user_email(self, token: str) -> dict:
+        """
+        Verify the email used by a user to sign-up their account with.
+
+        No permissions required.
+
+        :param  token: The token given to validate the email.
+        :return: User email verification info.
+        """
+
+        url = f"{self.api_url}/email/verify/"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('token', token)
+
+        return self.request(url, request_type='POST')
