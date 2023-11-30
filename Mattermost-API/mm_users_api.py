@@ -1454,3 +1454,19 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='GET')
+
+    def revoke_all_sessions_from_all_users(self) -> dict:
+        """
+        For any session currently on the server (including admin) it will be revoked. Clients will be notified to log out users.
+
+        Minimum server version: 5.14
+
+        Must have manage_system permission.
+
+        :return: Sessions revoke info.
+        """
+        url = f"{self.api_url}/sessions/revoke/all"
+
+        self.reset()
+
+        return self.request(url, request_type='POST')
