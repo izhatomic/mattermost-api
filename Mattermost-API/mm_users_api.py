@@ -1596,3 +1596,27 @@ class Uploads(Base):
         self.add_to_json('auto', auto)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_users_with_invalid_emails(self,
+                                      page: int = None,
+                                      per_page: int = None) -> dict:
+        """
+        Get users whose emails are considered invalid. It is an error to invoke this API if your team settings enable an open server.
+
+        Requires sysconsole_read_user_management_users.
+
+        :param page: Default: 0. The page to select.
+        :param per_page: Default: 60. The number of users per page. There is a maximum limit of 200 users per page.
+        :return: User page retrieval info.
+        """
+
+        url = f"{self.api_url}/invalid_emails"
+
+        self.reset()
+        self.add_application_json_header()
+        if page is not None:
+            self.add_to_json('page', page)
+        if per_page is not None:
+            self.add_to_json('per_page', per_page)
+
+        return self.request(url, request_type='GET', body=True)
