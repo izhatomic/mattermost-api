@@ -1435,3 +1435,22 @@ class Uploads(Base):
         self.add_to_json('accepted', accepted)
 
         return self.request(url, request_type='POST', body=True)
+
+    def fetch_user_latest_tos_action_if_was_for_acceptance(self, user_id: str) -> dict:
+        """
+        Will be deprecated in v6.0 Fetches user's latest terms of
+        service action if the latest action was for acceptance.
+
+        Minimum server version: 5.6
+
+        Must be logged in as the user being acted on.
+
+        :param user_id: User GUID
+        :return: User accepted terms of service info.
+        """
+
+        url = f"{self.api_url}/{user_id}/terms_of_service"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
