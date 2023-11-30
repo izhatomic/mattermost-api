@@ -1497,3 +1497,21 @@ class Uploads(Base):
             self.add_to_json('parent_id', parent_id)
 
         return self.request(url, request_type='POST', body=True)
+
+    def get_uploads_for_user(self, user_id: str) -> dict:
+        """
+        Gets all the upload sessions belonging to a user.
+
+        Minimum server version: 5.28
+
+        Must be logged in as the user who created the upload sessions.
+
+        :param user_id: User GUID
+        :return: User upload retrieval info.
+        """
+
+        url = f"{self.api_url}/{user_id}/uploads"
+
+        self.reset()
+
+        return self.request(url, request_type='GET')
