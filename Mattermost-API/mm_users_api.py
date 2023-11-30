@@ -1470,3 +1470,30 @@ class Uploads(Base):
         self.reset()
 
         return self.request(url, request_type='POST')
+
+    def publish_user_typing_websocket_event(self,
+                                            user_id: str,
+                                            channel_id: str,
+                                            parent_id: str = None) -> dict:
+        """
+        Notify users in the given channel via websocket that the given user is typing.
+
+        Minimum server version: 5.26
+
+        Must have manage_system permission to publish for any user other than oneself.
+
+        :param user_id: User GUID
+        :param channel_id: The id of the channel to which to direct the typing event.
+        :param parent_id: The optional id of the root post of the thread to which the user is replying. If unset, the typing event is directed at the entire channel.
+        :return: User typing websocket event info.
+        """
+
+        url = f"{self.api_url}/{user_id}/typing"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('channel_id', channel_id)
+        if parent_id is non None:
+            self.add_to_json('parent_id', parent_id)
+
+        return self.request(url, request_type='POST', body=True)
