@@ -1570,3 +1570,29 @@ class Uploads(Base):
         self.add_to_json('force', force)
 
         return self.request(url, request_type='POST', body=True)
+
+    def migrate_user_accounts_authentication_type_to_ldap(self, t_from: str,
+                                                          matches: str,
+                                                          auto: bool) -> dict:
+        """
+        Migrates accounts from one authentication provider to another. For example, you can upgrade your authentication provider from email to SAML.
+
+        Minimum server version: 5.28
+
+        Must have manage_system permission.
+
+        :param t_from: The current authentication type for the matched users.
+        :param matches: Users map.
+        :param auto: Toggle auto migration.
+        :return: Migration info.
+        """
+
+        url = f"{self.api_url}/migrate_auth/saml"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('from', t_from)
+        self.add_to_json('matches', matches)
+        self.add_to_json('auto', auto)
+
+        return self.request(url, request_type='POST', body=True)
