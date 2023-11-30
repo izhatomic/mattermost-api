@@ -1544,3 +1544,29 @@ class Uploads(Base):
 
         return self.request(url, request_type='GET', body=True)
 
+    def migrate_user_accounts_authentication_type_to_ldap(self,
+                                                          t_from: str,
+                                                          match_field: str,
+                                                          force: bool) -> dict:
+        """
+        Migrates accounts from one authentication provider to another. For example, you can upgrade your authentication provider from email to LDAP.
+
+        Minimum server version: 5.28
+
+        Must have manage_system permission.
+
+        :param t_from: The current authentication type for the matched users.
+        :param match_field: Foreign user field name to match.
+        :param force: Toggle force migration.
+        :return: Migration info.
+        """
+
+        url = f"{self.api_url}/migrate_auth/ldap"
+
+        self.reset()
+        self.add_application_json_header()
+        self.add_to_json('from', t_from)
+        self.add_to_json('match_field', match_field)
+        self.add_to_json('force', force)
+
+        return self.request(url, request_type='POST', body=True)
