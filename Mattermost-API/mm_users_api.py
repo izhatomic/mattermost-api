@@ -1493,7 +1493,7 @@ class Uploads(Base):
         self.reset()
         self.add_application_json_header()
         self.add_to_json('channel_id', channel_id)
-        if parent_id is non None:
+        if parent_id is not None:
             self.add_to_json('parent_id', parent_id)
 
         return self.request(url, request_type='POST', body=True)
@@ -1601,7 +1601,8 @@ class Uploads(Base):
                                       page: int = None,
                                       per_page: int = None) -> dict:
         """
-        Get users whose emails are considered invalid. It is an error to invoke this API if your team settings enable an open server.
+        Get users whose emails are considered invalid.
+        It is an error to invoke this API if your team settings enable an open server.
 
         Requires sysconsole_read_user_management_users.
 
@@ -1620,3 +1621,67 @@ class Uploads(Base):
             self.add_to_json('per_page', per_page)
 
         return self.request(url, request_type='GET', body=True)
+
+    def convert_bot_into_user(self,
+                              bot_user_id: str,
+                              set_system_admin: bool = None,
+                              email: str = None,
+                              username: str = None,
+                              password: str = None,
+                              first_name: str = None,
+                              last_name: str = None,
+                              nickname: str = None,
+                              locale: str = None,
+                              position: str = None,
+                              props: dict = None,
+                              notify_props: dict = None) -> dict:
+        """
+        Convert a bot into a user.
+
+        Minimum server version: 5.26.
+
+        Must have manage_system permission.
+
+        :param bot_user_id: Bot user ID.
+        :param set_system_admin: Default: false. Whether to give the user the system admin role.
+        :param email: Email to be used in the user creation
+        :param username: Username to be used in the user creation
+        :param password: Password to be used in the user creation
+        :param first_name: First name to be used in the user creation
+        :param last_name: Last name to be used in the user creation
+        :param nickname: Nickname to be used in the user creation
+        :param locale: Locale to be used in the user creation
+        :param position: Position to be used in the user creation
+        :param props: Props to be used in the user creation
+        :param notify_props: Notify props to be used in the user creation
+        :return: Bot conversion info.
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/convert_to_user"
+
+        self.reset()
+        self.add_application_json_header()
+        if set_system_admin is not None:
+            self.add_to_json('set_system_admin', set_system_admin)
+        if email is not None:
+            self.add_to_json('email', email)
+        if username is not None:
+            self.add_to_json('username', username)
+        if password is not None:
+            self.add_to_json('password', password)
+        if first_name is not None:
+            self.add_to_json('first_name', first_name)
+        if last_name is not None:
+            self.add_to_json('last_name', last_name)
+        if nickname is not None:
+            self.add_to_json('nickname', nickname)
+        if locale is not None:
+            self.add_to_json('locale', locale)
+        if nickname is not None:
+            self.add_to_json('position', position)
+        if nickname is not None:
+            self.add_to_json('props', props)
+        if notify_props is not None:
+            self.add_to_json('notify_props', notify_props)
+
+        return self.request(url, request_type='POST', body=True)
