@@ -417,7 +417,7 @@ class Posts(Base):
 
         Minimum server version: 5.14
 
-        :param user_id: Team GUID
+        :param team_id: Team GUID
         :param terms: The search terms as inputed by the user. To search for posts from a user include
         from:someusername, using a user's username. To search in a specific channel include in:somechannel,
         using the channel name (not the display name).
