@@ -12,7 +12,7 @@ class Uploads(Base):
                                    login_id: str = None,
                                    token: str = None,
                                    device_id: str = None,
-                                   ldap_only: str = None,
+                                   ldap_only: bool = None,
                                    password: str = None) -> dict:
         """
         Logins to Mattermost server.
@@ -20,10 +20,10 @@ class Uploads(Base):
         No permission required
 
         :param id: User ID for authentication.
-        :param login_id: User login_id for authentication.
+        :param login_id: User login ID for authentication.
         :param token: User token for authentication.
-        :param device_id: User device_id for authentication.
-        :param ldap_only: User ldap_only for authentication.
+        :param device_id: User device ID for authentication.
+        :param ldap_only: User LDAP only for authentication.
         :param password: User password for authentication.
         :return: User login info.
         """
