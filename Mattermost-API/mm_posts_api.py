@@ -287,21 +287,27 @@ class Posts(Base):
 
         return self.request(url, request_type='GET', body=True)
 
-    def get_file_info_for_post(self, post_id: str) -> dict:
+    def get_file_info_for_post(self,
+                               post_id: str,
+                               include_deleted: bool = None) -> dict:
         """
         Gets a list of file information objects for the files attached to a post.
 
         Must have read_channel permission for the channel the post is in.
 
-        :param post_id: ID of the post
-        :return: File info retrieval info
+        :param post_id: ID of the post.
+        :param include_deleted: Default: false. Defines if result should include deleted posts, must have 'manage_system' (admin) permission.
+        :return: File info
         """
 
         url = f"{self.api_url}/{post_id}/files/info"
 
         self.reset()
+        self.add_application_json_header()
+        if include_deleted is not None:
+            self.add_to_json('include_deleted', include_deleted)
 
-        return self.request(url, request_type='GET')
+        return self.request(url, request_type='GET', body=True)
 
     def get_posts_for_channel(self,
                               channel_id: str,
