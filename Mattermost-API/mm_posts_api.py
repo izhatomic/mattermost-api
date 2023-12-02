@@ -162,7 +162,7 @@ class Posts(Base):
         :return: Post info.
         """
 
-        url = f"{self.base_url}/users/{user_id}/post/{post_id}/set_unread"
+        url = f"{self.base_url}/users/{user_id}/posts/{post_id}/set_unread"
         self.reset()
 
         return self.request(url, request_type='POST')
