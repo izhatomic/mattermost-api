@@ -125,10 +125,10 @@ class Posts(Base):
 
         :param post_id: ID of the post to update.
         :param id: ID of the post to update.
-        :param is_pinned: The size of the file to upload in bytes.
+        :param is_pinned: Set to true to pin the post to the channel it is in.
         :param message: The message text of the post.
         :param has_reactions: Set to true if the post has reactions to it.
-        :param props: A general JSON property bag to attach to the post
+        :param props: A general JSON property bag to attach to the post.
         :return: Post update info.
         """
 
