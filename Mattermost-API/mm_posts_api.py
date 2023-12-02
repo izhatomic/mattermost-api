@@ -8,9 +8,9 @@ class Posts(Base):
         self.api_url = f"{self.base_url}/posts"
 
     def create_post(self,
-                    set_online: bool,
                     channel_id: str,
-                    message: str = None,
+                    message: str,
+                    set_online: bool = None,
                     root_id: str = None,
                     file_ids: list[str] = None,
                     props: dict = None,
@@ -21,9 +21,9 @@ class Posts(Base):
 
         Must have create_post permission for the channel the post is being created in.
 
-        :param set_online: Whether to set the user status as online or not.
         :param channel_id: The channel ID to post in.
         :param message: The message contents, can be formatted with Markdown.
+        :param set_online: Whether to set the user status as online or not.
         :param root_id: The post ID to comment on.
         :param file_ids: A list of file IDs to associate with the post.
         Note that posts are limited to 5 files maximum. Please use additional posts for more files.
@@ -35,10 +35,10 @@ class Posts(Base):
         url = f"{self.api_url}"
         self.reset()
         self.add_application_json_header()
-        self.add_to_json('set_online', set_online)
         self.add_to_json('channel_id', channel_id)
-        if message is not None:
-            self.add_to_json('message', message)
+        self.add_to_json('message', message)
+        if set_online is not None:
+            self.add_to_json('set_online', set_online)
         if root_id is not None:
             self.add_to_json('root_id', root_id)
         if file_ids is not None:
