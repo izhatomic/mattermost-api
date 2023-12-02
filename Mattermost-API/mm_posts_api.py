@@ -168,12 +168,12 @@ class Posts(Base):
         return self.request(url, request_type='POST')
 
     def patch_post(self,
-                   post_id:str,
-                   is_pinned:bool,
-                   message:str,
-                   file_ids:list[str],
-                   has_reactions:bool,
-                   props:str)->dict:
+                   post_id: str,
+                   is_pinned: bool = None,
+                   message: str = None,
+                   file_ids: list[str] = None,
+                   has_reactions: bool = None,
+                   props: str = None) -> dict:
         """
         Partially update a post by providing only the fields you want to update.
         Omitted fields will not be updated. The fields that can be updated are defined in the request body,
