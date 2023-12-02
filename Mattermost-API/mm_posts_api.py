@@ -326,17 +326,17 @@ class Posts(Base):
 
         Must have read_channel permission for the channel.
 
-        :param channel_id: The channel ID to get the posts for
-        :param page: Default: 0. The page to select
+        :param channel_id: The channel ID to get the posts for.
+        :param page: Default: 0. The page to select.
         :param per_page: Default: 60. The number of posts per page
-        :param since: Provide a non-zero value in Unix time milliseconds to select posts modified after that time
-        :param before: A post id to select the posts that came before this one
-        :param after: A post id to select the posts that came after this one
-        :param include_deleted: ID of the post
-        :return: Post list retrieval info
+        :param since: Provide a non-zero value in Unix time milliseconds to select posts modified after that time.
+        :param before: A post id to select the posts that came before this one.
+        :param after: A post id to select the posts that came after this one.
+        :param include_deleted: ID of the post.
+        :return: Post list retrieval info.
         """
 
-        url = f"{self.base_url}/channnels/{channel_id}/posts"
+        url = f"{self.base_url}/channels/{channel_id}/posts"
 
         self.reset()
         self.add_application_json_header()
