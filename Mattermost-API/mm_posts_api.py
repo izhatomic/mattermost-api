@@ -497,7 +497,7 @@ class Posts(Base):
 
         return self.request(url, request_type='POST')
 
-    def get_posts_by_list_of_ids(self, post_ids: list[str]) -> dict:
+    def get_posts_by_list_of_ids(self, post_ids: list[str] = None) -> dict:
         """
         Fetch a list of posts based on the provided postIDs
 
