@@ -521,15 +521,18 @@ class Posts(Base):
                           post_id: str,
                           target_time: int) -> dict:
         """
+        Set a reminder for the user for the post.
+
         Must have read_channel permission for the channel the post is in.
 
         Minimum server version: 7.2
 
-        :param user_id: User GUID
-        :param post_id: Post GUID
-        :param target_time: Target time for the reminder
-        :return: Reminder info
+        :param user_id: User GUID.
+        :param post_id: Post GUID.
+        :param target_time: Target time for the reminder.
+        :return: Reminder info.
         """
+
         url = f"{self.base_url}/users/{user_id}/posts/{post_id}/reminder"
         self.reset()
         self.add_application_json_header()
