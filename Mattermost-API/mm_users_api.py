@@ -264,6 +264,7 @@ class Uploads(Base):
         Minimum server version: 5.26.0
 
         Local mode only: This endpoint is only available through local mode.
+
         :return: Delete request info.
         """
 
@@ -765,7 +766,7 @@ class Uploads(Base):
         :return: Profile image reset info
         """
 
-        url = f"{self.self.api_url}/{user_id}/image"
+        url = f"{self.api_url}/{user_id}/image"
 
         self.reset()
 
@@ -1571,7 +1572,8 @@ class Uploads(Base):
 
         return self.request(url, request_type='POST', body=True)
 
-    def migrate_user_accounts_authentication_type_to_ldap(self, t_from: str,
+    def migrate_user_accounts_authentication_type_to_saml(self,
+                                                          t_from: str,
                                                           matches: str,
                                                           auto: bool) -> dict:
         """
