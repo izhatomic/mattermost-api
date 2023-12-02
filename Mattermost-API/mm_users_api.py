@@ -55,8 +55,8 @@ class Uploads(Base):
 
         A Cloud license is required
 
-        :param login_id: User login_id for authentication.
-        :param cws_token: User cws_token for authentication.
+        :param login_id: User login ID for authentication.
+        :param cws_token: User CWS token for authentication.
         :return: User login info.
         """
 
