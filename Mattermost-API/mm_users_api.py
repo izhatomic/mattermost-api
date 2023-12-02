@@ -71,7 +71,7 @@ class Uploads(Base):
 
         return self.request(url, request_type='POST', body=True)
 
-    def logout_from_mm_server(self)->dict:
+    def logout_from_mm_server(self) -> dict:
         """
         Logout from the Mattermost server.
 
@@ -99,7 +99,7 @@ class Uploads(Base):
                     password: str = None,
                     locale: str = None,
                     props: dict = None,
-                    notify_props: str = None) -> dict:
+                    notify_props: dict = None) -> dict:
         """
         Create a new user on the system. Password is required for email login.
         For other authentication types such as LDAP or SAML, auth_data and auth_service fields are required.
@@ -111,8 +111,8 @@ class Uploads(Base):
         :param username: User username to be created.
         :param t: Token id from an email invitation.
         :param iid: Token id from an invitation link.
-        :param first_name: User first_name to be created.
-        :param last_name: User last_name to be created.
+        :param first_name: User first name to be created.
+        :param last_name: User last name to be created.
         :param nickname: User nickname to be created.
         :param auth_data: Service-specific authentication data, such as email address.
         :param auth_service: The authentication service, one of
@@ -120,7 +120,7 @@ class Uploads(Base):
         :param password: The password used for email authentication.
         :param locale: User locale to be created.
         :param props: User props to be created.
-        :param notify_props: User notify_props to be created.
+        :param notify_props: User notify props to be created.
         :return: User creation info.
         """
 
