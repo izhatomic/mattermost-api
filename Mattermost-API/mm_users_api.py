@@ -1151,7 +1151,7 @@ class Uploads(Base):
         :return: User email info.
         """
 
-        url = f"{self.api_url}/email/verify/send/"
+        url = f"{self.api_url}/email/verify/send"
 
         self.reset()
         self.add_application_json_header()
@@ -1189,7 +1189,7 @@ class Uploads(Base):
         :return: Login method info.
         """
 
-        url = f"{self.api_url}/email/verify/send/"
+        url = f"{self.api_url}/login/switch"
 
         self.reset()
         self.add_application_json_header()
