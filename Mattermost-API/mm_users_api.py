@@ -671,7 +671,8 @@ class Uploads(Base):
                           user_id: str,
                           roles: str) -> dict:
         """
-        Update a user's system-level roles. Valid user roles are "system_user", "system_admin" or both of them. Overwrites any previously assigned system-level roles.
+        Update a user's system-level roles. Valid user roles are "system_user", "system_admin" or both of them.
+        Overwrites any previously assigned system-level roles.
 
         Must have the manage_roles permission.
 
@@ -693,7 +694,11 @@ class Uploads(Base):
                                   active: bool) -> dict:
         """
         Update user active or inactive status.
-        Since server version 4.6, users using a SSO provider to login can be activated or deactivated with this endpoint. However, if their activation status in Mattermost does not reflect their status in the SSO provider, the next synchronization or login by that user will reset the activation status to that of their account in the SSO provider. Server versions 4.5 and before do not allow activation or deactivation of SSO users from this endpoint.
+        Since server version 4.6, users using a SSO provider to login can be activated or
+        deactivated with this endpoint. However, if their activation status in Mattermost does not reflect their
+        status in the SSO provider, the next synchronization or login by that user will reset the activation
+        status to that of their account in the SSO provider. Server versions 4.5 and before do not allow activation
+        or deactivation of SSO users from this endpoint.
 
         User can deactivate themselves. User with manage_system permission can activate or deactivate a user.
 
