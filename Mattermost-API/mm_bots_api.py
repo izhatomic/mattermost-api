@@ -108,9 +108,8 @@ class Bots(Base):
         :param bot_user_id: Bot user ID.
         :param username: Bot's name.
         :param display_name: Bot's display name.
-        :param description: Bot's name.
-        A bot is consitered orphaned if it's owner has been deactivated.
-        :return: Bot patch info
+        :param description: Bot's description.
+        :return: Bot patch info.
         """
 
         url = f"{self.api_url}/{bot_user_id}"
