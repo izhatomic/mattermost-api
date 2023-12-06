@@ -1001,7 +1001,8 @@ class Uploads(Base):
         """
         Get a user object by providing a user email. Sensitive information will be sanitized out.
 
-        Requires an active session and for the current session to be able to view another user's email based on the server's privacy settings.
+        Requires an active session and for the current session to be able to view another user's
+        email based on the server's privacy settings.
 
         :param  email: User Email
         :return: User retrieval info
