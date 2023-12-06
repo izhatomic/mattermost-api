@@ -1249,7 +1249,7 @@ class Uploads(Base):
         :return: User access tokens retrieval info.
         """
 
-        url = f"{self.api_url}/{user_id}/tokens/"
+        url = f"{self.api_url}/{user_id}/tokens"
 
         self.reset()
         self.add_application_json_header()
