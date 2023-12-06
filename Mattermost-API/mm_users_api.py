@@ -974,7 +974,8 @@ class Uploads(Base):
 
     def send_password_reset_email(self, email: str) -> dict:
         """
-        Send an email containing a link for resetting the user's password. The link will contain a one-use, timed recovery code tied to the user's account. Only works for non-SSO users.
+        Send an email containing a link for resetting the user's password. The link will contain a one-use,
+        timed recovery code tied to the user's account. Only works for non-SSO users.
 
         No permissions required.
 
