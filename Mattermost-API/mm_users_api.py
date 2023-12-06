@@ -719,7 +719,8 @@ class Uploads(Base):
         Must be logged in.
 
         :param user_id: User GUID
-        :param _: Not used by the server. Clients can pass in the last picture update time of the user to potentially take advantage of caching
+        :param _: Not used by the server. Clients can pass in the last picture update
+        time of the user to potentially take advantage of caching
         :return: User's profile image info
         """
 
