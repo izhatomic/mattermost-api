@@ -305,7 +305,7 @@ class Bots(Base):
         :param locale: User's locale.
         :param position: User's position.
         :param props: User's props.
-        :param notify_props: User's notify_props.
+        :param notify_props: User's notify props.
         :return: Bot conversion info.
         """
 
