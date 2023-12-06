@@ -201,7 +201,7 @@ class Bots(Base):
 
         :param bot_user_id: Bot user ID.
         :param user_id: The user ID to assign the bot to.
-        :return: Bot enable info
+        :return: Bot assign info
         """
 
         url = f"{self.api_url}/{bot_user_id}/assign/{user_id}"
