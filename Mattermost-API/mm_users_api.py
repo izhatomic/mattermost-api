@@ -1222,7 +1222,7 @@ class Uploads(Base):
         :return: User email info.
         """
 
-        url = f"{self.api_url}/{user_id}/tokens/"
+        url = f"{self.api_url}/{user_id}/tokens"
 
         self.reset()
         self.add_application_json_header()
