@@ -738,20 +738,20 @@ class Uploads(Base):
         """
         Set a user's profile image based on user_id string parameter.
 
-         Must be logged in as the user being updated or have the edit_other_users permission.
+        Must be logged in as the user being updated or have the edit_other_users permission.
 
-        :param user_id:
-        :param image:
+        :param user_id: User GUID
+        :param image: The image to be uploaded
         :return: Profile image
         """
 
         url = f"{self.api_url}/{user_id}/image"
 
         self.reset()
-        self.add_application_multipart_form_data_header()
-        self.add_to_multipart_form_data('image', image)
+        self.add_multipart_form_data_header()
+        self.add_file(file_path=image)
 
-        return self.request(url, request_type='POST', file=True)
+        return self.request(url, request_type='POST', files=True)
 
     def delete_user_profile_image(self,
                                   user_id: str) -> dict:
