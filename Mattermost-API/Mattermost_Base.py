@@ -40,7 +40,7 @@ class Base:
 
     def add_query_param(self, key: str, value: Union[str, dict, list, tuple, int, bool]) -> None:
         """
-            Добавляет запись {key:value} в json Body.
+            Добавляет запись {key:value} в Query parameters.
 
             :param key: Ключ для добавления в query Parameters.
             :type key: :obj:`base.String`
