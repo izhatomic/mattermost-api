@@ -7,8 +7,7 @@ class Bots(Base):
         super().__init__(token, server_url)
         self.api_url = f"{self.base_url}/bots"
 
-    def convert_user_into_bot(self,
-                              user_id: str) -> dict:
+    def convert_user_into_bot(self, user_id: str) -> dict:
         """
         Convert a user into a bot.
 
@@ -28,8 +27,8 @@ class Bots(Base):
 
     def create_bot(self,
                    username: str,
-                   display_name: str,
-                   description: str) -> dict:
+                   display_name: str = None,
+                   description: str = None) -> dict:
         """
         Create a new bot account on the system. Username is required.
 
@@ -56,10 +55,10 @@ class Bots(Base):
         return self.request(url, request_type='POST', body=True)
 
     def get_bots(self,
-                 page: int,
-                 per_page: int,
-                 include_deleted: bool,
-                 only_orphaned: bool) -> dict:
+                 page: int = None,
+                 per_page: int = None,
+                 include_deleted: bool = None,
+                 only_orphaned: bool = None) -> dict:
 
         """
         Get a page of a list of bots.
@@ -74,29 +73,30 @@ class Bots(Base):
         :param include_deleted: If deleted bots should be returned.
         :param only_orphaned: When true, only orphaned bots will be returned.
         A bot is consitered orphaned if it's owner has been deactivated.
-        :return: Bot creation info
+        :return: Bot page retrieval info
+
         """
 
         url = f"{self.api_url}"
 
         self.reset()
-        self.add_application_json_header()
+
         if page is not None:
-            self.add_to_json('page', page)
+            self.add_query_param('page', page)
         if per_page is not None:
-            self.add_to_json('per_page', per_page)
+            self.add_query_param('per_page', per_page)
         if include_deleted is not None:
-            self.add_to_json('include_deleted', include_deleted)
+            self.add_query_param('include_deleted', include_deleted)
         if only_orphaned is not None:
-            self.add_to_json('only_orphaned', only_orphaned)
+            self.add_query_param('only_orphaned', only_orphaned)
 
         return self.request(url, request_type='GET', body=True)
 
     def patch_bot(self,
                   bot_user_id: str,
                   username: str,
-                  display_name: str,
-                  description: str) -> dict:
+                  display_name: str = None,
+                  description: str = None) -> dict:
 
         """
         Partially update a bot by providing only the fields you want to update.
@@ -109,9 +109,8 @@ class Bots(Base):
         :param bot_user_id: Bot user ID.
         :param username: Bot's name.
         :param display_name: Bot's display name.
-        :param description: Bot's name.
-        A bot is consitered orphaned if it's owner has been deactivated.
-        :return: Bot patch info
+        :param description: Bot's description.
+        :return: Bot patch info.
         """
 
         url = f"{self.api_url}/{bot_user_id}"
@@ -128,7 +127,7 @@ class Bots(Base):
 
     def get_bot(self,
                 bot_user_id: str,
-                include_deleted: bool) -> dict:
+                include_deleted: bool = None) -> dict:
 
         """
         Get a bot specified by its bot id.
@@ -146,9 +145,9 @@ class Bots(Base):
         url = f"{self.api_url}/{bot_user_id}"
 
         self.reset()
-        self.add_application_json_header()
+
         if include_deleted is not None:
-            self.add_to_json('include_deleted', include_deleted)
+            self.add_query_param('include_deleted', include_deleted)
 
         return self.request(url, request_type='GET', body=True)
 
@@ -203,7 +202,7 @@ class Bots(Base):
 
         :param bot_user_id: Bot user ID.
         :param user_id: The user ID to assign the bot to.
-        :return: Bot enable info
+        :return: Bot assign info
         """
 
         url = f"{self.api_url}/{bot_user_id}/assign/{user_id}"
@@ -233,7 +232,7 @@ class Bots(Base):
 
     def set_bot_lhs_icon_image(self,
                                bot_user_id: str,
-                               image:str) -> dict:
+                               image: str) -> dict:
 
         """
         Set a bot's LHS icon image based on bot_user_id string parameter.
@@ -251,8 +250,8 @@ class Bots(Base):
         url = f"{self.api_url}/{bot_user_id}/icon"
 
         self.reset()
-        self.add_application_json_header()
-        self.add_to_json('image', image)
+        self.add_multipart_form_data_header()
+        self.add_file(file_path=image)
 
         return self.request(url, request_type='POST')
 
@@ -274,3 +273,68 @@ class Bots(Base):
         self.reset()
 
         return self.request(url, request_type='DEL')
+
+    def convert_bot_into_user(self,
+                              bot_user_id: str,
+                              set_system_admin: bool = None,
+                              email: str = None,
+                              username: str = None,
+                              password: str = None,
+                              first_name: str = None,
+                              last_name: str = None,
+                              nickname: str = None,
+                              locale: str = None,
+                              position: str = None,
+                              props: str = None,
+                              notify_props: dict = None) -> dict:
+
+        """
+        Convert a bot into a user.
+
+        Must have manage_system permission.
+
+        Minimum server version: 5.26
+
+        :param bot_user_id: Bot user ID.
+        :param set_system_admin: Default: false. Whether to give the user the system admin role.
+        :param email: User's email.
+        :param username: User's name.
+        :param password: User's password.
+        :param first_name: User's first name.
+        :param last_name: User's last name.
+        :param nickname: User's nickname.
+        :param locale: User's locale.
+        :param position: User's position.
+        :param props: User's props.
+        :param notify_props: User's notify props.
+        :return: Bot conversion info.
+        """
+
+        url = f"{self.api_url}/{bot_user_id}/convert_to_user"
+
+        self.reset()
+        self.add_application_json_header()
+        if set_system_admin is not None:
+            self.add_query_param('set_system_admin', set_system_admin)
+        if email is not None:
+            self.add_to_json('email', email)
+        if username is not None:
+            self.add_to_json('username', username)
+        if password is not None:
+            self.add_to_json('password', password)
+        if first_name is not None:
+            self.add_to_json('first_name', first_name)
+        if last_name is not None:
+            self.add_to_json('last_name', last_name)
+        if nickname is not None:
+            self.add_to_json('nickname', nickname)
+        if locale is not None:
+            self.add_to_json('locale', locale)
+        if position is not None:
+            self.add_to_json('position', position)
+        if props is not None:
+            self.add_to_json('props', props)
+        if notify_props is not None:
+            self.add_to_json('notify_props', notify_props)
+
+        return self.request(url, request_type='POST', body=True)
