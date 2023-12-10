@@ -54,7 +54,7 @@ class Base:
 
     def add_application_json_header(self) -> None:
         """
-            Добавляет заголовок в запрос для отправки JSON данных.
+            Добавляет заголовок в запрос для отправки JSON.
         """
         if self.headers is None:
             self.headers = {}
@@ -62,11 +62,19 @@ class Base:
 
     def add_application_www_form_header(self) -> None:
         """
-            Добавляет заголовок в запрос для отправки JSON данных.
+            Добавляет заголовок в запрос для отправки x-www-form.
         """
         if self.headers is None:
             self.headers = {}
         self.headers.update({'Content-Type': 'application/x-www-form-urlencoded'})
+
+    def add_multipart_form_data_header(self) -> None:
+        """
+            Добавляет заголовок в запрос для отправки multipart/form-data.
+        """
+        if self.headers is None:
+            self.headers = {}
+        self.headers.update({'Content-Type': 'multipart/form-data'})
 
     def add_to_json(self, key: str, value: Union[str, dict, list, tuple, int, bool]) -> None:
         """
@@ -102,7 +110,7 @@ class Base:
 
         filename = os.path.basename(file_path)
 
-        self.files.update({filename: data})
+        self.files.update({filename: (filename, data)})
 
     def request(self, url: str,
                 params: bool = None,

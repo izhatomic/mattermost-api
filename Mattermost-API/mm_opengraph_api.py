@@ -7,7 +7,7 @@ class Opengraph(Base):
         super().__init__(token, server_url)
         self.api_url = f"{self.base_url}/opengraph"
 
-    def get_og_mdata_for_url(self, url: str) -> dict:
+    def get_og_mdata_for_url(self) -> dict:
         """
         Get Open Graph Metadata for a specif URL.
         Use the Open Graph protocol to get some generic metadata about a URL.

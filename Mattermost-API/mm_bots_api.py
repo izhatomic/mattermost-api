@@ -74,6 +74,7 @@ class Bots(Base):
         :param only_orphaned: When true, only orphaned bots will be returned.
         A bot is consitered orphaned if it's owner has been deactivated.
         :return: Bot page retrieval info
+
         """
 
         url = f"{self.api_url}"
