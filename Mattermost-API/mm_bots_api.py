@@ -80,15 +80,15 @@ class Bots(Base):
         url = f"{self.api_url}"
 
         self.reset()
-        self.add_application_json_header()
+
         if page is not None:
-            self.add_to_json('page', page)
+            self.add_query_param('page', page)
         if per_page is not None:
-            self.add_to_json('per_page', per_page)
+            self.add_query_param('per_page', per_page)
         if include_deleted is not None:
-            self.add_to_json('include_deleted', include_deleted)
+            self.add_query_param('include_deleted', include_deleted)
         if only_orphaned is not None:
-            self.add_to_json('only_orphaned', only_orphaned)
+            self.add_query_param('only_orphaned', only_orphaned)
 
         return self.request(url, request_type='GET', body=True)
 
@@ -145,9 +145,9 @@ class Bots(Base):
         url = f"{self.api_url}/{bot_user_id}"
 
         self.reset()
-        self.add_application_json_header()
+
         if include_deleted is not None:
-            self.add_to_json('include_deleted', include_deleted)
+            self.add_query_param('include_deleted', include_deleted)
 
         return self.request(url, request_type='GET', body=True)
 
@@ -250,8 +250,8 @@ class Bots(Base):
         url = f"{self.api_url}/{bot_user_id}/icon"
 
         self.reset()
-        self.add_application_json_header()
-        self.add_to_json('image', image)
+        self.add_multipart_form_data_header()
+        self.add_file(file_path=image)
 
         return self.request(url, request_type='POST')
 
@@ -315,7 +315,8 @@ class Bots(Base):
         self.reset()
         self.add_application_json_header()
         if set_system_admin is not None:
-            self.add_to_json('set_system_admin', set_system_admin)
+            self.add_query_param('set_system_admin', set_system_admin)
+
         if email is not None:
             self.add_to_json('email', email)
         if username is not None:
