@@ -73,7 +73,8 @@ class Bots(Base):
         :param include_deleted: If deleted bots should be returned.
         :param only_orphaned: When true, only orphaned bots will be returned.
         A bot is consitered orphaned if it's owner has been deactivated.
-        :return: Bot creation info
+        :return: Bot page retrieval info
+
         """
 
         url = f"{self.api_url}"
@@ -108,9 +109,8 @@ class Bots(Base):
         :param bot_user_id: Bot user ID.
         :param username: Bot's name.
         :param display_name: Bot's display name.
-        :param description: Bot's name.
-        A bot is consitered orphaned if it's owner has been deactivated.
-        :return: Bot patch info
+        :param description: Bot's description.
+        :return: Bot patch info.
         """
 
         url = f"{self.api_url}/{bot_user_id}"
@@ -202,7 +202,7 @@ class Bots(Base):
 
         :param bot_user_id: Bot user ID.
         :param user_id: The user ID to assign the bot to.
-        :return: Bot enable info
+        :return: Bot assign info
         """
 
         url = f"{self.api_url}/{bot_user_id}/assign/{user_id}"
@@ -306,7 +306,7 @@ class Bots(Base):
         :param locale: User's locale.
         :param position: User's position.
         :param props: User's props.
-        :param notify_props: User's notify_props.
+        :param notify_props: User's notify props.
         :return: Bot conversion info.
         """
 
