@@ -73,7 +73,7 @@ class Posts(Base):
 
     def get_post(self,
                  post_id: str,
-                 include_deleted: bool) -> dict:
+                 include_deleted: bool = None) -> dict:
         """
         Get a single post.
 
@@ -434,10 +434,8 @@ class Posts(Base):
 
         self.reset()
         self.add_application_json_header()
-        if terms is not None:
-            self.add_to_json('terms', terms)
-        if is_or_search is not None:
-            self.add_to_json('is_or_search', is_or_search)
+        self.add_to_json('terms', terms)
+        self.add_to_json('is_or_search', is_or_search)
         if time_zone_offset is not None:
             self.add_to_json('time_zone_offset', time_zone_offset)
         if include_deleted_channels is not None:
