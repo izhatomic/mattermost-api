@@ -9,6 +9,7 @@ from mm_opengraph_api import Opengraph
 from mm_permissions_api import Permissions
 from mm_terms_of_service_api import TermsOfService
 from mm_usage_api import Usage
+from mm_shared_channels_api import SharedChannels
 
 
 class MattermostAPI:
@@ -21,7 +22,7 @@ class MattermostAPI:
         return Uploads(token=self.token, server_url=self.server_url)
 
     @property
-    def blevels(self):
+    def bleve(self):
         return Bleve(token=self.token, server_url=self.server_url)
 
     @property
@@ -59,6 +60,10 @@ class MattermostAPI:
     @property
     def usage(self):
         return Usage(token=self.token, server_url=self.server_url)
+
+    @property
+    def shared_channels(self):
+        return SharedChannels(token=self.token, server_url=self.server_url)
 
 
 

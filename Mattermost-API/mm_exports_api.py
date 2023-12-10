@@ -17,7 +17,7 @@ class Exports(Base):
         :return: List of all available export files
         """
 
-        url = f"{self.api_url}/"
+        url = f"{self.api_url}"
 
         self.reset()
 

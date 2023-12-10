@@ -316,6 +316,7 @@ class Bots(Base):
         self.add_application_json_header()
         if set_system_admin is not None:
             self.add_query_param('set_system_admin', set_system_admin)
+
         if email is not None:
             self.add_to_json('email', email)
         if username is not None:
