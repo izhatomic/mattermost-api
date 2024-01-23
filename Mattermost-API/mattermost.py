@@ -80,8 +80,3 @@ class MattermostAPI:
     def bots(self):
         return Bots(token=self.token, server_url=self.server_url)
 
-
-if __name__ == "__main__":
-    app = MattermostAPI(token="token", server_url="https://api.mm.ru")
-    app.uploads.create_upload(channel_id="asdfasdf", filename="/my_file", file_size=10)
-
